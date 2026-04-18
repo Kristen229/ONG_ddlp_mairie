@@ -27,7 +27,7 @@
             @endif
 
             <!-- Formulaire -->
-            <form method="POST" action="{{ route('admin.login.submit') }}" class="space-y-6">
+            <form method="POST" action="{{ route('admin.login') }}" class="space-y-6">
                 @csrf
                 <div>
                     <label for="email" class="block text-sm font-bold text-gray-700 mb-1">Email Administrateur</label>

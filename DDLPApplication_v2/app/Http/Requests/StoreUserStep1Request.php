@@ -9,10 +9,10 @@ class StoreUserStep1Request extends FormRequest
     public function rules(): array
     {
         return [
-            'groupe' => 'required|string|max:255',
+            'group' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'domaine' => 'required|array',
-            'denomination' => 'required|string|max:255',
+            'domaine' => 'required|string|max:255',
+            'denomination' => 'nullable|string|max:255',
             'date' => 'required|date',
             'objectif1' => 'required|string|max:255',
             'objectif2' => 'required|string|max:255',

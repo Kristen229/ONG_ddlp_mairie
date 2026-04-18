@@ -13,10 +13,7 @@ class StoreUserStep2Request extends FormRequest
             'email' => 'required|email|max:255',
             'number1' => 'required|string|max:20',
             'number2' => 'nullable|string|max:20',
-            'attachment' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'identifiant' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
-            'lien' => 'required|url|max:255',
+            'password' => 'required|string|min:6|confirmed',
         ];
     }
 }

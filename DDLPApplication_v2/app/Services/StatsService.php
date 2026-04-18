@@ -16,8 +16,8 @@ class StatsService
         $year = now()->year;
 
         $userCount = User::count();
-        $ongCount = User::where('group', 'ong')->count();
-        $associationCount = User::where('group', 'association')->count();
+        $ongCount = User::where('groupe', 'ong')->count();
+        $associationCount = User::where('groupe', 'association')->count();
 
         $requestCount = AssociationRequest::count();
         $requestaCount = AssociationRequest::where('status', RequestStatus::APPROVED)->count();
@@ -26,12 +26,12 @@ class StatsService
         $requesttCount = $requestaCount + $requestrCount;
 
         $activityCount = Activity::count();
-        $activitysCount = Activity::whereHas('user', fn($q) => $q->where('group', 'ong'))->count();
-        $activityseCount = Activity::whereHas('user', fn($q) => $q->where('group', 'association'))->count();
+        $activitysCount = Activity::whereHas('user', fn($q) => $q->where('groupe', 'ong'))->count();
+        $activityseCount = Activity::whereHas('user', fn($q) => $q->where('groupe', 'association'))->count();
 
         $countsByMonth = $this->monthly('users', null, $year);
-        $countsAssociations = $this->monthly('users', ['group' => 'association'], $year);
-        $countsOng = $this->monthly('users', ['group' => 'ong'], $year);
+        $countsAssociations = $this->monthly('users', ['groupe' => 'association'], $year);
+        $countsOng = $this->monthly('users', ['groupe' => 'ong'], $year);
         $requestCounts = $this->monthly('association_requests', null, $year);
 
         $requestTypes = DB::table('association_requests')
@@ -43,8 +43,8 @@ class StatsService
         $statsTotal = []; $statsAsso = []; $statsONG = [];
         for ($m = 1; $m <= 12; $m++) {
             $statsTotal[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->count();
-            $statsAsso[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->whereHas('user', fn($q) => $q->where('group', 'association'))->count();
-            $statsONG[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->whereHas('user', fn($q) => $q->where('group', 'ong'))->count();
+            $statsAsso[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->whereHas('user', fn($q) => $q->where('groupe', 'association'))->count();
+            $statsONG[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->whereHas('user', fn($q) => $q->where('groupe', 'ong'))->count();
         }
 
         $lastUsers = User::latest()->take(8)->get();

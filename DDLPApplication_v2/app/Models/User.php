@@ -12,7 +12,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'group',
+        'groupe',
         'name',
         'domaine',
         'denomination',
@@ -55,7 +55,7 @@ class User extends Authenticatable
     {
         return [
             'password' => 'hashed',
-            'group' => UserGroup::class,
+            'groupe' => UserGroup::class,
             'date' => 'date',
         ];
     }
