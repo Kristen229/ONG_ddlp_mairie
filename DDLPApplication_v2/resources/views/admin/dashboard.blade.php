@@ -224,15 +224,31 @@
                                 <span class="text-xs text-gray-400">Aucun</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            @if($req->status === \App\Enums\RequestStatus::PENDING)
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                            @if($req->statut === \App\Enums\RequestStatus::PENDING)
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-lg bg-yellow-100 text-yellow-800">En Attente</span>
-                            @elseif($req->status === \App\Enums\RequestStatus::APPROVED)
+                            @elseif($req->statut === \App\Enums\RequestStatus::APPROVED)
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-lg bg-green-100 text-green-800">Vu et Approuvé</span>
                             @else
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-lg bg-red-100 text-red-800">Rejeté</span>
                             @endif
                         </td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <!-- Boutons Accepter / Refuser -->
+                            @if($req->statut === \App\Enums\RequestStatus::PENDING)
+                                <div class="flex justify-end gap-2">
+                                    <form method="POST" action="{{ route('admin.approve', $req->id) }}">
+                                        @csrf <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-sm font-bold transition-colors">Approuver</button>
+                                    </form>
+                                    <form method="POST" action="{{ route('admin.reject', $req->id) }}">
+                                        @csrf <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm font-bold transition-colors">Rejeter</button>
+                                    </form>
+                                </div>
+                            @else
+                                <span class="text-xs text-gray-400">Déjà traité</span>
+                            @endif
+                        </td>
+
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             <!-- Boutons Accepter / Refuser -->
                             @if($req->status === \App\Enums\RequestStatus::PENDING)

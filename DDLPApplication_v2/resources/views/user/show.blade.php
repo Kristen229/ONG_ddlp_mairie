@@ -158,7 +158,7 @@
 
                     <!-- Tableau des demandes -->
                     <div class="overflow-x-auto text-sm">
-                        @if($user->associationRequests && $user->associationRequests->count() > 0)
+                        @if($user->requests && $user->requests->count() > 0)
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50 text-gray-500 uppercase">
                                 <tr>
@@ -169,7 +169,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($user->associationRequests as $request)
+                                @foreach($user->requests as $request)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $request->created_at->format('d/m/Y') }}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900">{{ $request->objet }}</td>
@@ -177,11 +177,11 @@
                                         <a href="{{ asset('storage/' . $request->attachment) }}" target="_blank" class="text-teal-600 hover:underline">Voir PDF</a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($request->status === \App\Enums\RequestStatus::PENDING)
+                                        @if($request->statut === \App\Enums\RequestStatus::PENDING)
                                             <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">En cours</span>
-                                        @elseif($request->status === \App\Enums\RequestStatus::APPROVED)
+                                        @elseif($request->statut === \App\Enums\RequestStatus::APPROVED)
                                             <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approuvé</span>
-                                        @elseif($request->status === \App\Enums\RequestStatus::REJECTED)
+                                        @elseif($request->statut === \App\Enums\RequestStatus::REJECTED)
                                             <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Rejeté</span>
                                         @endif
                                     </td>

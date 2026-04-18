@@ -20,9 +20,9 @@ class StatsService
         $associationCount = User::where('groupe', 'association')->count();
 
         $requestCount = AssociationRequest::count();
-        $requestaCount = AssociationRequest::where('status', RequestStatus::APPROVED)->count();
-        $requestrCount = AssociationRequest::where('status', RequestStatus::REJECTED)->count();
-        $requesteCount = AssociationRequest::where('status', RequestStatus::PENDING)->count();
+        $requestaCount = AssociationRequest::where('statut', RequestStatus::APPROVED)->count();
+        $requestrCount = AssociationRequest::where('statut', RequestStatus::REJECTED)->count();
+        $requesteCount = AssociationRequest::where('statut', RequestStatus::PENDING)->count();
         $requesttCount = $requestaCount + $requestrCount;
 
         $activityCount = Activity::count();

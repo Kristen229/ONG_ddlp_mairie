@@ -14,7 +14,7 @@ class RequestManagementController extends Controller
     public function approve(Request $request, $id)
     {
         $assocRequest = AssociationRequest::findOrFail($id);
-        $assocRequest->update(['status' => RequestStatus::APPROVED]);
+        $assocRequest->update(['statut' => RequestStatus::APPROVED]);
 
         if ($request->hasFile('attachment')) {
             $pdfPath = $request->file('attachment')->store('courriers', 'public');
@@ -32,7 +32,7 @@ class RequestManagementController extends Controller
     public function reject(Request $request, $id)
     {
         $assocRequest = AssociationRequest::findOrFail($id);
-        $assocRequest->update(['status' => RequestStatus::REJECTED]);
+        $assocRequest->update(['statut' => RequestStatus::REJECTED]);
 
         $user = $assocRequest->user;
         if ($user && $user->email) {

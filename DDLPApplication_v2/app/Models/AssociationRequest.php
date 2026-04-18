@@ -10,7 +10,7 @@ class AssociationRequest extends Model
 {
     use HasFactory;
 
-    protected $table = 'association_requests';
+    protected $table = 'requests';
 
     protected $fillable = [
         'user_id',
@@ -18,16 +18,17 @@ class AssociationRequest extends Model
         'type',
         'description',
         'location',
-        'status',
+        'statut',
         'pdf_path',
         'destinataire',
+        'motif',
         'reference',
     ];
 
     protected function casts(): array
     {
         return [
-            'status' => RequestStatus::class,
+            'statut' => RequestStatus::class,
         ];
     }
 
@@ -42,6 +43,6 @@ class AssociationRequest extends Model
 
     public static function countPending(): int
     {
-        return self::where('status', RequestStatus::PENDING)->count();
+        return self::where('statut', RequestStatus::PENDING)->count();
     }
 }

@@ -29,9 +29,7 @@ class UserController extends Controller
     public function shows($id)
     {
         $user = User::findOrFail($id);
-        $activities = $user->activities;
-        $requests = $user->requests;
-        return view('user.dashboard', compact('user', 'activities', 'requests'));
+        return view('user.show', compact('user'));
     }
 
     public function showLoginForm()
