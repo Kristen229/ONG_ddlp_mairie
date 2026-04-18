@@ -1,0 +1,1691 @@
+/* Fonts */
+:root {
+    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Satisfy",  sans-serif;
+    --nav-font: "Poppins",  sans-serif;
+    --section-font: "Montserrat";
+}
+    
+:root { 
+    --background-color: #031c29;
+    --default-color: #000000;
+    --heading-color: #433f39;
+    --accent-color: #004B70;
+    --surface-color: #000000;
+    --contrast-color: #ffffff;
+}
+    
+:root {
+    --nav-color: #000000;
+    --nav-hover-color: #004B70;
+    --nav-mobile-background-color: #ffffff;
+}
+    
+/* Smooth scroll */
+:root {
+    scroll-behavior: smooth;
+}
+    
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+body {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    font-family: var(--default-font);
+}
+    
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+    
+a:hover {
+    color: color-mix(in srgb, var(--accent-color), transparent 25%);
+    text-decoration: none;
+}
+    
+h1,
+h2{
+    color: var(--heading-color);
+    font-family: var(--heading-font);
+}
+   
+/*--------------------------------------------------------------
+# Global Header
+--------------------------------------------------------------*/
+.header {
+    --background-color: #ffffff;
+    --default-color: #000000;
+    --heading-color: #ffffff;
+    color: var(--default-color);
+    transition: all 0.5s;
+    z-index: 997;
+    background-color: var(--background-color);
+}
+    
+.header .branding {
+    min-height: 60px;
+    padding: 5px 0;
+}
+    
+.header .logo {
+    line-height: 1;
+}
+    
+.header .logo img {
+    max-height: 80px;
+    margin-right: 20px;
+    object-fit: cover;
+}
+    
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+  
+/* Navmenu - Desktop */
+@media (min-width: 1200px) {
+    .navmenu {
+      padding: 0;
+    }
+    
+    .navmenu ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      list-style: none;
+      align-items: center;
+    }
+    
+    .navmenu li {
+      position: relative;
+    }
+    
+    .navmenu a,
+    .navmenu a:focus {
+      color: var(--nav-color);
+      padding: 18px 15px;
+      font-size: 18px;
+      font-family: var(--nav-font);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      white-space: nowrap;
+      transition: 0.3s;
+    }
+    
+    .navmenu a i,
+    .navmenu a:focus i {
+      font-size: 12px;
+      line-height: 0;
+      margin-left: 5px;
+      transition: 0.3s;
+    }
+    
+    .navmenu li:last-child a {
+      padding-right: 0;
+    }
+    
+    .navmenu li:hover>a,
+    .navmenu .active,
+    .navmenu .active:focus {
+      color: var(--nav-hover-color);
+    }
+    
+}
+    
+/* Navmenu - Mobile */
+@media (max-width: 1199px) {
+    .mobile-nav-toggle {
+      color: var(--nav-color);
+      font-size: 28px;
+      line-height: 0;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .navmenu {
+        padding: 0;
+        z-index: 9997;
+    }
+    
+    .navmenu ul {
+        display: none;
+        list-style: none;
+        position: absolute;
+        inset: 60px 20px 20px 20px;
+        padding: 10px 0;
+        margin: 0;
+        border-radius: 6px;
+        background-color: var(--nav-mobile-background-color);
+        overflow-y: auto;
+        transition: 0.3s;
+        z-index: 9998;
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navmenu a,
+    .navmenu a:focus {
+        color: var(--default-color);
+        padding: 10px 20px;
+        font-family: var(--nav-font);
+        font-size: 17px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        white-space: nowrap;
+        transition: 0.3s;
+    }
+    
+    .navmenu a i,
+    .navmenu a:focus i {
+        font-size: 12px;
+        line-height: 0;
+        margin-left: 5px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: 0.3s;
+        background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+    }
+    
+    .navmenu a i:hover,
+    .navmenu a:focus i:hover {
+        background-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+    
+    .navmenu a:hover,
+    .navmenu .active,
+    .navmenu .active:focus {
+        color: var(--nav-dropdown-hover-color);
+    }
+    
+    .navmenu .active i,
+    .navmenu .active:focus i {
+        background-color: var(--accent-color);
+        color: var(--contrast-color);
+        transform: rotate(180deg);
+    }
+    
+    .mobile-nav-active {
+        overflow: hidden;
+    }
+    
+    .mobile-nav-active .mobile-nav-toggle {
+        color: #fff;
+        position: absolute;
+        font-size: 32px;
+        top: 15px;
+        right: 15px;
+        margin-right: 0;
+        z-index: 9999;
+    }
+    
+    .mobile-nav-active .navmenu {
+        position: fixed;
+        overflow: hidden;
+        inset: 0;
+        background: rgba(33, 37, 41, 0.8);
+        transition: 0.3s;
+    }
+    
+    .mobile-nav-active .navmenu>ul {
+        display: block;
+    }
+}
+  
+.header .navmenu .cta-btn {
+    color: var(--contrast-color);
+    background: var(--accent-color);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 6px 30px 8px 30px;
+    border-radius: 50px;
+    transition: 0.3s;
+}
+    
+.header .navmenu .cta-btn:hover {
+    background: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+    
+
+.prop {
+    display: flex;
+    justify-content: space-between; /* Place gauche à gauche et droite à droite */
+    align-items: flex-start; /* Aligne les éléments en haut du conteneur */
+    padding: 0 ; /* Ajoute un peu d'espace sur les côtés */
+}
+
+.prop img {
+    width: 53px;
+    height: 68px;
+    gap: 0px;
+    opacity: 0px;
+}
+
+/* Style pour le dropdown */
+.dropdown-content {
+    display: none; /* Cache le menu déroulant par défaut */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Optionnel : lorsque vous voulez améliorer l'apparence du bouton, vous pouvez ajouter un peu de style */
+.dropbtn {
+    cursor: pointer;
+}
+
+/* Style interne du contenu du dropdown */
+.prop {
+    display: flex;
+    align-items: center;
+}
+
+.prop .traitd{
+    width: 1px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #000000;
+}
+
+.tex {
+    flex: 1;
+    font-size: 14px;
+    margin-left: 15px;
+}
+
+.tex h2{
+    width: 75px;
+    font-family: var(--section-font);
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #000000;
+    margin-top: -5px;
+}
+
+.tex p{
+    font-family: var(--section-font);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #000000;
+}
+
+.dropdown-content a {
+    padding: 12px;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.navmenu .dropdown-content {
+    display: none; /* Cache le menu au début */
+    width: 807px;
+    margin-left: -450px;
+}
+
+/*--------------------------------------------------------------
+# Global Footer
+--------------------------------------------------------------*/
+.footer {
+    color: var(--contrast-color);
+    font-size: 14px;
+    padding: 40px 0 0 0;
+    position: relative;
+    background-color: #272727;
+    /*margin-top: 200px;*/
+}
+    
+.footer h4 {
+    font-family: var(--section-font);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    margin-bottom: 15px;
+    width: 547px;
+    margin-top: 30px;
+}
+    
+.footer p {
+    margin-bottom: 0px;
+    font-family: var(--section-font);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    width: 338px;
+}
+    
+.footer .copyright {
+    padding: 25px 0;
+}
+  
+.footer .copyright h3 {
+    margin-bottom: 0;
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+}
+    
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    overflow: hidden;
+    background: var(--background-color);
+    transition: all 0.6s ease-out;
+}
+    
+#preloader:before {
+    content: "";
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    border: 6px solid #ffffff;
+    border-color: var(--accent-color) transparent var(--accent-color) transparent;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: animate-preloader 1.5s linear infinite;
+}
+    
+@keyframes animate-preloader {
+    0% {
+      transform: rotate(0deg);
+    }
+    
+    100% {
+      transform: rotate(360deg);
+    }
+}
+    
+/*--------------------------------------------------------------
+# Scroll Top Button
+--------------------------------------------------------------*/
+.scroll-top {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: 15px;
+    z-index: 99999;
+    background-color: var(--accent-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    transition: all 0.4s;
+}
+    
+.scroll-top i {
+    font-size: 24px;
+    color: var(--contrast-color);
+    line-height: 0;
+}
+    
+.scroll-top:hover {
+    background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+    color: var(--contrast-color);
+}
+    
+.scroll-top.active {
+    visibility: visible;
+    opacity: 1;
+}
+    
+/*--------------------------------------------------------------
+# Disable aos animation delay on mobile devices
+--------------------------------------------------------------*/
+@media screen and (max-width: 768px) {
+    [data-aos-delay] {
+      transition-delay: 0 !important;
+    }
+}
+    
+/*--------------------------------------------------------------
+# Global Page Titles & Breadcrumbs
+--------------------------------------------------------------*/
+.page-title {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    position: relative;
+}
+    
+.page-title .heading {
+    padding: 160px 0 60px 0;
+    border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+    
+.page-title .heading h1 {
+    font-size: 38px;
+    font-weight: 700;
+}
+    
+.page-title nav {
+    background-color: color-mix(in srgb, var(--default-color), transparent 90%);
+    padding: 20px 0;
+}
+    
+.page-title nav ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+}
+    
+.page-title nav ol li+li {
+    padding-left: 10px;
+}
+    
+.page-title nav ol li+li::before {
+    content: "/";
+    display: inline-block;
+    padding-right: 10px;
+    color: color-mix(in srgb, var(--default-color), transparent 70%);
+}
+    
+/*--------------------------------------------------------------
+# Global Sections
+--------------------------------------------------------------*/
+section,
+.section {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    padding: 60px 0;
+    scroll-margin-top: 112px;
+    overflow: clip;
+}
+    
+@media (max-width: 1199px) {
+    
+    section,
+    .section {
+      scroll-margin-top: 105px;
+    }
+}
+    
+/*--------------------------------------------------------------
+# Global Section Titles
+--------------------------------------------------------------*/
+.section-title {
+    text-align: center;
+    padding-bottom: 60px;
+    position: relative;
+}
+    
+.section-title h2 {
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    padding: 8px 20px;
+    margin: 0;
+    background: color-mix(in srgb, var(--accent-color), transparent 90%);
+    color: var(--accent-color);
+    display: inline-block;
+    text-transform: uppercase;
+    border-radius: 50px;
+    font-family: var(--default-font);
+}
+    
+.section-title div {
+    color: var(--heading-color);
+    margin: 10px 0 0 0;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: var(--heading-font);
+}
+    
+.section-title div .description-title {
+    color: var(--accent-color);
+}
+  
+/*--------------------------------------------------------------
+  #Acceuil Sections
+--------------------------------------------------------------*/
+  
+/* Style pour la section accueil */
+#acceuil {
+    background-color: var(--background-color); /* Couleur de fond définie par la variable */
+    padding: 0; /* Espace en haut et en bas de la section */
+    text-align: center; /* Centre le texte horizontalement */
+}
+  
+/* Conteneur de la section */
+.acceuil-container {
+    max-width: 1257px; /* Limite la largeur du conteneur */
+    margin: 0 auto; /* Centre le conteneur */
+    padding: 0 20px; /* Espace interne pour les côtés */
+}
+  
+/* Style pour le titre */
+.acceuil .title h1 {
+    color: var(--contrast-color); /* Couleur du texte du titre */
+    font-size: 45px; /* Taille du texte du titre */
+    font-weight: 600; 
+    margin-top: 200px; /* Supprime les marges par défaut */
+    align-items: center;
+    line-height: 60px; /* Espacement entre les lignes */
+    font-family: var(--section-font);
+}
+  
+.acceuil .title p{
+    color: var(--contrast-color); /* Couleur du texte du titre */
+    font-size: 20px; /* Taille du texte du titre */
+    font-weight: 500; 
+    margin: 58px 0 0 190px; /* Supprime les marges par défaut */
+    max-width: 826px; /* Limite la largeur du conteneur */
+    align-items: center;
+    line-height: 29.88px; /* Espacement entre les lignes */
+    letter-spacing: -0.03em;
+    font-family: var(--section-font);
+}
+  
+@media screen and (max-width: 768px) {
+    .acceuil .title h1 {
+        margin-top: 150px;
+        font-size: 1.8rem; /* Réduit la taille de la police pour les petits écrans */
+        text-align: center; /* Centre le texte pour une meilleure lisibilité */
+        margin-bottom: 15px; /* Réduit l'espace sous le titre */
+        padding: 0 10px; /* Ajoute du padding pour éviter que le texte touche les bords de l'écran */
+    }
+  
+    .acceuil .title p {
+        display: none;
+    }
+}
+  
+.acceuil .container .row {
+    display: flex;
+    flex-wrap: nowrap; /* Empêche les éléments de passer à la ligne suivante */
+    margin: 50px 200px 0 5px ; /* Espace entre les éléments */
+    justify-content: space-between; /* Assure un espacement égal entre les card-items */
+}
+  
+.acceuil .container .row .card-item {
+    display: flex;
+    flex-direction: column; /* Place le texte sous l'image */
+    align-items: flex-start; /* Aligne le texte et l'image à gauche */    
+    padding: 10px;
+    line-height: 280px;
+    max-width: 280px;
+}
+    
+.acceuil .container .row .card-item p {
+    font-size: 15px;
+    color: var(--contrast-color);
+    margin: 0;
+    font-family: var(--section-font);
+    font-weight: 500;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    display: block;
+      
+}
+  
+.acceuil .container .row .card-item img{
+    max-height: 50.73px;
+    max-width: 39.75px;
+    width: auto;
+    text-align: left;
+    display: block;
+}
+  
+@media screen and (max-width: 768px) {
+    /* Adapter les largeurs */
+    .acceuil .container {
+        width: 100%;
+        padding: 10px;
+    }
+  
+    .acceuil .container .row {
+        flex-direction: column; /* Empile les éléments verticalement */
+        gap: 10px; /* Réduit l'espace entre les éléments */
+    }
+  
+    /* Ajuster les éléments card-item pour qu'ils prennent toute la largeur */
+    .acceuil .container .row .card-item {
+        max-width: 100%; /* Occupe toute la largeur disponible */
+        margin: 0 auto; /* Centrer les éléments */
+        text-align: center; /* Centrer le contenu à l'intérieur */
+    }
+  
+    /* Adapter la taille des images */
+    .acceuil .container .row .card-item img {
+        max-width: 60px;
+        margin-bottom: 10px; /* Ajouter un peu d'espace sous l'image */
+    }
+  
+}
+  
+.acceuil .carousel {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+}
+  
+.acceuil .carousel-item {
+    position: absolute;
+    inset: 0;
+}
+  
+.acceuil .carousel-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 3;
+    margin: 50px 0 0 250px;
+}
+  
+.acceuil .btn-get-started1 {
+    color: var(--contrast-color);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 8px 32px;
+    border-radius: 50px;
+    transition: 0.5s;
+    margin: 10px 5px;
+    animation: fadeInUp 1s both 0.4s;
+    border: 2px solid var(--accent-color);
+    background-color: var(--accent-color);
+}
+  
+.acceuil .btn-get-started1:hover{
+    background-color: #05354d;
+}
+  
+.acceuil .btn-get-started2:hover {
+    background: var(--background-color);
+}
+  
+.acceuil .btn-get-started2 {
+    color: var(--default-color);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 8px 32px;
+    border-radius: 50px;
+    transition: 0.5s;
+    margin: 10px 5px;
+    animation: fadeInUp 1s both 0.4s;
+    border: 2px solid var(--constrast-color);
+    background-color: var(--contrast-color);
+}
+  
+@media screen and (max-width: 768px) {
+    .acceuil .carousel-container {
+        height: auto;
+        padding: 10px; /* Ajuste le padding pour donner plus d'espace */
+        box-sizing: border-box;
+        margin-left: 50px;
+    }  
+  
+    .acceuil .carousel-container div {
+        display: flex; /* Utilise flexbox pour aligner les boutons sur la même ligne */
+        flex-direction: row; /* Aligne les éléments horizontalement */
+        justify-content: center; /* Centre les boutons horizontalement */
+        gap: 10px; /* Ajoute un espace entre les boutons */
+    }
+  
+    .acceuil .btn-get-started1, 
+    .acceuil .btn-get-started2 {
+        width: auto; /* Empêche les boutons de prendre toute la largeur */
+        padding: 8px 8px; /* Ajuste le padding pour une meilleure apparence sur mobile */
+        font-size: 11px;
+    }
+}
+  
+/*Section A Propos*/
+#apropos {
+    margin-top: 150px;
+    text-align: center;
+    background: linear-gradient(90deg, #000000, #031c29);
+    background-repeat: no-repeat;
+}
+  
+.apropos .apropos-container {
+    display: flex;
+    flex-direction: column; /* Changer en colonne pour empiler les éléments */
+    align-items: center; /* Centrer horizontalement */
+    padding: 20px;
+}
+  
+.apropos .apropos-container .title1 h1 {
+    color: var(--contrast-color);
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 78.3px;
+    font-family: var(--section-font);
+    letter-spacing: -0.03em;
+    margin: 0; /* Ajuster les marges */
+}
+  
+.apropos .apropos-container .row1 {
+    display: flex;
+    justify-content: flex-start; /* Centrer horizontalement */
+    align-items: flex-start; /* Aligner au début */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    gap: 5px;
+}
+  
+.apropos .apropos-container .row1 .col1 {
+    display: block; /* Peut rester ou être supprimé */
+    margin: 0;
+    padding: 0;
+}
+  
+.apropos .apropos-container .row1 .col1 img {
+    max-width: 518px;
+    max-height: 541px;
+    margin-left: 0;
+    padding-left: 0;
+    align-self: flex-start;
+    float: left;
+}
+  
+.apropos .apropos-container .row1 .col2 .row2A,
+.apropos .apropos-container .row1 .col2 .row2B {
+    display: flex; /* Utiliser flex pour aligner les enfants horizontalement */
+    gap: 20px; /* Espacement entre les éléments */
+    margin-top: 10px;
+}
+  
+.apropos .apropos-container .row1 .col2 .row2B{
+    gap: 20px;
+}
+  
+.apropos .apropos-container .row1 .col2 .row2A .row2A1,
+.apropos .apropos-container .row1 .col2 .row2A .row2A2{
+    display: flex;
+    flex-direction: column; /* Place le texte sous l'image */
+    align-items: flex-start; /* Aligne le texte et l'image à gauche */    
+    padding: 10px;
+    line-height: 100px;
+    max-width: 395px;
+    border: 1px solid skyblue;
+    border-radius: 29px;
+}
+  
+.apropos .apropos-container .row1 .col2 .row2B .row2B1,
+.apropos .apropos-container .row1 .col2 .row2B .row2B2{
+    display: flex;
+    flex-direction: column; /* Place le texte sous l'image */
+    align-items: flex-start; /* Aligne le texte et l'image à gauche */    
+    padding: 10px;
+    line-height: 100px;
+    max-width: 413px;
+    border: 1px solid skyblue;
+    border-radius: 29px;
+}
+  
+.apropos .apropos-container .row1 .col2 .row2A .row2A1 p,
+.apropos .apropos-container .row1 .col2 .row2A .row2A2 p,
+.apropos .apropos-container .row1 .col2 .row2B .row2B1 p,
+.apropos .apropos-container .row1 .col2 .row2B .row2B2 p{
+    font-size: 15px;
+    color: var(--contrast-color);
+    margin: 0;
+    font-family: var(--section-font);
+    font-weight: 400;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    display: block;
+    width: 350px;
+}
+  
+.apropos .apropos-container .row1 .col2 .row2A .row2A1 h2, 
+.apropos .apropos-container .row1 .col2 .row2A .row2A2 h2{
+    font-size: 20px;
+    color: var(--contrast-color);
+    margin: 0;
+    font-family: var(--section-font);
+    font-weight: 700;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    display: block;
+    width: 385px;
+      
+}
+  
+.apropos .apropos-container .row1 .col2 .row2B .row2B1 h2,
+.apropos .apropos-container .row1 .col2 .row2B .row2B2 h2{
+    font-size: 20px;
+    color: var(--contrast-color);
+    margin: 0;
+    font-family: var(--section-font);
+    font-weight: 700;
+    line-height: 45px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    display: block;
+    width: 372px;    
+}
+  
+.apropos .apropos-container .row1 .col2 .row2A .row2A1 img,
+.apropos .apropos-container .row1 .col2 .row2A .row2A2 img,
+.apropos .apropos-container .row1 .col2 .row2B .row2B1 img,
+.apropos .apropos-container .row1 .col2 .row2B .row2B2 img{
+    max-height: 55px;
+    max-width: 64px;
+    width: auto;
+    text-align: left;
+    display: block;
+}
+  
+#hero-carousel{
+    display: none;
+}
+  
+@media screen and (max-width: 768px) {
+    #hero-carousel{
+      display: block;
+    }
+  
+    .apropos .apropos-container .row1{
+        display: none;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-item .carousel-container{
+        display: flex;
+        flex-direction: column; /* Place le texte sous l'image */
+        align-items: flex-start; /* Aligne le texte et l'image à gauche  */  
+        padding: 10px;
+        line-height: 100px;
+        max-width: 395px;
+        border: 1px solid skyblue;
+        border-radius: 29px;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-item .carousel-container p{
+        font-size: 15px;
+        color: var(--contrast-color);
+        margin: 0;
+        font-family: var(--section-font);
+        font-weight: 400;
+        line-height: 29.88px;
+        letter-spacing: -0.03em;
+        text-align: left;
+        display: block;
+        width: 350px;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-item .carousel-container h2{
+        font-size: 20px;
+        color: var(--contrast-color);
+        margin: 0;
+        font-family: var(--section-font);
+        font-weight: 700;
+        line-height: 78.3px;
+        letter-spacing: -0.03em;
+        text-align: left;
+        display: block;
+        width: 385px;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-item .carousel-container img{
+        max-height: 55px;
+        max-width: 64px;
+        width: auto;
+        text-align: left;
+        display: block;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-control-prev,
+    .apropos .apropos-container .carousel .carousel-control-next {
+        width: 0.0000001%;
+        transition: 0.1s;
+        opacity: 0.5;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-control-prev:focus,
+    .apropos .apropos-container .carousel .carousel-control-next:focus {
+        opacity: 0.5;
+    }
+    
+    .apropos .apropos-container .carousel .carousel-control-prev:hover,
+    .apropos .apropos-container .carousel .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-control-next-icon{
+        background: none;
+        font-size: 28px;
+        line-height: 1;
+        width: 0.5%;
+        margin-left: 20px;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-control-prev-icon{
+        background: none;
+        font-size: 28px;
+        line-height: 1;
+        margin-left: 50px;
+        margin-right: 100px;
+    }
+  
+    .apropos .apropos-container .carousel .carousel-indicators {
+        list-style: none;
+        display: none;
+    }
+    
+    .apropos .apropos-container .carousel .carousel-indicators li {
+        cursor: pointer;
+    }
+  
+}  
+    
+/*A La une des associations et ONG Section*/
+#associationONG {
+    text-align: center;
+    background: linear-gradient(90deg, #000000, #031c29);
+    background-repeat: no-repeat;
+}
+  
+.associationONG .associationONG-container {
+    display: flex;
+    flex-direction: column; /* Changer en colonne pour empiler les éléments */
+    align-items: center; /* Centrer horizontalement */
+    padding: 20px;
+}
+  
+.associationONG .associationONG-container .title2 h1 {
+    color: var(--contrast-color);
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 78.3px;
+    font-family: var(--section-font);
+    letter-spacing: -0.03em;
+    margin: 0; /* Ajuster les marges */
+    width: 991px;
+    margin-left: 50px;
+}
+  
+.associationONG .associationONG-container p{
+    color: var(--contrast-color);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 29.88px;
+    font-family: var(--section-font);
+    letter-spacing: -0.03em;
+    margin: 0; /* Ajuster les marges */
+    width: 944px;
+    margin-top: 20px;
+    margin-left: 60px;
+}
+  
+.associationONG .associationONG-container .main-container {
+    width: calc(100vw - 200px);
+    overflow-x: auto;        /* ✅ scroll horizontal */
+    overflow-y: hidden;
+    position: relative;
+    margin-left: 120px;
+    margin-right: 80px;
+    scroll-behavior: smooth;
+}
+
+.associationONG .associationONG-container .main-container .inner-container {
+    display: flex;
+    gap: 1.2rem;
+    scroll-snap-type: x mandatory;
+}
+  
+.associationONG .associationONG-container .main-container .inner-container:hover{
+    transform: scale(1.05);
+    transition: all 0.3 ease;
+}
+  
+.associationONG .associationONG-container .main-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.associationONG .associationONG-container .main-container::-webkit-scrollbar-thumb {
+    background: #96D0EE;
+    border-radius: 10px;
+}
+
+.associationONG .associationONG-container .main-container::-webkit-scrollbar-track {
+    background: #e6f4fb;
+}
+
+  
+.associationONG .associationONG-container .main-container .inner-container .item {
+    flex: 0 0 70%;           /* ✅ chaque carte = 70% */
+    max-width: 750px;
+    padding: 10px;
+    border: 1px solid #96D0EE;
+    border-radius: 30px;
+    margin-top: 40px;
+    scroll-snap-align: start;
+}
+
+  
+.associationONG .associationONG-container .main-container .inner-container .item p{
+    font-size: 18px;
+    color: var(--contrast-color);
+    margin: 0;
+    font-family: var(--section-font);
+    font-weight: 500;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    display: block;
+    width: 580px;
+    margin-left: 50px;
+    margin-bottom: 15px;
+}
+  
+.associationONG .associationONG-container .main-container .inner-container .item h2{
+    font-size: 45px;
+    color: var(--contrast-color);
+    margin: 0;
+    font-family: var(--section-font);
+    font-weight: 700;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    display: block;
+    width: 639px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.associationONG .associationONG-container .main-container .inner-container .item img {
+    width: 712px;          /* largeur fixe */
+    height: 475px;         /* hauteur fixe */
+    object-fit: cover;     /* remplit sans déformation */
+    display: block;
+    margin: 0 auto;        /* centre horizontalement */
+    border-radius: 20px;   /* optionnel */
+}
+
+  
+/* Styles des boutons */
+.associationONG .associationONG-container .main-container .inner-container .item .btn {
+    padding: 10px;
+    font-size: 16px;
+    font-family: var(--section-font);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-align: center;
+    color: var(--default-color);
+    background-color: var(--contrast-color);
+    border: 1px solid var(--contrast-color);
+    border-radius: 4px;
+    width: 166px;
+    height: 40px;
+    margin-left: 525px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+/* Couleur bleue au survol */
+.associationONG .associationONG-container .main-container .inner-container .item .btn:hover {
+    background-color: #05354d;
+}
+  
+.associationONG .associationONG-container .main-container .inner-container .item p{
+    display: flex;
+    align-items: center;
+
+}
+  
+.associationONG .associationONG-container .btn-with-image {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    border: none;
+    background-color: #004B70; /* Couleur du bouton */
+    color: var(--contrast-color);
+    font-size: 16px;
+    cursor: pointer;
+    /*margin: 20px 20px 0 200px;*/
+    width: 450px;
+    height: 50px;
+    font-family: var(--section-font);
+    font-weight: 600;
+    gap: 9px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+  
+.associationONG .associationONG-container .btn-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px; /* Espace entre l'image et le texte */
+}
+  
+.associationONG .associationONG-container .btn-texte {
+    display: inline-block;
+    width: 400px;
+    color: black;
+}
+  
+.main-container {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    width: 100%;
+    height: 900px; /* Ajustez selon vos besoins */
+}
+
+.inner-container {
+    display: inline-flex;
+    animation: scroll 10s linear infinite;
+}
+
+.item {
+    display: inline-block;
+    width: 300px; /* Ajustez selon vos besoins */
+    margin-right: 20px;
+    text-align: left;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .associationONG .associationONG-container .title2 h1 {
+        color: var(--contrast-color);
+        font-size: 35px;
+        font-weight: 700;
+        line-height: 78.3px;
+        font-family: var(--section-font);
+        letter-spacing: -0.03em;
+        margin: 0; /* Ajuster les marges */
+        width: 991px;
+        margin-left: 50px;
+    }
+
+    .associationONG .associationONG-container p{
+        color: var(--contrast-color);
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 29.88px;
+        font-family: var(--section-font);
+        letter-spacing: -0.03em;
+        margin: 0; /* Ajuster les marges */
+        width: 644px;
+        margin-top: 20px;
+        margin-left: 60px;
+    }
+    
+    .associationONG .associationONG-container .main-container .inner-container .item {
+        display: flex;
+        flex-direction: column; /* Place le texte sous l'image */
+        padding: 5px;
+        line-height: 100px;
+        max-width: 450px;
+        max-height: 947px;
+        border: 1px solid #96D0EE;
+        border-radius: 30px;
+        color: #001925;
+        margin-top: 40px;
+        scroll-snap-align: start;
+    }
+
+    .associationONG .associationONG-container .main-container .inner-container .item h2{
+        font-size: 35px;
+        color: var(--contrast-color);
+        margin: 0;
+        font-family: var(--section-font);
+        font-weight: 700;
+        line-height: 78.3px;
+        letter-spacing: -0.03em;
+        display: block;
+        width: 639px;
+        margin-left: 130px;
+        /*text-align: center;*/
+    }
+
+    .associationONG .associationONG-container .main-container .inner-container .item p{
+        font-size: 15px;
+        color: var(--contrast-color);
+        margin: 0;
+        font-family: var(--section-font);
+        font-weight: 500;
+        line-height: 29.88px;
+        letter-spacing: -0.03em;
+        text-align: left;
+        display: block;
+        width: 580px;
+        margin-left: 50px;
+        margin-bottom: 15px;
+    }
+  
+    .associationONG .associationONG-container .main-container .inner-container .item img{
+        max-height: 275px;
+        width: 312px;
+        text-align: center;
+        display: block;
+        margin-left: 70px;
+        margin-right: 70px;
+    }
+  
+    /* Styles des boutons */
+    .associationONG .associationONG-container .main-container .inner-container .item .btn {
+        padding: 5px;
+        font-size: 14px;
+        font-family: var(--section-font);
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-align: center;
+        color: var(--default-color);
+        background-color: var(--contrast-color);
+        border: 1px solid var(--contrast-color);
+        border-radius: 4px;
+        width: 166px;
+        height: 40px;
+        margin-left: 209px;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+}
+
+@media(max-width: 576px){
+
+    .associationONG .associationONG-container .title2 h1 {
+        color: var(--contrast-color);
+        font-size: 25px;
+        font-weight: 700;
+        line-height: 78.3px;
+        font-family: var(--section-font);
+        letter-spacing: -0.03em;
+        margin: 0; /* Ajuster les marges */
+        width: 991px;
+        margin-left: 50px;
+    }
+
+    .associationONG .associationONG-container p{
+        color: var(--contrast-color);
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 29.88px;
+        font-family: var(--section-font);
+        letter-spacing: -0.03em;
+        margin: 0; /* Ajuster les marges */
+        width: 444px;
+        margin-top: 20px;
+        margin-left: 60px;
+    }
+    
+    .associationONG .associationONG-container .main-container .inner-container .item {
+        display: flex;
+        flex-direction: column; /* Place le texte sous l'image */
+        padding: 5px;
+        line-height: 100px;
+        max-width: 280px;
+        max-height: 947px;
+        border: 1px solid #96D0EE;
+        border-radius: 30px;
+        color: #001925;
+        margin-top: 40px;
+        scroll-snap-align: start;
+    }
+
+    .associationONG .associationONG-container .main-container .inner-container .item h2{
+        font-size: 25px;
+        color: var(--contrast-color);
+        font-family: var(--section-font);
+        font-weight: 700;
+        line-height: 78.3px;
+        letter-spacing: -0.03em;
+        display: block;
+        margin-left: -180px;
+       
+    }
+
+    .associationONG .associationONG-container .main-container .inner-container .item p{
+        font-size: 12px;
+        margin-left: -0.05px;
+    }
+  
+    .associationONG .associationONG-container .main-container .inner-container .item img{
+        max-height: 275px;
+        width: 212px;
+        text-align: center;
+        display: block;
+        margin-left: 30px;
+    }
+  
+    /* Styles des boutons */
+    .associationONG .associationONG-container .main-container .inner-container .item .btn {
+        padding: 5px;
+        font-size: 14px;
+        font-family: var(--section-font);
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-align: center;
+        color: var(--default-color);
+        background-color: var(--contrast-color);
+        border: 1px solid var(--contrast-color);
+        border-radius: 4px;
+        width: 150px;
+        height: 40px;
+        margin-left: 90px;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    } 
+    
+    .associationONG .associationONG-container .btn-with-image {
+        font-size: 14px;
+        cursor: pointer;
+        width: 350px;
+        height: 50px;
+        font-family: var(--section-font);
+        font-weight: 600;
+        gap: 9px;
+        border-radius: 10px;
+    }
+
+}
+
+/*FAQ Section*/
+#faq {
+    text-align: center;
+    background: linear-gradient(90deg, #031c29, #000000);
+    background-repeat: no-repeat;
+}
+  
+.faq .faq-container h2{
+    width: 945px;
+    margin-left: 140px;
+    font-family: var(--section-font);
+    font-size: 45px;
+    font-weight: 700;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: var(--contrast-color);
+}
+  
+.faq .faq-container h4{
+    width: 459px;
+    height: 30px;
+    margin-top: 20px;
+    margin-left: 140px;
+    font-family: var(--section-font);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: #ffffff;
+}
+  
+.faq .faq-container .question{
+    width: 1080px;
+    height: 79px;
+    margin-left: 140px;
+    background-color: #ffffff;
+    text-align: left;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+  
+.faq .faq-container .question .question-title{
+    display: flex;
+    align-items: center;
+    margin-left: 0 !important;
+    justify-content: flex-start;
+}
+  
+.faq .faq-container .question .question-title h2{
+    width: 1000px;
+    height: 79px;
+    font-family: var(--section-font);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: #000000;
+    margin-left: 20px;
+    padding: 0;
+    white-space: nowrap;
+}
+  
+.faq .faq-container .question .question-title img{
+    width: 40px;
+    height: 60px;
+    padding: 10.81px 3.75px 10.79px 7.46px;
+    margin-left: 200px;
+}
+  
+.faq .faq-container .question #title1 img,
+.faq .faq-container .question #title2 img{
+    width: 40px;
+    height: 60px;
+    padding: 10.81px 3.75px 10.79px 7.46px;
+    margin-left: 100px;
+}
+  
+.rotated {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease; /* Transition pour une rotation douce */
+}
+    
+.faq .faq-container .question p{
+    width: 945px;
+    height: 90px;
+    margin-left: 20px;
+    font-family: var(--section-font);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: #000000;
+    display: none;
+}
+
+@media(max-width: 768px){
+    #faq{
+        margin-left: -50px;
+    }
+
+    .faq .faq-container .question{
+        width: 500px;
+        height: 130px;
+    }
+  
+    .faq .faq-container .question .question-title h2 {
+        font-family: var(--section-font);
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 23.3px;
+        letter-spacing: -0.03em;
+        text-align: left;
+        color: #000000;
+        margin-left: 20px;
+        padding: 20px;
+        white-space: normal;
+    }
+
+    .faq .faq-container .question p{
+        width: 450px;
+        height: 150px;
+        margin-left: 20px;
+        font-family: var(--section-font);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 29.88px;
+        letter-spacing: -0.03em;
+        text-align: left;
+        color: #000000;
+        display: none;
+        margin-top: 30px;
+    }
+
+}
+
+@media(max-width:576px){
+    #faq{
+        display: none;
+    }
+
+}
+  
+/*Contact Section*/
+#contact {
+    text-align: center;
+    background: linear-gradient(90deg, #031c29, #000000);
+    background-repeat: no-repeat;
+}
+  
+.contact .contact-container h2{
+    width: 945px;
+    margin-left: 120px;
+    font-family: var(--section-font);
+    font-size: 45px;
+    font-weight: 700;
+    line-height: 64px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: #ffffff;
+}
+  
+.contact .contact-container .info{
+    width: 1080px;
+    height: 193px;
+    margin-top: 20px;
+    margin-left: 125px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Réduit l’espacement entre les éléments */
+    padding: 30px; /* Ajoutez un léger padding pour mieux contenir les éléments */
+    overflow: hidden; /* Assure que rien ne dépasse de `.info` */
+}
+  
+.contact .contact-container .info p{
+    width: 1002px;
+    font-family: var(--section-font);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: #000000;
+}
+  
+.contact .contact-container .info .info1,
+.contact .contact-container .info .info2{
+    display: flex;
+    align-items: center;
+    margin-bottom: 0; /* Enlevez la marge en bas */
+    height: 45px; /* Limite la hauteur pour chaque ligne */
+    gap: 5px; /* Optional: add a small gap between the image and text */
+}
+  
+.contact .contact-container .info .info1 img,
+.contact .contact-container .info .info2 img{
+    width: 24px;
+    height: 24px;
+    margin-top: -40px;
+    padding: 0;
+    left: 217px;
+}
+  
+.contact .contact-container .info .info1 p,
+.contact .contact-container .info .info2 p{
+    width: 358px;
+    height: 57px;
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5; /* Ajuste l'interligne pour plus de compacité */
+    margin: 0; /* Enlève les marges supplémentaires */
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: var(--section-font);
+    padding: 0;
+  
+}
+
+@media(max-width: 768px){
+    #contact {
+        margin-left: -50px;
+    }
+
+    .contact .contact-container .info{
+        width: 550px;
+        height: 220px;
+    }
+
+    .contact .contact-container .info p{
+        width: 540px;
+    }
+}
+
+@media(max-width: 576px){
+    #contact {
+        margin-left: -70px;
+    }
+
+    .contact .contact-container h2{
+        font-size: 40px;
+    }
+    .contact .contact-container .info{
+        width: 400px;
+        height: 250px;
+    }
+
+    .contact .contact-container .info p{
+        width: 350px;
+    }
+}

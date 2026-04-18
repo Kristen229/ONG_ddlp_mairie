@@ -1,0 +1,1212 @@
+/* Fonts */
+:root {
+    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Satisfy",  sans-serif;
+    --nav-font: "Poppins",  sans-serif;
+    --section-font: "Montserrat";
+}
+        
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+:root { 
+    --background-color: #ffffff; 
+    --default-color: #000000; 
+    --heading-color: #433f39;
+    --accent-color: #004B70; 
+    --surface-color: #000000;
+    --contrast-color: #ffffff; 
+}
+        
+/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+:root {
+    --nav-color: #000000;
+    --nav-hover-color: #004B70;
+    --nav-mobile-background-color: #ffffff; 
+}
+        
+/* Smooth scroll */
+:root {
+    scroll-behavior: smooth;
+}
+        
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+body {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    font-family: var(--default-font);
+}
+        
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+        
+a:hover {
+    color: color-mix(in srgb, var(--accent-color), transparent 25%);
+    text-decoration: none;
+}
+        
+h1,
+h2{
+    color: var(--heading-color);
+    font-family: var(--heading-font);
+}
+    
+/*--------------------------------------------------------------
+# Global Header
+--------------------------------------------------------------*/
+.header {
+    --background-color: #ffffff;
+    --default-color: #000000;
+    --heading-color: #ffffff;
+    color: var(--default-color);
+    transition: all 0.5s;
+    z-index: 997;
+    background-color: var(--background-color);
+}
+    
+.header .branding {
+    min-height: 60px;
+    padding: 5px 0;
+}
+        
+.header .logo {
+    line-height: 1;
+}
+        
+.header .logo img {
+    max-height: 80px;
+    margin-right: 20px;
+}
+ 
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+/* Navmenu - Desktop */
+@media (min-width: 1200px) {
+    .navmenu {
+      padding: 0;
+    }
+    
+    .navmenu ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      list-style: none;
+      align-items: center;
+    }
+    
+    .navmenu li {
+      position: relative;
+    }
+    
+    .navmenu a,
+    .navmenu a:focus {
+      color: var(--nav-color);
+      padding: 18px 15px;
+      font-size: 18px;
+      font-family: var(--nav-font);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      white-space: nowrap;
+      transition: 0.3s;
+    }
+    
+    .navmenu a i,
+    .navmenu a:focus i {
+      font-size: 12px;
+      line-height: 0;
+      margin-left: 5px;
+      transition: 0.3s;
+    }
+    
+    .navmenu li:last-child a {
+      padding-right: 0;
+    }
+    
+    .navmenu li:hover>a,
+    .navmenu .active,
+    .navmenu .active:focus {
+      color: var(--nav-hover-color);
+    }
+    
+}
+    
+/* Navmenu - Mobile */
+@media (max-width: 1199px) {
+    .mobile-nav-toggle {
+      color: var(--nav-color);
+      font-size: 28px;
+      line-height: 0;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .navmenu {
+      padding: 0;
+      z-index: 9997;
+    }
+    
+    .navmenu ul {
+      display: none;
+      list-style: none;
+      position: absolute;
+      inset: 60px 20px 20px 20px;
+      padding: 10px 0;
+      margin: 0;
+      border-radius: 6px;
+      background-color: var(--nav-mobile-background-color);
+      overflow-y: auto;
+      transition: 0.3s;
+      z-index: 9998;
+      box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navmenu a,
+    .navmenu a:focus {
+      color: var(--default-color);
+      padding: 10px 20px;
+      font-family: var(--nav-font);
+      font-size: 17px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      white-space: nowrap;
+      transition: 0.3s;
+    }
+    
+    .navmenu a i,
+    .navmenu a:focus i {
+      font-size: 12px;
+      line-height: 0;
+      margin-left: 5px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: 0.3s;
+      background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+    }
+    
+    .navmenu a i:hover,
+    .navmenu a:focus i:hover {
+      background-color: var(--accent-color);
+      color: var(--contrast-color);
+    }
+    
+    .navmenu a:hover,
+    .navmenu .active,
+    .navmenu .active:focus {
+      color: var(--nav-dropdown-hover-color);
+    }
+    
+    .navmenu .active i,
+    .navmenu .active:focus i {
+      background-color: var(--accent-color);
+      color: var(--contrast-color);
+      transform: rotate(180deg);
+    }
+    
+    .mobile-nav-active {
+      overflow: hidden;
+    }
+    
+    .mobile-nav-active .mobile-nav-toggle {
+      color: #fff;
+      position: absolute;
+      font-size: 32px;
+      top: 15px;
+      right: 15px;
+      margin-right: 0;
+      z-index: 9999;
+    }
+    
+    .mobile-nav-active .navmenu {
+      position: fixed;
+      overflow: hidden;
+      inset: 0;
+      background: rgba(33, 37, 41, 0.8);
+      transition: 0.3s;
+    }
+    
+    .mobile-nav-active .navmenu>ul {
+      display: block;
+    }
+}
+  
+.header .navmenu .cta-btn {
+    color: var(--contrast-color);
+    background: var(--accent-color);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 6px 30px 8px 30px;
+    border-radius: 50px;
+    transition: 0.3s;
+}
+    
+.header .navmenu .cta-btn:hover {
+    background: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+    
+.prop {
+    display: flex;
+    justify-content: space-between; /* Place gauche à gauche et droite à droite */
+    align-items: flex-start; /* Aligne les éléments en haut du conteneur */
+    padding: 0 ; /* Ajoute un peu d'espace sur les côtés */
+}
+
+.prop img {
+    width: 53px;
+    height: 68px;
+    gap: 0px;
+    opacity: 0px;
+}
+
+/* Style pour le dropdown */
+.dropdown-content {
+    display: none; /* Cache le menu déroulant par défaut */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Optionnel : lorsque vous voulez améliorer l'apparence du bouton, vous pouvez ajouter un peu de style */
+.dropbtn {
+    cursor: pointer;
+}
+
+/* Style interne du contenu du dropdown */
+.prop {
+    display: flex;
+    align-items: center;
+}
+
+.prop .traitd{
+    width: 1px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #000000;
+}
+
+.tex {
+    flex: 1;
+    font-size: 14px;
+    margin-left: 15px;
+}
+
+.tex h2{
+    width: 75px;
+    font-family: var(--section-font);
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #000000;
+    margin-top: -5px;
+}
+
+.tex p{
+    font-family: var(--section-font);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #000000;
+}
+
+.dropdown-content a {
+    padding: 12px;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.navmenu .dropdown-content {
+    display: none; /*Cache le menu au début */
+    width: 807px;
+    margin-left: -450px;
+}
+
+/*--------------------------------------------------------------
+# Global Footer
+--------------------------------------------------------------*/
+.footer {
+    color: var(--contrast-color);
+    font-size: 14px;
+    padding: 40px 0 0 0;
+    position: relative;
+    background-color: #272727;
+    margin-top: 200px;
+}
+        
+.footer h4 {
+    font-family: var(--section-font);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    margin-bottom: 15px;
+    width: 547px;
+    margin-top: 30px;
+}
+        
+.footer p {
+    margin-bottom: 0px;
+    font-family: var(--section-font);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    width: 338px;
+}
+        
+.footer .copyright {
+    padding: 25px 0;
+}
+    
+.footer .copyright h3 {
+    margin-bottom: 0;
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+}
+        
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    overflow: hidden;
+    background: var(--background-color);
+    transition: all 0.6s ease-out;
+}
+        
+#preloader:before {
+    content: "";
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    border: 6px solid #ffffff;
+    border-color: var(--accent-color) transparent var(--accent-color) transparent;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: animate-preloader 1.5s linear infinite;
+}
+        
+@keyframes animate-preloader {
+    0% {
+        transform: rotate(0deg);
+    }
+        
+    100% {
+        transform: rotate(360deg);
+    }
+}
+        
+/*--------------------------------------------------------------
+# Scroll Top Button
+--------------------------------------------------------------*/
+.scroll-top {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: 15px;
+    z-index: 99999;
+    background-color: var(--accent-color); 
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    transition: all 0.4s;
+}
+        
+.scroll-top i {
+    font-size: 24px;
+    color: var(--contrast-color);
+    line-height: 0;
+}
+        
+.scroll-top:hover {
+    color: var(--contrast-color);
+}
+        
+.scroll-top.active {
+    visibility: visible;
+    opacity: 1;
+}
+        
+/*--------------------------------------------------------------
+# Disable aos animation delay on mobile devices
+--------------------------------------------------------------*/
+@media screen and (max-width: 768px) {
+    [data-aos-delay] {
+        transition-delay: 0 !important;
+    }
+}
+    
+/*--------------------------------------------------------------
+# Global Sections
+--------------------------------------------------------------*/
+section,
+.section {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    padding: 60px 0;
+    scroll-margin-top: 112px;
+    overflow: clip;
+}
+      
+@media (max-width: 1199px) {
+      
+    section,
+    .section {
+    scroll-margin-top: 105px;
+    }
+}
+    
+.btn-with-image {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--contrast-color); /* Couleur du bouton */
+    color: var(--default-color);
+    font-size: 20px;
+    cursor: pointer;
+    margin: 170px 0 0 70px;
+    width: 200px;
+    height: 30px;
+    font-family: var(--section-font);
+    font-weight: 600;
+}
+    
+.btn-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px; /* Espace entre l'image et le texte */
+}
+    
+.btn-text {
+    display: inline-block;
+}
+    
+.espoir-title {
+    display: flex; /* Aligne les enfants sur une ligne */
+    align-items: center; /* Aligne verticalement au centre */
+}
+    
+.espoir-title .logo{
+    width: 110px;
+    height: 107px;
+    border: solid 2px black;
+    border-radius: 100%;
+    margin-left: 165px;
+    margin-top: 45px;
+    padding:  5px 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+    
+.espoir-title .logo img{
+    width: 160px;
+    height: 100px;
+    clip-path: ellipse(33% 50%);
+}
+    
+.espoir-title .texte{
+    display: inline-block;
+    margin-top: 70px;
+    margin-left: 20px;
+}
+    
+.espoir-title .texte h2{
+    font-family: var(--section-font);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 10.3px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+    width: 450px;
+}
+    
+.espoir-title .texte p{
+    font-family: var(--section-font);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 37.92px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+    width: 100px;
+}
+    
+.espoir-title .btn-with-image {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    border: none;
+    background-color: #004B70; /* Couleur du bouton */
+    color: var(--contrast-color);
+    font-size: 20px;
+    cursor: pointer;
+    margin: 20px 20px 0 300px;
+    width: 290px;
+    height: 50px;
+    font-family: var(--section-font);
+    font-weight: 600;
+    gap: 9px;
+    border-radius: 10px;
+}
+    
+.espoir-title .btn-with-image:hover {
+    background-color: #2a6785;
+}
+    
+.espoir-title .btn-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px; /* Espace entre l'image et le texte */
+}
+    
+.btn-text {
+    display: inline-block;
+}
+    
+.image img{
+    width: 1050px;
+    height: 750px;
+    border-radius: 5px;
+    margin-left: 150px;
+    margin-top: 20px;
+}
+
+@media(max-width: 768px){
+    
+    .espoir-title .logo{
+        width: 70px;
+        height: 70px;
+        margin-left: 100px;
+    }
+    
+    .espoir-title .logo img{
+        width: 70px;
+        height: 60px;
+    }
+
+    .espoir-title .texte{
+        margin-top: 80px;
+        margin-left: 10px;
+    }
+    
+    .espoir-title .texte h2{
+        font-size: 20px;
+    }
+    
+    .espoir-title .texte p{
+        font-size: 16px;
+    }
+
+    .espoir-title .btn-with-image {
+        font-size: 16px;
+        margin-left: -150px;
+        margin-bottom: -10px;
+        width: 150px;
+        gap: 15px;
+    }
+
+    .espoir-title .btn-icon {
+        margin-right: -5px; /* Espace entre l'image et le texte */
+    }
+
+    .image img{
+        width: 550px;
+        height: 500px;
+        margin-left: 80px;
+    }
+}
+
+@media(max-width: 576px){
+
+    .btn-with-image{
+        margin-left: -10px;
+    }
+
+    .espoir-title .logo{
+        width: 50px;
+        height: 50px;
+        margin-left: 20px;
+    }
+    
+    .espoir-title .logo img{
+        width: 50px;
+        height: 40px;
+    }
+
+    .espoir-title .texte{
+        margin-top: 80px;
+        margin-left: 10px;
+    }
+    
+    .espoir-title .texte h2{
+        font-size: 16px;
+        font-weight: 800;
+    }
+    
+    .espoir-title .texte p{
+        font-size: 15px;
+    }
+
+    .espoir-title .btn-with-image {
+        font-size: 16px;
+        margin-left: -200px;
+        margin-bottom: -15px;
+        width: 150px;
+        gap: 15px;
+    }
+
+    .image img{
+        width: 440px;
+        height: 390px;
+        margin-left: 25px;
+    }
+   
+}
+    
+.espoir-title1 {
+    display: flex;
+    align-items: center; /* This aligns items vertically in the center */
+    margin-left: 150px;
+    margin-top: 20px;
+}
+    
+.espoir-title1 .image1 {
+    margin-right: 20px; /* Add space between the image and text if needed */
+}
+    
+.espoir-title1 .image1 img{
+    width: 45px;
+    height: 45px;
+}
+.espoir-title1 .texte h2 {
+    display: inline-block; /* Ensure the text and span stay inline */
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.espoir-title1 .texte span {
+    font-weight: 700;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+
+.espoir-title2 {
+    display: flex;
+    align-items: center; /* This aligns items vertically in the center */
+    margin-left: 150px;
+    margin-top: 20px;
+}
+    
+.espoir-title2 .image2 {
+    margin-right: 20px; /* Add space between the image and text if needed */
+}
+
+.espoir-title2 .image2 img{
+    width: 45px;
+    height: 45px;
+}
+
+.espoir-title2 .texte h2 {
+    display: inline-block; /* Ensure the text and span stay inline */
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.objectifs{
+    display: flex;
+    align-items: center;
+    margin-left: 220px;
+    gap: 20px;
+}
+    
+.objectifs .trait{
+    border: 5px solid black;
+    background-color: black;
+    width: 2px;
+    height: 280px;
+    border-radius: 20px;
+}
+    
+.objectifs .objectifs-container{
+    display: inline-block;
+}
+    
+.objectifs .objectifs-container p{
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 37.92px;
+    color: #000000;
+}
+
+.espoir-title3 {
+    display: flex;
+    align-items: center; /* This aligns items vertically in the center */
+    margin-left: 150px;
+    margin-top: 20px;
+}
+    
+.espoir-title3 .image3 {
+    margin-right: 20px; /* Add space between the image and text if needed */
+}
+    
+.espoir-title3 .image3 img{
+    width: 45px;
+    height: 45px;
+}
+    
+.espoir-title3 .texte h2 {
+    display: inline-block; /* Ensure the text and span stay inline */
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.localisation .localisation-container{
+    display: inline-block;
+}
+    
+.localisation .localisation-container p{
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 37.92px;
+    color: #000000;
+    margin-left: 250px;
+}
+    
+.espoir-title4 {
+    display: flex;
+    align-items: center; /* This aligns items vertically in the center */
+    margin-left: 150px;
+    margin-top: 20px;
+}
+    
+.espoir-title4 .image4 {
+    margin-right: 20px; /* Add space between the image and text if needed */
+}
+    
+.espoir-title4 .image4 img{
+    width: 45px;
+    height: 45px;
+}
+    
+.espoir-title4 .texte h2 {
+    display: inline-block; /* Ensure the text and span stay inline */
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.contact{
+    display: flex;
+    align-items: center;
+    margin-left: 250px;
+    gap: 20px;
+}
+
+.contact .trait{
+    border: 5px solid black;
+    background-color: black;
+    width: 2px;
+    height: 150px;
+    border-radius: 20px;
+}
+    
+.contact .contact-container{
+    display: inline-block;
+}
+    
+.contact .contact-container p{
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 37.92px;
+    color: #000000;
+}
+
+.tr{
+    width: 1300px; 
+    border:2px solid #d9d9d9; 
+    border-radius:20px; 
+    background-color:#d9d9d9; 
+    margin-top:100px; 
+    margin-left:20px;
+}
+
+.activities p{
+    margin-left: 250px;
+}
+
+.espoir-title5{
+    margin-top:30px;
+}
+
+.espoir-title5 .texte h2{
+    width: 500px; 
+    font-family: var(--section-font); 
+    font-size: 25px; 
+    font-weight: 700; 
+    text-align: left; 
+    text-underline-position: from-font; 
+    text-decoration-skip-ink: none; 
+    color: #000000; 
+    margin-left:150px
+}
+
+    
+@media(max-width: 768px){
+    .espoir-title1{
+        margin-left: 50px;
+    }
+
+    .espoir-title1 .image1 img{
+        width: 40px;
+        height: 40px;
+    }
+
+    .espoir-title1 .texte h2{
+        font-size: 25px;
+        line-height: 30px;
+    }
+
+    .espoir-title1 .texte span{
+        font-size: 25px;
+    }
+
+    .espoir-title2 {
+        margin-left: 50px;
+    }
+
+    .espoir-title2 .image2 img{
+        width: 40px;
+        height: 40px;
+    }
+
+    .espoir-title2 .texte h2 {
+        font-size: 25px;
+    }
+
+    .objectifs{
+        margin-left: 110px;
+    }
+  
+    .objectifs .objectifs-container p{
+        font-size: 20px;
+    }
+
+    .espoir-title3 {
+        margin-left: 50px;
+    }
+    
+    .espoir-title3 .image3 img{
+        width: 40px;
+        height: 40px;
+    }
+    
+    .espoir-title3 .texte h2 {
+        font-size: 25px;
+    }
+    
+    .localisation .localisation-container p{
+        font-size: 21px;
+        margin-left: 110px;
+    }
+
+    .espoir-title4 {
+        margin-left: 50px;
+    }
+   
+    .espoir-title4 .image4 img{
+        width: 40px;
+        height: 40px;
+    }
+    
+    .espoir-title4 .texte h2 {
+        font-size: 25px;
+    }
+    
+    .contact{
+        margin-left: 110px;
+    }
+  
+    .contact .contact-container p{
+        font-size: 21px;
+    }
+
+    .tr{
+        width: 620px; 
+    }
+}
+
+@media(max-width: 576px){
+    .espoir-title1{
+        margin-left: 25px;
+    }
+
+    .espoir-title1 .image1 img{
+        width: 35px;
+        height: 35px;
+    }
+
+    .espoir-title1 .texte h2{
+        font-size: 22px;
+        line-height: 30px;
+    }
+
+    .espoir-title1 .texte span{
+        font-size: 22px;
+    }
+
+    .espoir-title1 .image1 {
+        margin-right: 8px; /* Add space between the image and text if needed */
+    }
+
+    .espoir-title2 {
+        margin-left: 25px;
+    }
+
+    .espoir-title2 .image2 img{
+        width: 35px;
+        height: 35px;
+    }
+
+    .espoir-title2 .texte h2 {
+        font-size: 22px;
+    }
+
+    .objectifs{
+        margin-left: 80px;
+    }
+  
+    .objectifs .objectifs-container p{
+        font-size: 18px;
+    }
+
+    .espoir-title3 {
+        margin-left: 25px;
+    }
+    
+    .espoir-title3 .image3 img{
+        width: 35px;
+        height: 35px;
+    }
+    
+    .espoir-title3 .texte h2 {
+        font-size: 22px;
+    }
+    
+    .localisation .localisation-container p{
+        font-size: 18px;
+        margin-left: 75px;
+    }
+
+    .espoir-title4 {
+        margin-left: 25px;
+    }
+   
+    .espoir-title4 .image4 img{
+        width: 35px;
+        height: 35px;
+    }
+    
+    .espoir-title4 .texte h2 {
+        font-size: 22px;
+    }
+    
+    .contact{
+        margin-left: 80px;
+    }
+  
+    .contact .contact-container p{
+        font-size: 18px;
+    }
+
+    .tr{
+        width: 450px; 
+    }
+
+    .espoir-title5 .texte{
+        width: 400px; 
+        margin-left:80px
+    }
+}
+
+.activities ul {
+    list-style: none;
+    padding: 0;
+}
+    
+.activities li {
+    margin-bottom: 20px;
+}
+    
+.activity-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+}
+    
+.activity-item h3 {
+    margin: 0;
+    font-size: 18px;
+}
+    
+.activity-item p {
+    font-size: 14px;
+    color: #666;
+}
+    
+.activities .btn-with-image {
+    align-self: flex-start;
+}
+
+/* Styles pour le modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#modal-details h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+}
+
+#modal-details p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+
+.activities {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0;
+    margin-left: -120px;
+    margin-top: 30px;
+}
+
+.activite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0;
+    margin-left: -120px;
+    margin-top: 30px;
+}
+
+.activites img {
+    width: 495.81px;
+    height: 299.35px;
+    margin-left: 300px;
+    border-radius: 14.03px 0 0 0;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: auto;
+    overflow-y: auto;
+}

@@ -1,0 +1,223 @@
+/* Fonts */
+:root {
+    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Satisfy",  sans-serif;
+    --nav-font: "Poppins",  sans-serif;
+    --section-font: "Montserrat";
+}
+    
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+:root { 
+    --background-color: #031c29; 
+    --default-color: #000000;
+    --heading-color: #433f39;
+    --accent-color: #004B70; 
+    --surface-color: #000000;
+    --contrast-color: #ffffff;
+}
+    
+/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+:root {
+    --nav-color: #000000; 
+    --nav-hover-color: #004B70;
+    --nav-mobile-background-color: #ffffff;
+}
+     
+/* Smooth scroll */
+:root {
+    scroll-behavior: smooth;
+}
+    
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+body {
+    color: var(--default-color);
+    font-family: var(--default-font);
+    background-color: #D9D9D9 ;
+    background-size: cover; /* Ajuste l'image pour qu'elle couvre tout l'écran */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    background-position: center; /* Centre l'image */
+    background-attachment: fixed; /* Garde l'image fixe même lors du défilement */
+}
+
+.main .titre {
+    margin-top: 150px;
+}
+
+.main .titre h1{
+    width: 1000px;
+    font-family: Montserrat;
+    font-size: 45px;
+    font-weight: 600;
+    line-height: 2px;
+    letter-spacing: -0.04em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #000000;
+    margin-left: 330px;
+}
+
+.main .formulaireCon{
+    margin-top: 50px;
+}
+
+.main .formulaireCon form{
+    background-color: white;
+    width: 700px;
+    border: 2px solid white;
+    border-radius: 20px;
+    margin-left: 330px;
+}
+  
+.main .formulaireCon form label {
+    margin-bottom: 10px;
+    width: 300px;
+    height: 18px;
+    margin-top: 50px;
+    margin-left: 130px;
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18.29px;
+    text-align: left;
+    color: #000000;
+}
+
+.main .formulaireCon form label span{
+    color: red;
+}
+
+.main .formulaireCon form input::placeholder{
+    width: 400px;
+    height: 18px;
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18.29px;
+    text-align: left;
+    color: #D9D9D9;
+}
+
+.main .formulaireCon form input{
+    padding: 10px;
+    margin-bottom: -30px;
+    width: 430px;
+    height: 45px;
+    margin-left: 130px;
+    border-radius: 5px;
+    border: 1px solid #EFEFEF;
+    background-color: #ffffff;
+}
+
+.main .formulaireCon form .logo{
+    margin-left: 250px;
+}
+
+.main .formulaireCon form .trai{
+    width: 650px;
+    height: 1px;
+    background-color: #D9D9D9;
+    border: 2px solid #D9D9D9;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-left: 25px;
+}
+
+.main .formulaireCon form .trai1{
+    width: 650px;
+    height: 1px;
+    background-color: #D9D9D9;
+    border: 2px solid #D9D9D9;
+    border-radius: 20px;
+    margin-top: 60px;
+    margin-left: 25px;
+}
+
+.main .formulaireCon form #bouton{
+    background-color: #004B70;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 449px;
+    height: 40px;
+    margin-top: 60px;
+    margin-left: 125px;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 4px;
+    border: 1px solid #004B70;
+    font-family: var(--section-font);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.main .formulaireCon form p{
+    margin-top: 25px;
+    margin-left: 30px; 
+    font-size: 14px;
+}
+
+.main .formulaireCon form p a{
+    text-decoration: none;
+    color: #004B70;
+}
+
+.main .formulaireCon form .tex{
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.main .formulaireCon form .tex a{
+    height: 30px;
+    font-family: var(--section-font);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 25.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    margin-left: 30px;
+    color: #004B70;
+    text-decoration: none;
+}
+
+@media(max-width: 768px){
+    .main .titre h1{
+        font-size: 35px;
+        margin-left: 60px;
+    }
+
+    .main .formulaireCon form{
+        width: 600px;
+        margin-left: 30px;
+    }
+  
+    .main .formulaireCon form label {
+        margin-left: 30px;
+    }
+
+    .main .formulaireCon form input{
+        margin-left: 30px;
+    }
+
+    .main .formulaireCon form .logo{
+        margin-left:200px;
+    }
+
+    .main .formulaireCon form .trai{
+        width: 550px;
+    }
+
+    .main .formulaireCon form .trai1{
+        width: 550px;
+    }
+
+    .main .formulaireCon form #bouton{
+        width: 300px;
+        margin-left: 125px;
+    }
+    
+}

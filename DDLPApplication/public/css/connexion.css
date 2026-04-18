@@ -1,0 +1,437 @@
+/* Fonts */
+:root {
+    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Satisfy",  sans-serif;
+    --nav-font: "Poppins",  sans-serif;
+    --section-font: "Montserrat";
+}
+    
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+:root { 
+    --background-color: #031c29; 
+    --default-color: #000000;
+    --heading-color: #433f39;
+    --accent-color: #004B70;
+    --surface-color: #000000;
+    --contrast-color: #ffffff;
+}
+    
+/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+:root {
+    --nav-color: #000000;
+    --nav-hover-color: #004B70;
+    --nav-mobile-background-color: #ffffff;
+}
+    
+/* Smooth scroll */
+:root {
+    scroll-behavior: smooth;
+}
+    
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+body {
+    color: var(--default-color);
+    font-family: var(--default-font);
+    background-image: url('/img2/main.jpg') ;
+    background-size: cover; /* Ajuste l'image pour qu'elle couvre tout l'écran */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    background-position: center; /* Centre l'image */
+    background-attachment: fixed; /* Garde l'image fixe même lors du défilement */
+}
+
+.container {
+    display: flex;
+    justify-content: space-between; /* Place gauche à gauche et droite à droite */
+    align-items: flex-start; /* Aligne les éléments en haut du conteneur */
+    padding: 0 ; /* Ajoute un peu d'espace sur les côtés */
+}
+
+.container .gauche img{
+    width: 296px;
+    height: 230px;
+    margin-top: 200px;
+}
+
+.container .gauche h3{
+    width: 477px;
+    height: 90px;
+    top: 234px;
+    gap: 0px;
+    opacity: 0px;
+    font-family: var(--section-font);
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 45px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #ffffff;
+}
+
+.container .droite{
+    width: 990px !important;
+    height: 939px;
+    background-color: #EFEFEF;
+    border: 1px solid #EFEFEF;
+    border-radius: 25px;
+    margin-top: 50px;
+}
+
+.container .droite h1{
+    width: 291px;
+    height: 82px;
+    font-family: Montserrat;
+    font-size: 45px;
+    font-weight: 600;
+    line-height: 82px;
+    letter-spacing: -0.04em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #000000;
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.container .droite p{
+    height: 30px;
+    font-family: var(--section-font);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 25.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: gray;
+    margin-left: 50px;
+}
+
+.container .droite a{
+    color: #004B70;
+    text-decoration: none;
+}
+
+.container .droite .con{
+    width: 500px;
+    height: 580px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.container .droite .con form .trai{
+    width: 460px;
+    height: 0px;
+    margin-left: 20px;
+    margin-top: 80px;
+    border: 2px solid #EFEFEF;
+    border-radius: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+  
+label {
+    margin-bottom: 10px;
+    width: 200px;
+    height: 18px;
+    margin-top: 50px;
+    margin-left: 50px;
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18.29px;
+    text-align: left;
+    color: #000000;
+
+}
+
+label span{
+    color: red;
+}
+
+input::placeholder{
+    width: 200px;
+    height: 18px;
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18.29px;
+    text-align: left;
+    color: #D9D9D9;
+}
+
+
+input, select {
+    padding: 10px;
+    margin-bottom: -30px;
+    width: 352px;
+    height: 45px;
+    margin-left: 50px;
+    border-radius: 5px;
+    border: 1px solid #EFEFEF;
+    background-color: #ffffff;
+}
+  
+.error {
+    color: red;
+    margin-bottom: 20px;
+}
+
+.container .droite .con form .pass{
+    margin-top: 30px;
+}
+
+.container .droite .con form .pass a{
+    height: 30px;
+    font-family: var(--section-font);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 25.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    margin-left: 50px;
+    color: #004B70;
+    text-decoration: none;
+}
+
+.container .droite .con form .trai1{
+    width: 460px;
+    height: 0px;
+    margin-left: 20px;
+    margin-top: 30px;
+    border: 2px solid #EFEFEF;
+    border-radius: 10px;
+}
+
+.container .droite .con form .tex{
+    margin-top: 30px;
+}
+
+.container .droite .con form .tex p{
+    height: 30px;
+    font-family: var(--section-font);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 25.88px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: black;
+    margin-left: 50px;
+}
+
+.container .droite .con form .tex a{
+    color: #004B70;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.container .droite .but{
+    margin-top: 50px;
+    margin-left: 280px;
+}
+
+.container .droite .but .btn-with-image {
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-size: 16px;
+    width: 450px;
+    font-family: var(--section-font);
+    font-weight: 600;
+    margin-left: 150px;
+    border: none;
+    transition: background-color 0.3s ease;
+    background-color: transparent;
+}
+
+.container .droite .but .btn-with-image .btn-text{
+    width: 493px;
+    margin-left: -120px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+#button{    
+    background-color: #004B70;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 449px;
+    height: 40px;
+    margin-top: 40px;
+    margin-left: 30px;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 4px;
+    border: 1px solid #004B70;
+    font-family: var(--section-font);
+    font-size: 16px;
+    font-weight: 600;                       
+}
+
+@media(max-width: 768px){
+
+    .container .gauche img{
+        width: 150px;
+        height: 150px;
+        margin-left: -10px;
+    } 
+    
+    .container .gauche h3{
+        width: 250px;
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+        margin-left: -50px;
+    }
+
+    .container .droite{
+        width: 380px !important;
+        height: 939px;
+    }
+
+    .container .droite h1{
+        text-align: center;
+    }
+
+    .container .droite p{
+        width: 320px;
+    }
+
+    .container .droite .con{
+        width: 360px;
+        height: 580px;
+        margin-left: 10px;
+        margin-top: 30px;
+    }
+
+    .container .droite .con form .trai{
+        width: 345px;
+        margin-left: 8px;
+        margin-top: 60px;
+    }
+  
+    label {
+        margin-left: 30px; 
+    }
+
+    input, select {
+        width: 300px;
+        margin-left: 30px;
+    }
+
+    #button{    
+        width: 300px;                     
+    }
+
+    .container .droite .con form .trai1{
+        width: 345px;
+        margin-left: 8px;
+        margin-top: 30px;
+    }
+
+    .container .droite .con form .tex p{
+        margin-left: 30px;
+    }
+
+    .container .droite .but{
+        margin-top: 30px;
+        margin-left: -60px;
+    }
+
+    .container .droite .but .btn-with-image {
+        width: 400px;
+    }
+
+    .container .droite .pass{
+        margin-left: 10px;
+    }
+}
+
+@media(max-width: 576px){
+
+    .container .gauche{
+        display: none;
+    } 
+    
+    .container .droite{
+        width: 380px !important;
+        height: 939px;
+        margin: 0 auto;
+    }
+
+    .container .droite h1{
+        text-align: center;
+    }
+
+    .container .droite p{
+        width: 320px;
+    }
+
+    .container .droite .con{
+        width: 360px;
+        height: 580px;
+        margin-left: 10px;
+        margin-top: 30px;
+    }
+
+    .container .droite .con form .trai{
+        width: 345px;
+        margin-left: 8px;
+        margin-top: 60px;
+    }
+  
+    label {
+        margin-left: 30px; 
+    }
+
+    input, select {
+        width: 300px;
+        margin-left: 30px;
+    }
+
+    #button{    
+        width: 300px;                     
+    }
+
+    .container .droite .con form .trai1{
+        width: 345px;
+        margin-left: 8px;
+        margin-top: 30px;
+    }
+
+    .container .droite .con form .tex p{
+        margin-left: 30px;
+    }
+
+    .container .droite .but{
+        margin-top: 30px;
+        margin-left: -60px;
+    }
+
+    .container .droite .but .btn-with-image {
+        width: 400px;
+    }
+
+    .container .droite .pass{
+        margin-left: 10px;
+    }
+}

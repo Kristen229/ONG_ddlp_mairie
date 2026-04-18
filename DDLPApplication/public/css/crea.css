@@ -1,0 +1,338 @@
+/* Fonts */
+:root {
+    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Satisfy",  sans-serif;
+    --nav-font: "Poppins",  sans-serif;
+    --section-font: "Montserrat";
+}
+    
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+:root { 
+    --background-color: #031c29; 
+    --default-color: #000000; 
+    --heading-color: #433f39;
+    --accent-color: #004B70; 
+    --surface-color: #000000; 
+    --contrast-color: #ffffff; 
+}
+    
+/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+:root {
+    --nav-color: #000000;
+    --nav-hover-color: #004B70; 
+    --nav-mobile-background-color: #ffffff; 
+}
+  
+/* Smooth scroll */
+:root {
+    scroll-behavior: smooth;
+}
+    
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+body {
+    color: var(--default-color);
+    background-color: #EFEFEF;
+    font-family: var(--default-font);
+    background-image: url('/img2/main.jpg');
+    background-size: cover; /* Ajuste l'image pour qu'elle couvre tout l'écran */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    background-position: center; /* Centre l'image */
+    background-attachment: fixed; /* Garde l'image fixe même lors du défilement */
+    position: relative;
+    margin: 0;
+}
+
+body::before {
+    content: "";
+    position: fixed; /* fixé à l’écran, pas au contenu */
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: -1; /* reste derrière le contenu */
+}
+    
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+    
+a:hover {
+    color: color-mix(in srgb, var(--accent-color), transparent 25%);
+    text-decoration: none;
+}
+    
+h1,
+h2{
+    color: var(--heading-color);
+    font-family: var(--heading-font);
+}
+   
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+  
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+    
+/*--------------------------------------------------------------
+  # Preloader
+--------------------------------------------------------------*/
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    overflow: hidden;
+    background: var(--background-color);
+    transition: all 0.6s ease-out;
+}
+    
+#preloader:before {
+    content: "";
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    border: 6px solid #ffffff;
+    border-color: var(--accent-color) transparent var(--accent-color) transparent;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: animate-preloader 1.5s linear infinite;
+}
+    
+@keyframes animate-preloader {
+    0% {
+      transform: rotate(0deg);
+    }
+    
+    100% {
+      transform: rotate(360deg);
+    }
+}
+    
+/*--------------------------------------------------------------
+  # Scroll Top Button
+--------------------------------------------------------------*/
+.scroll-top {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: 15px;
+    z-index: 99999;
+    background-color: var(--accent-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    transition: all 0.4s;
+}
+    
+.scroll-top i {
+    font-size: 24px;
+    color: var(--contrast-color);
+    line-height: 0;
+}
+    
+.scroll-top:hover {
+    background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+    color: var(--contrast-color);
+}
+    
+.scroll-top.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.main .title{
+    display: flex;
+    align-items: center;
+    margin-left: 170px;
+    margin-top: 30px;
+}
+
+.main .title .btn-with-image {
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-size: 16px;
+    width: 450px;
+    font-family: var(--section-font);
+    font-weight: 600;
+    margin-left: 550px;
+    border: none;
+    background-color: transparent;
+}
+
+.main .title .btn-with-image .btn-icon{
+    width: 30px;
+    height: 30px;
+    transform: rotate(180deg);
+}
+
+.main .title .btn-with-image .btn-text{
+    width: 493px;
+    margin-left: -120px;
+}
+
+.main .formu{
+    width: 332px;
+    height: 79px;
+    margin-left: 210px;
+    font-family: var(--section-font);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #ffffff;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 790px;
+    height: 908px;
+    border-radius: 5px;
+    border: 2px solid white;
+    background-color: #ffffff;
+}
+  
+label {
+    margin-bottom: 10px;
+    width: 250px;
+    height: 18px;
+    margin-top: 50px;
+    margin-left: 50px;
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18.29px;
+    text-align: left;
+    color: #000000;
+}
+
+label span{
+    color: red;
+}
+
+input::placeholder{
+    width: 700px;
+    height: 18px;
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18.29px;
+    text-align: left;
+    color: #D9D9D9;
+}
+
+input, select {
+    padding: 10px;
+    margin-bottom: -30px;
+    width: 730px;
+    height: 45px;
+    margin-left: 50px;
+    border-radius: 5px;
+    border: 1px solid #EFEFEF;
+    background-color: #ffffff;
+}
+  
+input[type="submit"] {
+    background-color: #004B70;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 250px;
+    height: 40px;
+    margin-top: 40px;
+    margin-left: 230px;
+    padding: 10px 10px 10px 10px;
+    gap: 10px;
+    border-radius: 4px;
+    border: 1px solid #004B70;
+    font-family: var(--section-font);
+    font-size: 16px;
+    font-weight: 600;
+}
+  
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+  
+.error {
+    color: red;
+    margin-bottom: 20px;
+}
+
+form .button1 button{
+    height: 50px;
+    border: 2px solid #004B70;
+    border-radius: 4px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: #000000;
+    font-size: 20px;
+    width: 200px;
+    font-family: var(--section-font);
+    margin-left: 550px;
+    margin-top: 50px;
+    gap: 20px;
+    padding: 5px;
+}
+
+form .button1 .btn-icone{
+    width: 20px;
+    height: 20px;
+}
+
+.logo{
+    align-items: center;
+    margin-left: 450px;
+}
+
+@media(max-width: 768px){  
+
+    .main .title .btn-with-image {
+        margin-left: 110px;
+    }
+
+    .main .formu{
+        margin-left: -40px;
+        margin-top: 30px;
+    }
+
+    form {
+        width: 600px;
+        height: 908px;
+    }
+  
+    label {
+        margin-left: 30px;
+    }
+
+    input, select {
+        width: 530px;
+    }
+
+    form .button1 button{
+        margin-left: 350px;
+    }
+
+    .logo{
+        align-items: center;
+        margin-left: 150px;
+    }
+}

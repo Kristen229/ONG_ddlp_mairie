@@ -1,0 +1,703 @@
+/* Fonts */
+:root {
+    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Satisfy",  sans-serif;
+    --nav-font: "Poppins",  sans-serif;
+    --section-font: "Montserrat";
+}
+        
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+:root { 
+    --background-color: #ffffff; 
+    --default-color: #000000; 
+    --heading-color: #433f39; 
+    --accent-color: #004B70; 
+    --surface-color: #000000; 
+    --contrast-color: #ffffff;
+}
+        
+/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+:root {
+    --nav-color: #000000; 
+    --nav-hover-color: #004B70; 
+    --nav-mobile-background-color: #ffffff;
+}
+        
+/* Smooth scroll */
+:root {
+    scroll-behavior: smooth;
+}
+        
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+body {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    font-family: var(--default-font);
+}
+        
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+        
+a:hover {
+    color: color-mix(in srgb, var(--accent-color), transparent 25%);
+    text-decoration: none;
+}
+        
+h1,
+h2{
+    color: var(--heading-color);
+    font-family: var(--heading-font);
+}
+          
+/*--------------------------------------------------------------
+# Global Footer
+--------------------------------------------------------------*/
+.footer {
+    color: var(--contrast-color);
+    font-size: 14px;
+    padding: 40px 0 0 0;
+    position: relative;
+    background-color: #272727;
+    margin-top: 200px;
+}
+        
+.footer h4 {
+    font-family: var(--section-font);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    margin-bottom: 15px;
+    width: 547px;
+    margin-top: 30px;
+}
+        
+.footer p {
+    margin-bottom: 0px;
+    font-family: var(--section-font);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+    width: 338px;
+}
+        
+.footer .copyright {
+    padding: 25px 0;
+}
+    
+.footer .copyright h3 {
+    margin-bottom: 0;
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 29.88px;
+    letter-spacing: -0.03em;
+}
+    
+/*--------------------------------------------------------------
+# Scroll Top Button
+--------------------------------------------------------------*/
+.scroll-top {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: 15px;
+    z-index: 99999;
+    background-color: var(--accent-color); 
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    transition: all 0.4s;
+}
+        
+.scroll-top i {
+    font-size: 24px;
+    color: var(--contrast-color);
+    line-height: 0;
+}
+        
+.scroll-top:hover {
+    color: var(--contrast-color);
+}
+        
+.scroll-top.active {
+    visibility: visible;
+    opacity: 1;
+}
+        
+/*--------------------------------------------------------------
+# Disable aos animation delay on mobile devices
+--------------------------------------------------------------*/
+@media screen and (max-width: 768px) {
+    [data-aos-delay] {
+        transition-delay: 0 !important;
+    }
+}
+    
+/*--------------------------------------------------------------
+# Global Sections
+--------------------------------------------------------------*/
+section,
+.section {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    padding: 60px 0;
+    scroll-margin-top: 112px;
+    overflow: clip;
+}
+      
+@media (max-width: 1199px) {
+      
+    section,
+    .section {
+        scroll-margin-top: 105px;
+    }
+}
+    
+.main{
+    margin-top: -120px;
+}
+
+.main #button1{
+    gap: 20px;
+}
+
+.espoir-title {
+    display: flex; /* Aligne les enfants sur une ligne */
+    align-items: center; /* Aligne verticalement au centre */
+}
+    
+.espoir-title .logo{
+    width: 110px;
+    height: 107px;
+    border: solid 2px black;
+    border-radius: 100%;
+    margin-left: 165px;
+    margin-top: 45px;
+    padding:  5px 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+    
+.espoir-title .logo img{
+    width: 160px;
+    height: 100px;
+    clip-path: ellipse(33% 50%);
+}
+    
+.espoir-title .texte{
+    display: inline-block;
+    margin-top: 70px;
+    margin-left: 20px;
+}
+    
+.espoir-title .texte h2{
+    font-family: var(--section-font);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 10.3px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+    width: 450px;
+}
+    
+.espoir-title .texte p{
+    font-family: var(--section-font);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 37.92px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+    width: 100px;
+}
+    
+.espoir-title .btn-with-image {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    background-color: #004B70; 
+    color: var(--contrast-color);
+    font-size: 20px;
+    cursor: pointer;
+    margin: 20px 20px 0 300px;
+    width: 260px;
+    height: 50px;
+    font-family: var(--section-font);
+    font-weight: 600;
+    gap: 9px;
+    border-radius: 10px;
+}
+    
+.espoir-title .btn-with-image:hover {
+    background-color: #2a6785;
+}
+    
+.espoir-title .btn-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px; /* Espace entre l'image et le texte */
+}
+
+.main .info{
+    width: 1000px;
+    height: 200px;
+    background-color: #d9d9d9;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    margin-left: 200px;
+    margin-top: 20px;
+    padding: 20px 0 50px 50px;
+}
+
+.main .info h3{
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 37.92px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+    width: 500px;
+}
+
+.main .info p{
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 27.92px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+    width: 500px;
+}
+
+.main .info span{
+    font-weight: 700;
+}
+
+.main .bureau-executif h2{
+    font-family: var(--section-font);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 27.92px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+    width: 500px;
+    margin-top: 50px;
+    margin-left: 200px;
+}
+
+.main .bureau-executif .member{
+    display: flex; 
+    align-items:center; 
+    margin-left:200px;
+    margin-top: 30px;
+}
+
+.main .bureau-executif .member .executif-member {
+    margin-right: -200px;
+}
+
+.main .bureau-executif .member .executif-member .executif-photo{
+    width: 81px; 
+    height: 79px; 
+    clip-path: circle(50%);
+}
+
+.main .bureau-executif .executif-member h2{
+    font-family: var(--section-font);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 27.92px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+    margin-left: -20px;
+}
+
+.main .bureau-executif .executif-member p{
+    font-family: var(--section-font);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 27.92px;
+    letter-spacing: -0.03em;
+    color: var(--default-color);
+}
+
+.image img{
+    width: 1100px;
+    height: 750px;
+    border-radius: 5px;
+    margin-left: 120px;
+    margin-top: 20px;
+}
+    
+.espoir-title1 {
+    display: flex;
+    align-items: center;
+    margin-left: 120px;
+    margin-top: 20px;
+}
+    
+.espoir-title1 .image1 {
+    margin-right: 20px; 
+}
+    
+.espoir-title1 .image1 img{
+    width: 45px;
+    height: 45px;
+}
+    
+.espoir-title1 .texte h2 {
+    display: inline-block; 
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.espoir-title1 .texte span {
+    font-weight: 700;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.espoir-title2 {
+    display: flex;
+    align-items: center; 
+    margin-left: 120px;
+    margin-top: 20px;
+}
+    
+.espoir-title2 .image2 {
+    margin-right: 20px; 
+}
+
+.espoir-title2 .image2 img{
+    width: 45px;
+    height: 45px;
+}
+
+.espoir-title2 .texte h2 {
+    display: inline-block; 
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.objectifs{
+    display: flex;
+    align-items: center;
+    margin-left: 190px;
+    gap: 20px;
+}
+
+.objectifs .trait{
+    border: 5px solid black;
+    background-color: black;
+    width: 2px;
+    height: 280px;
+    border-radius: 20px;
+}
+    
+.objectifs .objectifs-container{
+    display: inline-block;
+    margin-left: -10px;
+}
+    
+.objectifs .objectifs-container li{
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 45.92px;
+    color: #000000;
+}
+    
+.espoir-title3 {
+    display: flex;
+    align-items: center; 
+    margin-left: 120px;
+    margin-top: 20px;
+}
+    
+.espoir-title3 .image3 {
+    margin-right: 20px; 
+}
+    
+.espoir-title3 .image3 img{
+    width: 45px;
+    height: 45px;
+}
+    
+.espoir-title3 .texte h2 {
+    display: inline-block; 
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.localisation .localisation-container{
+    display: inline-block;
+}
+    
+.localisation .localisation-container p{
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 37.92px;
+    color: #000000;
+    margin-left: 190px;
+}
+    
+.espoir-title4 {
+    display: flex;
+    align-items: center; 
+    margin-left: 120px;
+    margin-top: 20px;
+}
+    
+.espoir-title4 .image4 {
+    margin-right: 20px; 
+}
+    
+.espoir-title4 .image4 img{
+    width: 45px;
+    height: 45px;
+}
+    
+.espoir-title4 .texte h2 {
+    display: inline-block; 
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 78.3px;
+    letter-spacing: -0.03em;
+    color: #000000;
+}
+    
+.contact{
+    display: flex;
+    align-items: center;
+    margin-left: 190px;
+    gap: 20px;
+}
+
+.contact .trait{
+    border: 5px solid black;
+    background-color: black;
+    width: 2px;
+    height: 150px;
+    border-radius: 20px;
+}
+    
+.contact .contact-container{
+    display: inline-block;
+}
+    
+.contact .contact-container p{
+    font-family: var(--section-font);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 37.92px;
+    color: #000000;
+}
+
+.btn-with-image {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--contrast-color); /* Couleur du bouton */
+    color: var(--default-color);
+    font-size: 20px;
+    cursor: pointer;
+    margin: 170px 0 0 70px;
+    width: 200px;
+    height: 30px;
+    font-family: var(--section-font);
+    font-weight: 600;
+}
+    
+.btn-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px; /* Espace entre l'image et le texte */
+}
+    
+.btn-text {
+    display: inline-block;
+}
+    
+.btn-text {
+    display: inline-block;
+}
+    
+@media(max-width: 768px){
+
+    .main #button1{
+        gap: 20px;
+        margin-left: 15px;
+    }
+
+    .espoir-title .logo{
+        width: 70px;
+        height: 77px;
+        margin-left: 15px;
+    }
+        
+    .espoir-title .logo img{
+        width: 60px;
+        height: 60px;
+    }
+    
+    .espoir-title .texte{
+        margin-left: 10px;
+    }
+        
+    .espoir-title .texte h2{
+        font-size: 25px;
+    }
+        
+    .espoir-title .texte p{
+        font-size: 15px;
+    }
+    
+    .espoir-title .btn-with-image {
+        font-size: 16px;
+        margin: 20px 20px 0 -120px;
+        width: 215px;
+        font-weight: 500;
+    }
+
+    .main .info{
+        width: 550px;
+        margin-left: 50px;
+    }
+
+    .main .bureau-executif h2{
+        margin-left: 140px;
+    }
+
+    .main .bureau-executif .member{
+        display: grid; 
+        grid-template-columns: 2fr 2fr;
+        row-gap: 20px;
+        margin-left: 150px;
+    }
+
+    .image img{
+        width: 600px;
+        height: 550px;
+        margin-left: 30px;
+    }
+    
+    .espoir-title1 {
+        margin-left: 20px;
+    }
+    
+    .espoir-title1 .image1 img{
+        width: 35px;
+        height: 35px;
+    }
+    
+    .espoir-title1 .texte h2 {
+        font-weight: 600;
+        font-size: 25px;
+        line-height: 38.3px;
+    }
+    
+    .espoir-title1 .texte span {
+        font-weight: 700;
+        font-size: 25px;
+    }
+    
+    .espoir-title2 {
+        margin-left: 20px;
+    }
+
+    .espoir-title2 .image2 img{
+        width: 35px;
+        height: 35px;
+    }
+
+    .espoir-title2 .texte h2 {
+        font-size: 25px;
+    }
+    
+    .objectifs{
+        margin-left: 80px;
+    }
+
+    .objectifs .trait{
+        margin-top: -20px;
+    }
+
+    .objectifs .objectifs-container li{
+        font-size: 20px;
+        margin-top: -10px;
+    }
+    
+    .espoir-title3 {
+        margin-left: 20px;
+    }
+        
+    .espoir-title3 .image3 img{
+        width: 35px;
+        height: 35px;
+    }
+    
+    .espoir-title3 .texte h2 {
+        font-size: 25px;
+    }
+    
+    .localisation .localisation-container{
+        display: inline-block;
+    }
+        
+    .localisation .localisation-container p{
+        font-size: 20px;
+        margin-left: 80px;
+    }
+    
+    .espoir-title4 {
+        margin-left: 20px;
+    }
+
+    .espoir-title4 .image4 img{
+        width: 45px;
+        height: 45px;
+    }
+        
+    .espoir-title4 .texte h2 {
+        font-size: 25px;
+    }
+        
+    .contact{
+        margin-left: 8dvi;
+    }
+        
+    .contact .contact-container p{
+        font-size: 20px;
+    }
+
+}    
+    
