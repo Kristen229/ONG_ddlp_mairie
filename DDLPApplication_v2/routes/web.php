@@ -26,9 +26,7 @@ use App\Http\Controllers\ContactController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [UserController::class, 'showAssociations']);
 
 Route::get('/accueil', [UserController::class, 'showAssociations'])->name('accueil');
 Route::get('/association-et-ong', [UserController::class, 'indexe'])->name('association-et-ong');

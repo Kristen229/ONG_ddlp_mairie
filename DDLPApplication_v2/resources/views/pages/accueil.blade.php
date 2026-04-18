@@ -1,0 +1,248 @@
+@extends('layouts.app')
+
+@section('content')
+<!-- Hero Section -->
+<section class="bg-gradient-to-b from-teal-50 to-white py-20 lg:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-tight">
+            Répertoire des <span class="bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-green-500">Associations et ONG</span>
+            <br /> de Cotonou
+        </h1>
+        <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+            Plusieurs associations et ONG interviennent activement dans la commune. Découvrez, suivez et participez aux initiatives locales pour un impact positif.
+        </p>
+
+        <!-- Stats Grid -->
+        <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Stat 1 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div class="h-12 w-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">150+</h3>
+                <p class="text-sm text-gray-500 mt-1 font-medium">Associations actives</p>
+            </div>
+            <!-- Stat 2 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div class="h-12 w-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">200+</h3>
+                <p class="text-sm text-gray-500 mt-1 font-medium">Projets réalisés</p>
+            </div>
+            <!-- Stat 3 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div class="h-12 w-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">10k+</h3>
+                <p class="text-sm text-gray-500 mt-1 font-medium">Citoyens impactés</p>
+            </div>
+            <!-- Stat 4 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div class="h-12 w-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">20+</h3>
+                <p class="text-sm text-gray-500 mt-1 font-medium">Domaines d'action</p>
+            </div>
+        </div>
+
+        <!-- Call to Actions -->
+        <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ route('association-et-ong') }}" class="inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-white bg-teal-600 rounded-full hover:bg-teal-700 shadow-lg shadow-teal-200 transition-all">
+                Consulter les Associations
+            </a>
+            <a href="{{ route('connexion') }}" class="inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-teal-700 bg-teal-50 border-2 border-teal-100 rounded-full hover:bg-teal-100 hover:border-teal-200 transition-all">
+                Espace Membre
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- À Propos Section -->
+<section id="apropos" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Pourquoi cette Plateforme ?</h2>
+            <div class="mt-4 w-24 h-1 bg-teal-500 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                <img src="{{ asset('/img1/4469bddf-fb4a-4003-9684-73ca66a47ad6-removebg-preview.png') }}" alt="Mairie de Cotonou" class="w-full h-auto object-cover" />
+            </div>
+            <div class="space-y-8">
+                <!-- Feature 1 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-xl bg-teal-100 text-teal-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Accès rapide aux informations</h3>
+                        <p class="mt-2 text-gray-600">Retrouvez en un seul endroit toutes les associations actives, leurs projets, missions et événements passés.</p>
+                    </div>
+                </div>
+                <!-- Feature 2 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-xl bg-teal-100 text-teal-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Suivi des initiatives locales</h3>
+                        <p class="mt-2 text-gray-600">Suivez en temps réel l'évolution et l'impact des projets sur la communauté grâce aux évaluations.</p>
+                    </div>
+                </div>
+                <!-- Feature 3 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-xl bg-teal-100 text-teal-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Démarches simplifiées</h3>
+                        <p class="mt-2 text-gray-600">Un espace dédié pour soumettre des demandes à la mairie de façon digitalisée.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- À La Une Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900">À la Une</h2>
+                <p class="mt-2 text-gray-600">Découvrez les associations qui brillent par leur impact.</p>
+            </div>
+            <a href="{{ route('association-et-ong') }}" class="hidden sm:flex text-teal-600 font-semibold hover:text-teal-700 items-center gap-2">
+                Tout voir
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @if(isset($users) && $users->count() > 0)
+                @foreach ($users->take(3) as $user)
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-gray-100 flex flex-col h-full">
+                    <img src="{{ $user->attachment5 ? asset('storage/' . $user->attachment5) : asset('img/no-image.jpg') }}" alt="{{ $user->name }}" class="w-full h-48 object-cover">
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800 mb-2">
+                                {{ Str::title($user->group) }}
+                            </span>
+                            <h3 class="text-xl font-bold text-gray-900 leading-tight">{{ $user->name }}</h3>
+                            <p class="mt-2 text-sm text-gray-500 line-clamp-2"><span class="font-semibold">Domaine :</span> {{ $user->domaine }}</p>
+                        </div>
+                        <a href="{{ route('association.details', $user->id) }}" class="mt-6 inline-flex w-full justify-center items-center px-4 py-2 border border-teal-600 text-teal-600 rounded-xl hover:bg-teal-50 transition-colors font-medium">
+                            En savoir plus
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+            @else
+                <p class="text-gray-500 italic col-span-full">Aucune association enregistrée pour le moment.</p>
+            @endif
+        </div>
+        <div class="mt-8 sm:hidden text-center">
+             <a href="{{ route('association-et-ong') }}" class="text-teal-600 font-semibold hover:text-teal-700">Consulter toutes les associations →</a>
+        </div>
+    </div>
+</section>
+
+<!-- Activités Récentes (Scroll hz) -->
+<section id="activite" class="py-20 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <h2 class="text-3xl font-bold text-gray-900">Activités Récentes</h2>
+    </div>
+
+    <!-- Scroll Container -->
+    <div class="flex overflow-x-auto gap-6 px-4 sm:px-6 lg:px-8 pb-8 snap-x snap-mandatory hide-scrollbars">
+        @php
+            $visibleActivities = isset($users) ? collect($users)->flatMap->activities->where('is_visible', true)->sortByDesc('created_at')->take(6) : collect();
+        @endphp
+
+        @forelse($visibleActivities as $activity)
+        <div class="min-w-[320px] md:min-w-[400px] flex-none snap-start">
+            <div class="bg-gray-900 rounded-3xl overflow-hidden shadow-xl text-white relative group">
+                <img src="{{ asset('storage/' . $activity->attachment) }}" alt="{{ $activity->titre }}" class="w-full h-56 object-cover opacity-80 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <img src="{{ $activity->user->attachment ? asset('storage/' . $activity->user->attachment) : asset('img/no-user.png') }}" class="w-10 h-10 rounded-full border-2 border-white object-cover">
+                        <div>
+                            <p class="text-sm font-bold">{{ $activity->user->name }}</p>
+                            <p class="text-xs text-teal-300">{{ $activity->user->domaine }}</p>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold leading-tight mb-2">{{ $activity->titre }}</h3>
+                    <p class="text-xs text-gray-300 mb-2">{{ $activity->created_at->format('d/m/Y') }}</p>
+                    <p class="text-sm text-gray-300 line-clamp-2">{{ $activity->description }}</p>
+                </div>
+            </div>
+        </div>
+        @empty
+        <div class="w-full px-4 text-center">
+            <p class="text-gray-500 italic">Aucune activité publique pour le moment.</p>
+        </div>
+        @endforelse
+    </div>
+</section>
+
+<!-- FAQ Section avec Alpine.js -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900">Questions Fréquentes</h2>
+        </div>
+        
+        <div class="space-y-4">
+            <!-- Item 1 -->
+            <details class="group bg-white rounded-xl shadow-sm border border-gray-100 [&_summary::-webkit-details-marker]:hidden">
+                <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-gray-900">
+                    <span>Comment consulter la liste des associations ?</span>
+                    <span class="transition group-open:rotate-180">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-600">
+                    Allez sur la page "Associations et ONG" via le menu. Vous y trouverez une barre de recherche pour filtrer par domaine ou nom.
+                </div>
+            </details>
+            
+            <!-- Item 2 -->
+            <details class="group bg-white rounded-xl shadow-sm border border-gray-100 [&_summary::-webkit-details-marker]:hidden">
+                <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-gray-900">
+                    <span>Comment s'enregistrer en tant qu'ONG ?</span>
+                    <span class="transition group-open:rotate-180">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-600">
+                    Cliquez sur "Connexion membre" puis sur le bouton "S'inscrire". Remplissez les formulaires étape par étape pour soumettre votre dossier à la Mairie.
+                </div>
+            </details>
+
+            <!-- Item 3 -->
+            <details class="group bg-white rounded-xl shadow-sm border border-gray-100 [&_summary::-webkit-details-marker]:hidden">
+                <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-gray-900">
+                    <span>Comment soumettre une demande d'accompagnement ?</span>
+                    <span class="transition group-open:rotate-180">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-600">
+                    Une fois connecté à votre espace membre, cliquez sur "Demande" dans le menu latéral et suivez les instructions.
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- Scroller CSS cache scrollbar horizontal -->
+<style>
+    .hide-scrollbars::-webkit-scrollbar { display: none; }
+    .hide-scrollbars { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+@endsection
