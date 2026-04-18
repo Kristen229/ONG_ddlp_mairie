@@ -32,9 +32,9 @@ class StatsService
         $countsByMonth = $this->monthly('users', null, $year);
         $countsAssociations = $this->monthly('users', ['groupe' => 'association'], $year);
         $countsOng = $this->monthly('users', ['groupe' => 'ong'], $year);
-        $requestCounts = $this->monthly('association_requests', null, $year);
+        $requestCounts = $this->monthly('requests', null, $year);
 
-        $requestTypes = DB::table('association_requests')
+        $requestTypes = DB::table('requests')
             ->select('type', DB::raw('COUNT(*) as count'))
             ->whereYear('created_at', $year)->groupBy('type')->pluck('count', 'type');
         $labels = $requestTypes->keys()->toArray();
