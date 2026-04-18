@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Enums\RequestStatus;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -36,7 +37,7 @@ class AdminController extends Controller
         // Vérifier si l'utilisateur existe et si le mot de passe correspond
         if ($admin && Hash::check($request->password, $admin->password)) {
             // Authentifier l'utilisateur
-            Auth::login($admin);
+            Auth::guard('admin')->login($admin);
     
             return redirect()->route('admin', ['id' => $admin->id]);
         }
@@ -105,9 +106,9 @@ public function exportStatsPdf(Request $request)
         'ongCount'         => User::where('groupe', 'ong')->count(),
 
         'requestCount'     => Requests::count(),
-        'requestaCount'    => Requests::where('statut', 'Acceptée')->count(),
-        'requestrCount'    => Requests::where('statut', 'Rejetée')->count(),
-        'requesteCount'    => Requests::where('statut', 'En attente')->count(),
+        'requestaCount'    => Requests::where('statut', RequestStatus::APPROVED->value)->count(),
+        'requestrCount'    => Requests::where('statut', RequestStatus::REJECTED->value)->count(),
+        'requesteCount'    => Requests::where('statut', RequestStatus::PENDING->value)->count(),
 
         'activityCount'    => Activity::count(),
         'activitysCount'   => Activity::whereHas('user', fn($q)=>$q->where('groupe','ONG'))->count(),

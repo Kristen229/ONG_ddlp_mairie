@@ -12,22 +12,14 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Mail; 
 use App\Mail\WarningMail;
-
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ActivityRequest;
 use Illuminate\Support\Facades\DB;
 
 class ActivityController extends Controller
 {
-    public function store(Request $request)
+    public function store(ActivityRequest $request)
     {
-        // Validation des données
-        $request->validate([
-            'titre' => 'required|string|max:255',
-            'description' => 'required|string',
-            'lieu' => 'required|string',
-            'date' => 'required|date',
-            'attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,docx',
-        ]);
 
         // Sauvegarder l'activité
         $activity = new Activity();
@@ -117,22 +109,15 @@ class ActivityController extends Controller
 
         $activity->save();
 
-        return back()->with('success','Activité retirée de l’interface.');
+        return back()->with('success', "Activité retirée de l'interface.");
     }
 
-    public function update(Request $request, $id)
+    public function update(ActivityRequest $request, $id)
     {
         $activity = Activity::findOrFail($id);
     
         // Validation des données
-        $validatedData = $request->validate([
-            'titre' => 'required|string|max:255',
-            'description' => 'required|string',
-            'attachment' => 'nullable|image|max:2048',
-            'beneficiaries_actual' => 'required|integer',
-            'budget_actual' => 'required|numeric',
-            'actual_date' => 'required|date'
-        ]);
+        $validatedData = $request->validated();
     
         // Mise à jour des champs
         $activity->titre = $validatedData['titre'];
@@ -156,204 +141,22 @@ class ActivityController extends Controller
         return redirect()->back()->with('success', 'Activité modifiée avec succès.');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, \App\Services\StatsService $statsService)
     {
+        $data = $statsService->getAdminDashboardData();
         
-        // Compter le nombre d'association et ong enregistrés
-        $userCount = User::count();
+        // Custom logic for ActivityController
+        $data['user'] = Auth::user();
+        $data['users'] = User::paginate(10);
         
-        $ongCount = User::where('groupe', 'ong')->count();
-
-        $associationCount = User::where('groupe', 'association')->count();
-
-        $requestCount = Requests::count();
-
-        $requesttCount = Requests::whereIn('statut', ['Acceptée', 'Rejetée'])->count();
-        
-        $requesteCount = Requests::where('statut', 'En attente')->count();
-
-        $requestaCount = Requests::where('statut', 'Acceptée')->count();
-
-        $requestrCount = Requests::where('statut', 'Rejetée')->count();
-
-        $activityCount = Activity::count();
-        
-        $activitysCount = Activity::whereHas('user', function ($query) {
-            $query->where('groupe', 'ONG');
-        })->count();
-
-        $activityseCount = Activity::whereHas('user', function ($query) {
-            $query->where('groupe', 'association');
-        })->count();
-
-        $requests = Requests::with('user')->paginate(10); // Vous pouvez aussi paginer les demandes
-        
-        $associations = User::all();
-
-        // Assurez-vous de récupérer les associations correctement
-        $userAssociations = User::where('created_by', 'user')->get();  // Les associations créées par l'utilisateur
-        $adminAssociations = User::where('created_by', 'admin')->get();  // Les associations créées par l'administrateur
-
-        // Récupérer les notifications paginées
-        $notifications = Notification::latest()->paginate(5);
-
-        // Compter les demandes en attente
-        $pendingRequestsCount = Requests::where('statut', 'En attente')->count();
-
-        $activities = Activity::where('is_visible', true)->get();
-
-        $lastUsers = User::latest()->take(8)->get();
-
-        $monthlyCounts = DB::table('users')  // ici DB::table, pas User::table
-        ->select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
-        ->whereYear('created_at', now()->year) // année dynamique
-        ->groupBy('month')
-        ->orderBy('month')
-        ->pluck('count', 'month');
-
-        // Pour avoir un tableau de 12 mois rempli à zéro par défaut
-        $countsByMonth = [];
-        for ($m = 1; $m <= 12; $m++) {
-            $countsByMonth[$m] = $monthlyCounts->get($m, 0);
-        }
-
-        $monthlyAssociations = DB::table('users')
-        ->select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
-        ->where('groupe', 'association')
-        ->whereYear('created_at', now()->year) // année dynamique
-        ->groupBy('month')
-        ->orderBy('month')
-        ->pluck('count', 'month');
-
-        $countsAssociations = [];
-        for ($m = 1; $m <= 12; $m++) {
-            $countsAssociations[] = $monthlyAssociations->get($m, 0); // tableau indexé
-        }
-
-
-        $monthlyOng = DB::table('users')
-        ->select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
-        ->where('groupe', 'ong')
-        ->whereYear('created_at', now()->year) // année dynamique
-        ->groupBy('month')
-        ->orderBy('month')
-        ->pluck('count', 'month');
-
-        $countsOng = [];
-        for ($m = 1; $m <= 12; $m++) {
-            $countsOng[] = $monthlyOng->get($m, 0); // tableau indexé
-        }
-
-        $monthlyRequests = DB::table('requests')
-        ->select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
-        ->whereYear('created_at', now()->year) // année dynamique
-        ->groupBy('month')
-        ->orderBy('month')
-        ->pluck('count', 'month');
-
-        $requestCounts = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $requestCounts[] = $monthlyRequests->get($i, 0); // valeurs indexées de janvier à décembre
-        }
-
-        $requestTypes = DB::table('requests')
-        ->select('type', DB::raw('COUNT(*) as count'))
-        ->whereYear('created_at', now()->year) // année dynamique
-        ->groupBy('type')
-        ->pluck('count', 'type');
-
-        // Préparation des données
-        $labels = $requestTypes->keys()->toArray();
-        $data = $requestTypes->values()->toArray();
-
-        $year = now()->year; // année en cours
-        $months = range(1, 12);
-
-        $statsTotal = [];
-        $statsAsso = [];
-        $statsONG = [];
-
-        foreach ($months as $month) {
-            $statsTotal[] = Activity::whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)
-                ->count();
-
-            $statsAsso[] = Activity::whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)
-                ->whereHas('user', fn($q) => $q->where('groupe', 'association'))
-                ->count();
-
-            $statsONG[] = Activity::whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)
-                ->whereHas('user', fn($q) => $q->where('groupe', 'ONG'))
-                ->count();
-        }
-
-        // Fetch requests with the user relationship
-        $requests = Requests::with('user')->get();
-    
-        // Count pending requests
-        $pendingRequestsCount = $requests->where('statut', 'pending')->count();
-    
-        $notifications = Notification::latest()->paginate(5);
-
-        $user = Auth::user();  // Get the currently authenticated user
-
-
-        // Fetch recent activities (if needed)
-        $activities = Activity::orderBy('created_at', 'desc')->get();
-        $activities = Activity::where('is_visible', true)->get();
-        $activities = Activity::with('user')->get();
-        
-        // Récupère tous les utilisateurs (associations)
-        $users = User::paginate(10); // Paginer avec 10 utilisateurs par page
-    
         $search = $request->input('search');
-
-        // Filtrer les activités selon le nom de l'association/ONG
-        $activities = Activity::when($search, function ($query, $search) {
+        $data['activities'] = Activity::when($search, function ($query, $search) {
             return $query->whereHas('user', function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%');
             });
         })->with('user')->get();
 
-        return view('admin', [
-            'requests' => $requests,
-            'pendingRequestsCount' => $pendingRequestsCount,
-            'activities' => $activities,
-            'notifications' => $notifications,
-            'user' => $user,
-            'users' => $users,
-           'associations' =>$associations,
-            'userAssociations' => $userAssociations,
-            'adminAssociations' => $adminAssociations,
-            'pendingRequestsCount' => $pendingRequestsCount,
-            'requests' => $requests, // Assurez-vous que cette ligne passe bien la variable requests
-            'notifications' => $notifications,
-            'activities'=> $activities,
-            'userCount' => $userCount,
-            'ongCount' => $ongCount,
-            'associationCount' => $associationCount,
-            'requestCount' => $requestCount,
-            'requesttCount' => $requesttCount,
-            'requestaCount' => $requestaCount,
-            'requestrCount' => $requestrCount,
-            'activityCount' => $activityCount,
-            'activitysCount' => $activitysCount,
-            'activityseCount' => $activityseCount,
-            'lastUsers' => $lastUsers,
-            'countsByMonth' => $countsByMonth,
-            'countsAssociations' => $countsAssociations,
-            'countsOng' => $countsOng,
-            'requesteCount' => $requesteCount,
-            'requestCounts' => $requestCounts,
-            'labels' => $labels,
-            'data' => $data,
-            'statsTotal' => $statsTotal,
-            'statsAsso' => $statsAsso,
-            'statsONG' => $statsONG,
-            'users' => User::all(),
-        ]);
+        return view('admin', $data);
     }
 
     public function sendWarning($id)
@@ -380,16 +183,8 @@ class ActivityController extends Controller
         return view('admin.activities.create', compact('users'));
     }
 
-    public function storeAdmin(Request $request)
+    public function storeAdmin(ActivityRequest $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'titre' => 'required|string|max:255',
-            'description' => 'required',
-            'attachment' => 'required|image',
-            'lieu' => 'required|string|max:255',
-            'date' => 'required|string|max:255',
-        ]);
 
         // Sauver l'image
         $filePath = $request->file('attachment')->store('attachments', 'public');

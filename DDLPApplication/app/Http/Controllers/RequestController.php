@@ -8,9 +8,9 @@ use App\Models\User;
 use App\Models\Notification;
 use App\Models\Activity;
 use App\Models\Requests;
+use App\Enums\RequestStatus;
 
-use Illuminate\Http\Request as HttpRequest;
-use setasign\Fpdi\Fpdi;
+
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 
@@ -37,7 +37,7 @@ class RequestController extends Controller
             'location'    => 'required|string|max:255',
             'description' => 'required|string',
             'destinataire'=> 'required|in:Maire de la Commune de Cotonou,Secretaire exécutif',
-            'reference'=> 'require|string',
+            'reference'=> 'required|string',
 
         ]);
 
@@ -49,8 +49,8 @@ class RequestController extends Controller
             'type'        => $data['type'],
             'location'    => $data['location'],
             'description' => $data['description'],
-            'statut'      => 'En attente',
-            'destinataire'=> 'required|in:Maire de la Commune de Cotonou,Secretaire exécutif',
+            'statut'      => RequestStatus::PENDING->value,
+            'destinataire'=> $data['destinataire'],
             'reference'=>$data['reference'],
 
         ]);
@@ -120,7 +120,7 @@ class RequestController extends Controller
             'location'    => $data['location'],
             'description' => $data['description'],
             'pdf_path'    => $pdfPath,
-            'statut'      => 'en_attente',
+            'statut'      => RequestStatus::PENDING->value,
         ]);
 
         // 7️⃣ Page de confirmation
