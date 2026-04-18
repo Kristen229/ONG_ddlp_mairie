@@ -1,0 +1,84 @@
+<?php
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class UserController extends Controller
+{
+    public function showAssociations()
+    {
+        $users = User::all();
+        return view('pages.accueil', compact('users'));
+    }
+
+    public function indexe()
+    {
+        $users = User::all();
+        return view('pages.association-et-ong', compact('users'));
+    }
+
+    public function showDetails($id)
+    {
+        $user = User::findOrFail($id);
+        return view('pages.association-et-ong', compact('user'));
+    }
+
+    public function shows($id)
+    {
+        $user = User::findOrFail($id);
+        $activities = $user->activities;
+        $requests = $user->requests;
+        return view('user.dashboard', compact('user', 'activities', 'requests'));
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function authenticate(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user);
+            return redirect()->route('user.show', ['id' => $user->id]);
+        }
+
+        return back()->withErrors(['email' => 'Les informations de connexion ne correspondent pas.']);
+    }
+
+    public function showAdminPage()
+    {
+        return redirect()->route('admin.dashboard');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $data = $request->except(['_token', '_method']);
+
+        if ($request->hasFile('attachment')) {
+            $data['attachment'] = $request->file('attachment')->store('attachments', 'public');
+        }
+
+        $user->update($data);
+        return redirect()->route('user.show', ['id' => $user->id])->with('success', 'Profil mis à jour.');
+    }
+
+    public function updateInfos(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $data = $request->except(['_token', '_method']);
+        $user->update($data);
+        return redirect()->route('user.show', ['id' => $user->id])->with('success', 'Informations mises à jour.');
+    }
+}
