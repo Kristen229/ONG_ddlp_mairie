@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Mail;
 
 class ActivityController extends Controller
 {
+    public function index()
+    {
+        $activities = Activity::with('user')->orderBy('created_at', 'desc')->paginate(15);
+        return view('admin.activities.index', compact('activities'));
+    }
+
     public function createAdmin()
     {
         $users = User::all();

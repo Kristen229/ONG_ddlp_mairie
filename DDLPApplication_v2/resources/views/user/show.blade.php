@@ -1,188 +1,230 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 py-8" x-data="{ tab: 'profil', showActivityModal: false, showRequestModal: false }">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <!-- Header Profil -->
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden mb-8 relative">
-            <div class="h-32 bg-gradient-to-r from-teal-700 to-green-600"></div>
-            <div class="px-8 pb-8 relative">
-                <div class="flex flex-col sm:flex-row items-center sm:items-end -mt-12 sm:-mt-16 gap-6">
-                    <div class="h-24 w-24 sm:h-32 sm:w-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden flex-shrink-0">
-                        @if($user->attachment5)
-                            <img src="{{ asset('storage/' . $user->attachment5) }}" alt="Logo" class="w-full h-full object-cover">
-                        @else
-                            <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                            </div>
-                        @endif
+<div class="bg-gray-50 flex min-h-[calc(100vh-4rem)]" x-data="{ tab: 'profil', showActivityModal: false, showRequestModal: false, mobileSidebar: false }">
+
+    <!-- OVERLAY POUR MOBILE -->
+    <div x-show="mobileSidebar" class="fixed inset-0 bg-gray-900/50 z-40 lg:hidden" @click="mobileSidebar = false" style="display: none;"></div>
+
+    <!-- SIDEBAR ASSOCIATION -->
+    <aside :class="mobileSidebar ? 'translate-x-0' : '-translate-x-full'" class="fixed lg:sticky top-16 h-[calc(100vh-4rem)] w-72 bg-white border-r border-gray-200 z-50 lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- En-tête Sidebar -->
+        <div class="p-6 border-b border-gray-100 text-center">
+            <div class="h-24 w-24 mx-auto rounded-full border-4 border-gray-50 bg-white shadow-sm overflow-hidden mb-3">
+                @if($user->attachment5)
+                    <img src="{{ asset('storage/' . $user->attachment5) }}" alt="Logo" class="w-full h-full object-cover">
+                @else
+                    <div class="w-full h-full bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-2xl">
+                        {{ substr($user->name, 0, 1) }}
                     </div>
-                    <div class="text-center sm:text-left flex-grow">
-                        <h1 class="text-3xl font-black text-gray-900">{{ $user->name }}</h1>
-                        <p class="text-teal-600 font-medium text-lg">{{ $user->denomination }}</p>
-                    </div>
-                    <div class="flex gap-3 mt-4 sm:mt-0">
-                        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-teal-100 text-teal-800">
-                            {{ $user->groupe ? Str::title($user->groupe->value) : '-' }}
-                        </span>
-                    </div>
-                </div>
+                @endif
             </div>
-            
-            <!-- Navigation des Onglets -->
-            <div class="bg-gray-50/50 border-t border-gray-100 px-8 flex overflow-x-auto">
-                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                    <button @click="tab = 'profil'" :class="tab === 'profil' ? 'border-teal-500 text-teal-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm transition-colors">
-                        Mon Profil
-                    </button>
-                    <button @click="tab = 'activites'" :class="tab === 'activites' ? 'border-teal-500 text-teal-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm transition-colors">
-                        Mes Activités
-                    </button>
-                    <button @click="tab = 'demandes'" :class="tab === 'demandes' ? 'border-teal-500 text-teal-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm transition-colors">
-                        Mes Demandes
-                    </button>
-                    <!-- Bouton Déconnexion -->
-                    <form method="POST" action="{{ route('user.logout') }}" class="ml-auto mt-2">
-                        @csrf
-                        <button type="submit" class="text-red-500 hover:text-red-700 font-medium text-sm px-4 py-2 hover:bg-red-50 rounded-lg transition-colors">
-                            Déconnexion
-                        </button>
-                    </form>
-                </nav>
-            </div>
+            <h2 class="font-black text-gray-900 text-lg leading-tight">{{ $user->name }}</h2>
+            <p class="text-teal-600 text-xs font-bold mt-1 uppercase tracking-wider">{{ $user->groupe ? $user->groupe->value : 'ONG' }}</p>
         </div>
 
-        <!-- CONTENU DES ONGLETS -->
-        <div class="w-full">
+        <!-- Menu Navigation -->
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+            <button @click="tab = 'profil'; mobileSidebar = false" :class="tab === 'profil' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                Mon Profil
+            </button>
+            <button @click="tab = 'activites'; mobileSidebar = false" :class="tab === 'activites' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Mes Activités
+            </button>
+            <button @click="tab = 'demandes'; mobileSidebar = false" :class="tab === 'demandes' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                Mes Demandes
+            </button>
+        </nav>
+
+        <!-- Bas Sidebar -->
+        <div class="p-4 border-t border-gray-100">
+            <form method="POST" action="{{ route('user.logout') }}">
+                @csrf
+                <button type="submit" class="w-full flex items-center justify-center gap-2 text-red-600 font-bold px-4 py-3 bg-red-50 hover:bg-red-100 rounded-xl transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Déconnexion
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-x-hidden min-w-0 bg-gray-50">
+        <!-- Header Mobile pour Sidebar -->
+        <div class="lg:hidden bg-white border-b border-gray-200 p-4 flex items-center gap-4">
+            <button @click="mobileSidebar = true" class="p-2 bg-gray-100 rounded-lg text-gray-600">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <h1 class="font-bold text-gray-800 text-lg">Espace ONG</h1>
+        </div>
+
+        <div class="p-6 md:p-8 lg:p-10 max-w-5xl mx-auto">
             
             <!-- ONGLET 1 : PROFIL -->
-            <div x-show="tab === 'profil'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-6">
-                <!-- Info Section -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b pb-4">Informations Générales</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+            <div x-show="tab === 'profil'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-black text-gray-900">Vue d'ensemble</h2>
+                    <p class="text-gray-500 mt-1">Consultez les informations de votre structure.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Informations Générales</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
-                            <p class="text-gray-500 mb-1">Domaine d'intervention</p>
-                            <p class="font-semibold text-gray-900 text-base">{{ $user->domaine }}</p>
+                            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Domaine d'intervention</p>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-50 text-teal-700 border border-teal-100">{{ $user->domaine }}</span>
                         </div>
                         <div>
-                            <p class="text-gray-500 mb-1">Email (Identifiant)</p>
-                            <p class="font-semibold text-gray-900 text-base">{{ $user->email }}</p>
+                            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Email (Identifiant)</p>
+                            <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50">{{ $user->email }}</p>
                         </div>
                         <div>
-                            <p class="text-gray-500 mb-1">Siège / Localisation</p>
-                            <p class="font-semibold text-gray-900 text-base">{{ $user->siege }}</p>
+                            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Siège / Localisation</p>
+                            <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50">{{ $user->siege }}</p>
                         </div>
                         <div>
-                            <p class="text-gray-500 mb-1">Téléphones</p>
-                            <p class="font-semibold text-gray-900 text-base">{{ $user->number1 }} @if($user->number2) / {{ $user->number2 }} @endif</p>
+                            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Téléphones</p>
+                            <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                {{ $user->number1 }} @if($user->number2) / {{ $user->number2 }} @endif
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bureau Section -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b pb-4">Membres du Bureau</h3>
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Membres du Bureau</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-2">Président</p>
-                            <p class="font-bold text-gray-900">{{ $user->name_president }} {{ $user->last_name_president }}</p>
+                        <div class="bg-gradient-to-br from-teal-50 to-white p-5 rounded-2xl border border-teal-100 text-center">
+                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-3">Président</p>
+                            <div class="w-12 h-12 bg-white rounded-full mx-auto mb-2 flex items-center justify-center font-bold text-teal-700 shadow-sm">{{ substr($user->name_president, 0, 1) }}</div>
+                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_president }} {{ $user->last_name_president }}</p>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-2">Vice-Président</p>
-                            <p class="font-bold text-gray-900">{{ $user->name_vice_president ?: '-' }} {{ $user->last_name_vice_president ?: '-' }}</p>
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
+                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Vice-Président</p>
+                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_vice_president ?: '-' }} <br/> {{ $user->last_name_vice_president ?: '' }}</p>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-2">Secrétaire G.</p>
-                            <p class="font-bold text-gray-900">{{ $user->name_secretaire_general ?: '-' }} {{ $user->last_name_secretaire_general ?: '-' }}</p>
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
+                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Secrétaire G.</p>
+                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_secretaire_general ?: '-' }} <br/> {{ $user->last_name_secretaire_general ?: '' }}</p>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-2">Trésorier</p>
-                            <p class="font-bold text-gray-900">{{ $user->name_tresorier_general ?: '-' }} {{ $user->last_name_tresorier_general ?: '-' }}</p>
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
+                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Trésorier</p>
+                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_tresorier_general ?: '-' }} <br/> {{ $user->last_name_tresorier_general ?: '' }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- ONGLET 2 : ACTIVITÉS -->
-            <div x-show="tab === 'activites'" style="display: none;" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-                        <h3 class="text-xl font-bold text-gray-900">Historique des Activités</h3>
-                        <button @click="showActivityModal = true" class="inline-flex items-center px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">
-                            + Ajouter une activité
-                        </button>
+            <div x-show="tab === 'activites'" style="display: none;" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-3xl font-black text-gray-900">Mes Activités</h2>
+                        <p class="text-gray-500 mt-1">Publiez vos actions pour qu'elles soient visibles de tous.</p>
                     </div>
+                    <button @click="showActivityModal = true" class="inline-flex items-center gap-2 px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold rounded-xl shadow-lg transition-transform hover:-translate-y-0.5">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Nouvelle Activité
+                    </button>
+                </div>
 
-                    <!-- Liste des activités (à boucler) -->
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                     @if($user->activities && $user->activities->count() > 0)
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach($user->activities as $activity)
-                            <div class="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-                                <img src="{{ asset('storage/' . $activity->attachment) }}" class="w-full h-40 object-cover bg-gray-100">
-                                <div class="p-4 flex-grow flex flex-col justify-between">
+                            <div class="group border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all flex flex-col bg-white hover:-translate-y-1">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="{{ asset('storage/' . $activity->attachment) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute top-3 right-3">
+                                        @if($activity->is_visible)
+                                            <span class="px-3 py-1 text-xs font-black tracking-wider bg-green-500 text-white rounded-full shadow-md">Publié</span>
+                                        @else
+                                            <span class="px-3 py-1 text-xs font-black tracking-wider bg-yellow-400 text-yellow-900 rounded-full shadow-md">Modération</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="p-5 flex-grow flex flex-col justify-between border-t border-gray-50">
                                     <div>
-                                        <div class="flex justify-between items-start mb-2">
-                                            <h4 class="font-bold text-gray-900">{{ $activity->titre }}</h4>
-                                            @if($activity->is_visible)
-                                                <span class="px-2 py-1 text-xs font-bold bg-green-100 text-green-700 rounded-lg">Publié</span>
-                                            @else
-                                                <span class="px-2 py-1 text-xs font-bold bg-yellow-100 text-yellow-700 rounded-lg">En attente</span>
-                                            @endif
-                                        </div>
-                                        <p class="text-xs text-gray-500 mb-2">{{ $activity->created_at->format('d/m/Y') }}</p>
-                                        <p class="text-sm text-gray-600 line-clamp-2">{{ $activity->description }}</p>
+                                        <h4 class="font-bold text-gray-900 text-lg leading-tight mb-2">{{ $activity->titre }}</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-3">{{ $activity->description }}</p>
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-xs font-medium text-gray-400">
+                                        <span>Ajouté le {{ $activity->created_at->format('d/m/Y') }}</span>
                                     </div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
                     @else
-                        <div class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                            <p class="text-gray-500">Aucune activité enregistrée.</p>
+                        <div class="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                            <div class="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center shadow-sm mb-4">
+                                <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-1">Aucune activité enregistrée</h3>
+                            <p class="text-gray-500">Commencez par ajouter votre première activité pour la rendre publique.</p>
+                            <button @click="showActivityModal = true" class="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-teal-500 text-teal-600 text-sm font-bold rounded-xl transition-colors">
+                                Ajouter une activité
+                            </button>
                         </div>
                     @endif
                 </div>
             </div>
 
             <!-- ONGLET 3 : DEMANDES -->
-            <div x-show="tab === 'demandes'" style="display: none;" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-                        <h3 class="text-xl font-bold text-gray-900">Mes Demandes d'accompagnement</h3>
-                        <button @click="showRequestModal = true" class="inline-flex items-center px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm">
-                            Écrire au Maire
-                        </button>
+            <div x-show="tab === 'demandes'" style="display: none;" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-3xl font-black text-gray-900">Demandes Officielles</h2>
+                        <p class="text-gray-500 mt-1">Soumettez vos courriers et sollicitations à la Mairie.</p>
                     </div>
+                    <button @click="showRequestModal = true" class="inline-flex items-center gap-2 px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-teal-200 transition-transform hover:-translate-y-0.5">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        Nouveau Courrier
+                    </button>
+                </div>
 
-                    <!-- Tableau des demandes -->
-                    <div class="overflow-x-auto text-sm">
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="overflow-x-auto">
                         @if($user->requests && $user->requests->count() > 0)
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50 text-gray-500 uppercase">
+                        <table class="min-w-full divide-y divide-gray-100">
+                            <thead class="bg-gray-50/50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left font-medium tracking-wider">Date</th>
-                                    <th class="px-6 py-3 text-left font-medium tracking-wider">Objet de la Demande</th>
-                                    <th class="px-6 py-3 text-left font-medium tracking-wider">Justificatif</th>
-                                    <th class="px-6 py-3 text-left font-medium tracking-wider">Statut</th>
+                                    <th class="px-6 py-4 text-left font-bold text-gray-500 text-xs uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-4 text-left font-bold text-gray-500 text-xs uppercase tracking-wider">Objet du Courrier</th>
+                                    <th class="px-6 py-4 text-left font-bold text-gray-500 text-xs uppercase tracking-wider">Fichier Joint</th>
+                                    <th class="px-6 py-4 text-left font-bold text-gray-500 text-xs uppercase tracking-wider">Statut DDP</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="divide-y divide-gray-100 bg-white">
                                 @foreach($user->requests as $request)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $request->created_at->format('d/m/Y') }}</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900">{{ $request->objet }}</td>
-                                    <td class="px-6 py-4">
-                                        <a href="{{ asset('storage/' . $request->attachment) }}" target="_blank" class="text-teal-600 hover:underline">Voir PDF</a>
+                                <tr class="hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-500 font-medium">{{ $request->created_at->format('d/m/Y') }}</td>
+                                    <td class="px-6 py-5">
+                                        <p class="font-bold text-gray-900">{{ $request->objet }}</p>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-5">
+                                        <a href="{{ asset('storage/' . $request->attachment) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors">
+                                            <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                            Ouvrir
+                                        </a>
+                                    </td>
+                                    <td class="px-6 py-5 whitespace-nowrap">
                                         @if($request->statut === \App\Enums\RequestStatus::PENDING)
-                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">En cours</span>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-yellow-50 text-yellow-700 border border-yellow-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span> En instruction
+                                            </span>
                                         @elseif($request->statut === \App\Enums\RequestStatus::APPROVED)
-                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approuvé</span>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Approuvé
+                                            </span>
                                         @elseif($request->statut === \App\Enums\RequestStatus::REJECTED)
-                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Rejeté</span>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Rejeté
+                                            </span>
                                         @endif
                                     </td>
                                 </tr>
@@ -190,8 +232,12 @@
                             </tbody>
                         </table>
                         @else
-                            <div class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                                <p class="text-gray-500">Aucune demande envoyée.</p>
+                            <div class="text-center py-16 bg-gray-50 border-t border-gray-100">
+                                <div class="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center shadow-sm mb-4">
+                                    <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-900 mb-1">Aucun courrier soumis</h3>
+                                <p class="text-gray-500">Toutes vos correspondances s'afficheront ici.</p>
                             </div>
                         @endif
                     </div>
@@ -199,40 +245,40 @@
             </div>
 
         </div>
-    </div>
+    </main>
 
     <!-- MODAL AJOUT ACTIVITÉ -->
     <div x-show="showActivityModal" style="display: none;" class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="showActivityModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="showActivityModal = false"></div>
+            <div x-show="showActivityModal" x-transition.opacity class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" @click="showActivityModal = false"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <div x-show="showActivityModal" x-transition.scale class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
                 <form action="{{ route('activites.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <h3 class="text-xl leading-6 font-bold text-gray-900 mb-4" id="modal-title">Ajouter une Activité</h3>
+                    <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
+                        <h3 class="text-2xl font-black text-gray-900 mb-6" id="modal-title">Publier une Activité</h3>
                         
-                        <div class="space-y-4">
+                        <div class="space-y-5">
                             <div>
-                                <label class="block text-sm font-bold text-gray-700">Titre de l'activité <span class="text-red-500">*</span></label>
-                                <input type="text" name="titre" required class="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500">
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Titre de l'action <span class="text-red-500">*</span></label>
+                                <input type="text" name="titre" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700">Description détaillée <span class="text-red-500">*</span></label>
-                                <textarea name="description" rows="4" required class="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500"></textarea>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Description détaillée <span class="text-red-500">*</span></label>
+                                <textarea name="description" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Décrivez l'impact de l'activité..."></textarea>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700">Affiche ou Photo (Image) <span class="text-red-500">*</span></label>
-                                <input type="file" name="attachment" accept="image/*" required class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Photo d'illustration <span class="text-red-500">*</span></label>
+                                <input type="file" name="attachment" accept="image/*" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-100">
-                        <button type="submit" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-teal-600 text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:ml-3 sm:w-auto sm:text-sm">
-                            Enregistrer l'activité
-                        </button>
-                        <button type="button" @click="showActivityModal = false" class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <div class="bg-gray-50 px-6 py-4 sm:px-8 border-t border-gray-100 flex flex-col-reverse sm:flex-row justify-end gap-3">
+                        <button type="button" @click="showActivityModal = false" class="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">
                             Annuler
+                        </button>
+                        <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-colors">
+                            Publier
                         </button>
                     </div>
                 </form>
@@ -243,44 +289,55 @@
     <!-- MODAL NOUVELLE DEMANDE (LETTRE) -->
     <div x-show="showRequestModal" style="display: none;" class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="showRequestModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="showRequestModal = false"></div>
+            <div x-show="showRequestModal" x-transition.opacity class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" @click="showRequestModal = false"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <div x-show="showRequestModal" x-transition.scale class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
                 <form action="{{ route('courrier.generate') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <div class="flex items-center gap-3 mb-4 border-b pb-4">
-                            <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-teal-100 text-teal-600">
+                    <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
+                        <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
+                            <div class="w-12 h-12 rounded-full bg-teal-50 flex items-center justify-center text-teal-600">
                                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </div>
-                            <h3 class="text-xl leading-6 font-bold text-gray-900" id="modal-title">Écrire à l'administration</h3>
+                            <h3 class="text-2xl font-black text-gray-900" id="modal-title">Nouveau Courrier</h3>
                         </div>
                         
-                        <div class="space-y-4">
+                        <div class="space-y-5">
                             <div>
-                                <label class="block text-sm font-bold text-gray-700">Objet de la demande <span class="text-red-500">*</span></label>
-                                <input type="text" name="objet" placeholder="Ex: Demande de subvention, Audience..." required class="mt-1 block w-full border border-gray-300 rounded-xl shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500">
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Objet officiel <span class="text-red-500">*</span></label>
+                                <input type="text" name="objet" placeholder="Ex: Demande de subvention..." required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700">Lettre ou Fichier Justificatif (PDF) <span class="text-red-500">*</span></label>
-                                <input type="file" name="attachment" accept="application/pdf" required class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 border border-gray-200">
-                                <p class="text-xs text-gray-500 mt-2">Veuillez joindre une lettre officielle signée au format PDF.</p>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Fichier PDF (Signé) <span class="text-red-500">*</span></label>
+                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl bg-gray-50 hover:bg-teal-50 transition-colors">
+                                    <div class="space-y-1 text-center">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <div class="flex text-sm text-gray-600 justify-center">
+                                            <label class="relative cursor-pointer bg-white rounded-md font-bold text-teal-600 hover:text-teal-500 focus-within:outline-none px-2">
+                                                <span>Importer un fichier</span>
+                                                <input type="file" name="attachment" accept="application/pdf" class="sr-only" required>
+                                            </label>
+                                        </div>
+                                        <p class="text-xs text-gray-500">PDF uniquement jusqu'à 10MB</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-100">
-                        <button type="submit" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-teal-600 text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:ml-3 sm:w-auto sm:text-sm items-center gap-2">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                            Envoyer la demande
-                        </button>
-                        <button type="button" @click="showRequestModal = false" class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <div class="bg-gray-50 px-6 py-4 sm:px-8 border-t border-gray-100 flex flex-col-reverse sm:flex-row justify-end gap-3">
+                        <button type="button" @click="showRequestModal = false" class="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">
                             Annuler
+                        </button>
+                        <button type="submit" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-colors">
+                            Envoyer la demande
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 </div>
 @endsection

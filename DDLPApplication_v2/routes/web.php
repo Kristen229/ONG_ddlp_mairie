@@ -19,6 +19,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AssociationRequestController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::get('/contact', function () { return view('pages.contact'); })->name('con
 Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/association/{id}', [UserController::class, 'showDetails'])->name('association.details');
+Route::post('/association/{id}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 // --- Auth User ---
 Route::get('/connexion', [LoginController::class, 'showLoginForm'])->name('connexion');
@@ -104,6 +106,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     // Associations
+    Route::get('/admin/associations', [AssociationController::class, 'index'])->name('admin.associations.index');
     Route::get('/account/{id}', [AssociationController::class, 'showPage'])->name('account.show');
     Route::get('/admin/edit/{id}', [AssociationController::class, 'edit'])->name('admin.edit');
     Route::post('/admin/update/{id}', [AssociationController::class, 'update'])->name('admin.update');
@@ -121,11 +124,13 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/admin/createUserType3', [AssociationController::class, 'createUserType3'])->name('admin.createUserType3');
 
     // Demandes
+    Route::get('/admin/requests', [RequestManagementController::class, 'index'])->name('admin.requests.index');
     Route::get('/requests/{id}', [AssociationRequestController::class, 'show'])->name('requests.show');
     Route::post('/admin/approve/{id}', [RequestManagementController::class, 'approve'])->name('admin.approve');
     Route::post('/admin/reject/{id}', [RequestManagementController::class, 'reject'])->name('admin.reject');
 
     // Activités admin
+    Route::get('/admin/activities', [AdminActivityController::class, 'index'])->name('admin.activities.index');
     Route::get('/admin/activities/create', [AdminActivityController::class, 'createAdmin'])->name('admin.activities.create');
     Route::post('/admin/activities/store', [AdminActivityController::class, 'storeAdmin'])->name('admin.activities.store');
     Route::post('/activites/{id}/validate', [AdminActivityController::class, 'validatActivity'])->name('activites.validate');

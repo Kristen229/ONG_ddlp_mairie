@@ -38,8 +38,20 @@
                 <span x-show="sidebarOpen" class="ml-3 font-medium text-sm">Tableau de bord</span>
             </a>
 
-            <!-- L'administrateur aura ici les autres liens de gestion comme la V1 -->
-            
+            <a href="{{ route('admin.associations.index') }}" class="flex items-center px-3 py-3 rounded-xl transition-colors {{ request()->routeIs('admin.associations.*') ? 'bg-teal-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}" title="Structures et ONG">
+                <svg class="h-6 w-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                <span x-show="sidebarOpen" class="ml-3 font-medium text-sm">Structures & ONG</span>
+            </a>
+
+            <a href="{{ route('admin.requests.index') }}" class="flex items-center px-3 py-3 rounded-xl transition-colors {{ request()->routeIs('admin.requests.*') ? 'bg-teal-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}" title="Courriers & Demandes">
+                <svg class="h-6 w-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <span x-show="sidebarOpen" class="ml-3 font-medium text-sm">Courriers & Demandes</span>
+            </a>
+
+            <a href="{{ route('admin.activities.index') }}" class="flex items-center px-3 py-3 rounded-xl transition-colors {{ request()->routeIs('admin.activities.*') ? 'bg-teal-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}" title="Activités">
+                <svg class="h-6 w-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span x-show="sidebarOpen" class="ml-3 font-medium text-sm">Activités</span>
+            </a>
             <button @click="sidebarOpen = !sidebarOpen" class="w-full flex items-center justify-center mt-8 py-3 text-slate-500 hover:text-white bg-slate-900 border border-slate-800 rounded-xl transition-colors">
                 <svg x-show="sidebarOpen" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg>
                 <svg x-show="!sidebarOpen" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>

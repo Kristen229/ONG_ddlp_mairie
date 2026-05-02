@@ -11,6 +11,13 @@ use App\Mail\RequestRejected;
 
 class RequestManagementController extends Controller
 {
+    public function index()
+    {
+        $requests = AssociationRequest::with('user')->orderBy('created_at', 'desc')->paginate(20);
+        $pendingRequestsCount = AssociationRequest::where('statut', RequestStatus::PENDING)->count();
+        return view('admin.requests.index', compact('requests', 'pendingRequestsCount'));
+    }
+
     public function approve(Request $request, $id)
     {
         $assocRequest = AssociationRequest::findOrFail($id);

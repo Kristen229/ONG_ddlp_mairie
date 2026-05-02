@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AssociationController extends Controller
 {
+    public function index()
+    {
+        $users = User::paginate(20);
+        return view('admin.associations.index', compact('users'));
+    }
+
     public function showPage($id)
     {
         $user = User::findOrFail($id);

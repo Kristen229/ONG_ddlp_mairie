@@ -22,8 +22,10 @@ class UserController extends Controller
 
     public function showDetails($id)
     {
-        $user = User::findOrFail($id);
-        return view('pages.association-et-ong', compact('user'));
+        $user = User::with(['activities' => function($query) {
+            $query->where('is_visible', true);
+        }, 'reviews'])->findOrFail($id);
+        return view('pages.association-details', compact('user'));
     }
 
     public function shows($id)
