@@ -56,6 +56,9 @@
             <a href="{{ route('connexion') }}" class="inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-teal-700 bg-teal-50 border-2 border-teal-100 rounded-full hover:bg-teal-100 hover:border-teal-200 transition-all">
                 Espace Membre
             </a>
+            <button type="button" x-data @click="$dispatch('open-review-modal')" class="inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-white bg-slate-900 rounded-full hover:bg-slate-800 shadow-lg transition-all">
+                Donnez votre avis
+            </button>
         </div>
     </div>
 </section>
@@ -190,6 +193,53 @@
     </div>
 </section>
 
+<!-- Derniers Avis du Public -->
+<section class="py-20 bg-teal-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900">Derniers retours citoyens</h2>
+            <p class="mt-2 text-gray-600">Ce que le public pense des initiatives locales.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse($latestReviews as $review)
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <span class="font-bold text-gray-900 block">{{ $review->author_name }}</span>
+                        <span class="text-xs text-gray-500">{{ $review->created_at->diffForHumans() }}</span>
+                    </div>
+                    <div class="flex">
+                        @for($i = 1; $i <= 5; $i++)
+                            <svg class="w-4 h-4 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-200' }}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        @endfor
+                    </div>
+                </div>
+                
+                <div class="mb-4 bg-gray-50 p-3 rounded-lg">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Concerne</span>
+                    <a href="{{ route('association.details', $review->user_id) }}" class="text-sm font-bold text-teal-700 hover:underline block">
+                        {{ $review->user->name }}
+                    </a>
+                    @if($review->activity)
+                        <span class="text-sm text-gray-600 block mt-1"><span class="font-medium text-gray-900">Activité :</span> {{ $review->activity->titre }}</span>
+                    @else
+                        <span class="text-sm text-gray-500 italic block mt-1">Avis général sur l'ONG</span>
+                    @endif
+                </div>
+
+                <p class="text-gray-600 text-sm italic flex-grow">"{{ $review->comment }}"</p>
+            </div>
+            @empty
+            <div class="col-span-full text-center py-8">
+                <p class="text-gray-500 italic">Aucun avis publié pour le moment. Soyez le premier à partager votre expérience !</p>
+                <button type="button" x-data @click="$dispatch('open-review-modal')" class="mt-4 px-6 py-2 bg-slate-900 text-white rounded-full font-semibold hover:bg-slate-800">Laisser un avis</button>
+            </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+
 <!-- FAQ Section avec Alpine.js -->
 <section class="py-20 bg-gray-50">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -245,4 +295,117 @@
     .hide-scrollbars::-webkit-scrollbar { display: none; }
     .hide-scrollbars { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
+
+<!-- MODAL GLOBALE D'AVIS -->
+<div 
+    x-data="{ 
+        show: false,
+        selectedAssociation: '',
+        activities: [],
+        isLoading: false,
+        
+        init() {
+            this.$watch('selectedAssociation', (value) => {
+                this.activities = [];
+                if (value) {
+                    this.loadActivities(value);
+                }
+            });
+        },
+        
+        async loadActivities(id) {
+            this.isLoading = true;
+            try {
+                let response = await fetch('/api/associations/' + id + '/activities');
+                this.activities = await response.json();
+            } catch (e) {
+                console.error(e);
+            }
+            this.isLoading = false;
+        }
+    }"
+    @open-review-modal.window="show = true"
+>
+    <div x-show="show" style="display: none;" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div @click.away="show = false" class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-xl border border-gray-100">
+                    <form action="{{ route('reviews.storeFromHome') }}" method="POST">
+                        @csrf
+                        <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
+                            <h3 class="text-2xl font-black text-gray-900 mb-6" id="modal-title">Partagez votre expérience</h3>
+                            
+                            @if(session('success'))
+                                <div class="bg-green-50 text-green-700 px-4 py-3 rounded-xl border border-green-200 shadow-sm mb-6 text-sm font-medium">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
+                            <div class="space-y-5">
+                                
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Quelle association concerne votre avis ? <span class="text-red-500">*</span></label>
+                                    <select name="user_id" x-model="selectedAssociation" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                        <option value="">-- Sélectionnez une ONG / Association --</option>
+                                        @foreach($users as $u)
+                                            <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div x-show="selectedAssociation" x-transition>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1 flex justify-between">
+                                        <span>Sur quelle activité spécifiquement ?</span>
+                                        <span x-show="isLoading" class="text-teal-600 text-xs italic">Chargement...</span>
+                                    </label>
+                                    <select name="activity_id" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                        <option value="">Avis général sur l'association (Aucune activité spécifique)</option>
+                                        <template x-for="activity in activities" :key="activity.id">
+                                            <option :value="activity.id" x-text="activity.titre"></option>
+                                        </template>
+                                    </select>
+                                    <p class="text-xs text-gray-500 mt-1">Laissez ce champ vide si votre avis concerne l'association en général.</p>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-700 mb-1">Votre Nom / Pseudo <span class="text-red-500">*</span></label>
+                                        <input type="text" name="author_name" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Ex: Jean D.">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-700 mb-1">Note (sur 5) <span class="text-red-500">*</span></label>
+                                        <select name="rating" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                            <option value="4">⭐⭐⭐⭐ Très bien</option>
+                                            <option value="3">⭐⭐⭐ Correct</option>
+                                            <option value="2">⭐⭐ Moyen</option>
+                                            <option value="1">⭐ Médiocre</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Votre commentaire <span class="text-red-500">*</span></label>
+                                    <textarea name="comment" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Racontez-nous votre expérience..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-4 sm:px-8 border-t border-gray-100 flex flex-col-reverse sm:flex-row justify-end gap-3">
+                            <button type="button" @click="show = false" class="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">
+                                Annuler
+                            </button>
+                            <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-md hover:bg-slate-800 transition-colors">
+                                Publier l'avis
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
