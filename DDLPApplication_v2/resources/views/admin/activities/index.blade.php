@@ -54,15 +54,15 @@
                     </div>
                 </div>
                 
-                <p class="text-sm text-slate-600 line-clamp-3 mb-4 flex-grow">{{ $act->description }}</p>
-                
-                <button type="button" 
-                        data-activity="{{ json_encode(['titre' => $act->titre, 'description' => $act->description, 'lieu' => $act->lieu, 'date' => $act->date ? $act->date->format('d/m/Y') : null, 'beneficiaries_expected' => $act->beneficiaries_expected, 'budget_expected' => $act->budget_expected, 'created_at' => $act->created_at->format('d/m/Y H:i'), 'user_name' => $act->user->name ?? 'Inconnu']) }}"
-                        @click.prevent="selectedAct = JSON.parse($el.dataset.activity); showModal = true;" 
-                        class="text-xs font-bold text-teal-600 mb-4 flex items-center gap-1 hover:text-teal-700">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    Voir les détails
-                </button>
+                <div class="mt-auto">
+                    <button type="button" 
+                            data-activity="{{ json_encode(['titre' => $act->titre, 'description' => $act->description, 'lieu' => $act->lieu, 'date' => $act->date ? $act->date->format('d/m/Y') : null, 'beneficiaries_expected' => $act->beneficiaries_expected, 'budget_expected' => $act->budget_expected, 'created_at' => $act->created_at->format('d/m/Y H:i'), 'user_name' => $act->user->name ?? 'Inconnu', 'image' => asset('storage/'.$act->attachment)]) }}"
+                            @click.prevent.stop="selectedAct = JSON.parse($el.dataset.activity); showModal = true;" 
+                            class="w-full text-sm font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl transition-colors flex justify-center items-center gap-2 mb-4">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        Voir les détails
+                    </button>
+                </div>
                 
                 <!-- Actions -->
                 <div class="pt-4 border-t border-gray-100 flex justify-between gap-2 mt-auto">
@@ -75,18 +75,17 @@
                         </button>
                     </form>
                     @endif
-                    <form method="POST" action="{{ route('activites.warn', $act->id) }}" class="{{ !$act->is_visible ? 'w-auto' : 'w-1/2' }}" onsubmit="return confirm('Êtes-vous sûr de vouloir envoyer un avertissement par email à cette ONG ?');">
+                    <form method="POST" action="{{ route('activites.warn', $act->id) }}" class="flex-shrink-0" onsubmit="return confirm('Êtes-vous sûr de vouloir envoyer un avertissement par email à cette ONG ?');">
                         @csrf 
-                        <button type="submit" title="Envoyer un email d'avertissement" class="w-full bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1 px-2">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                            @if($act->is_visible) Avertir ONG @endif
+                        <button type="submit" title="Envoyer un avertissement" class="w-10 h-10 bg-amber-50 hover:bg-amber-100 text-amber-600 border border-amber-200 rounded-xl flex justify-center items-center transition-colors">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         </button>
                     </form>
-                    <form method="POST" action="{{ route('activites.destroy', $act->id) }}" onsubmit="return confirm('Retirer définitivement cette activité ?');" class="{{ !$act->is_visible ? 'w-auto' : 'w-1/2' }}">
+                    <form method="POST" action="{{ route('activites.destroy', $act->id) }}" onsubmit="return confirm('Retirer définitivement cette activité ?');" class="flex-grow">
                         @csrf @method('DELETE')
                         <button type="submit" title="Supprimer" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1 px-2">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            @if($act->is_visible) Del @endif
+                            Supprimer
                         </button>
                     </form>
                 </div>
@@ -109,68 +108,86 @@
     @endif
 
     <!-- Modale de Détails -->
-    <div x-show="showModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div x-show="showModal" style="display: none;" class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
             <!-- Overlay -->
-            <div x-show="showModal" x-transition.opacity class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="showModal = false"></div>
+            <div x-show="showModal" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click.stop="showModal = false"></div>
 
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
             <!-- Modal Panel -->
             <div x-show="showModal" 
+                 @click.stop
                  x-transition:enter="ease-out duration-300" 
                  x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
                  x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
                  x-transition:leave="ease-in duration-200" 
                  x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
-                 class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl w-full border border-gray-100">
+                 class="relative inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl w-full border border-slate-200">
                 
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-8">
-                    <div class="flex justify-between items-start mb-6">
-                        <h3 class="text-2xl font-bold text-gray-900" x-text="selectedAct?.titre"></h3>
-                        <button @click="showModal = false" class="text-gray-400 hover:text-gray-500 focus:outline-none bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition-colors">
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
+                <!-- Header Image -->
+                <div class="h-64 w-full bg-slate-200 relative">
+                    <img :src="selectedAct?.image" class="w-full h-full object-cover" alt="Image de l'activité">
+                    <button @click.prevent.stop="showModal = false" class="absolute top-4 right-4 text-white bg-black/40 hover:bg-black/60 backdrop-blur p-2 rounded-full transition-colors">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                    <!-- Gradient overlay -->
+                    <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h3 class="text-3xl font-black text-white leading-tight drop-shadow-md" x-text="selectedAct?.titre"></h3>
+                    </div>
+                </div>
+
+                <div class="bg-white px-6 pt-6 pb-8 sm:px-8">
+                    <div class="flex items-center gap-3 mb-8 pb-6 border-b border-slate-100">
+                        <div class="h-12 w-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-lg font-black border border-teal-100">
+                            <span x-text="(selectedAct?.user_name || 'A').substring(0, 1)"></span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-500 uppercase tracking-wide">Soumis par</p>
+                            <p class="text-lg font-black text-slate-800" x-text="selectedAct?.user_name"></p>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-6 mb-6">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Association / ONG</p>
-                            <p class="text-slate-800 font-medium" x-text="selectedAct?.user_name"></p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-1 text-slate-500">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <span class="text-xs font-bold uppercase">Date prévue</span>
+                            </div>
+                            <p class="text-slate-800 font-bold" x-text="selectedAct?.date"></p>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Date soumission</p>
-                            <p class="text-slate-800 font-medium" x-text="selectedAct?.created_at"></p>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-1 text-slate-500">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <span class="text-xs font-bold uppercase">Lieu</span>
+                            </div>
+                            <p class="text-slate-800 font-bold" x-text="selectedAct?.lieu"></p>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Lieu prévu</p>
-                            <p class="text-slate-800 font-medium" x-text="selectedAct?.lieu"></p>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-1 text-slate-500">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span class="text-xs font-bold uppercase">Budget</span>
+                            </div>
+                            <p class="text-teal-600 font-black font-mono text-lg" x-text="(selectedAct?.budget_expected || 0) + ' XOF'"></p>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Date prévue</p>
-                            <p class="text-slate-800 font-medium" x-text="selectedAct?.date"></p>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Budget prévisionnel</p>
-                            <p class="text-slate-800 font-medium font-mono" x-text="(selectedAct?.budget_expected || 0) + ' XOF'"></p>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Bénéficiaires ciblés</p>
-                            <p class="text-slate-800 font-medium" x-text="selectedAct?.beneficiaries_expected + ' personnes'"></p>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-1 text-slate-500">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                <span class="text-xs font-bold uppercase">Public cible</span>
+                            </div>
+                            <p class="text-slate-800 font-bold" x-text="selectedAct?.beneficiaries_expected + ' pers.'"></p>
                         </div>
                     </div>
 
                     <div>
-                        <p class="text-xs text-slate-500 font-bold uppercase mb-2">Description de l'activité</p>
-                        <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 text-gray-700 text-sm leading-relaxed whitespace-pre-wrap" x-text="selectedAct?.description"></div>
+                        <h4 class="text-sm font-black text-slate-800 uppercase tracking-wide mb-3 flex items-center gap-2">
+                            <svg class="h-5 w-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                            Description
+                        </h4>
+                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 text-slate-700 leading-relaxed whitespace-pre-wrap shadow-inner" x-text="selectedAct?.description"></div>
                     </div>
-                </div>
-                
-                <div class="bg-gray-50 px-4 py-4 sm:px-8 flex justify-end">
-                    <button type="button" @click="showModal = false" class="inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-6 py-2.5 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none transition-colors">
-                        Fermer
-                    </button>
                 </div>
             </div>
         </div>
