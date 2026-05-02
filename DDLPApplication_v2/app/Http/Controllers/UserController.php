@@ -11,7 +11,10 @@ class UserController extends Controller
     public function showAssociations()
     {
         $users = User::all();
-        $latestReviews = \App\Models\Review::with(['user', 'activity'])->latest()->take(6)->get();
+        $latestReviews = \App\Models\Review::with(['user', 'activity'])
+            ->latest()
+            ->take(6)
+            ->get();
         return view('pages.accueil', compact('users', 'latestReviews'));
     }
 

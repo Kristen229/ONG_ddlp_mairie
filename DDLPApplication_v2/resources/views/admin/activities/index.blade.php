@@ -18,7 +18,10 @@
             <div class="h-56 bg-slate-100 relative w-full overflow-hidden shrink-0">
                 <img src="{{ asset('storage/'.$act->attachment) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 <!-- Badges Status (Evaluation) sur l'image -->
-                <div class="absolute top-3 left-3 flex gap-2">
+                <div class="absolute top-3 left-3 flex flex-col gap-2">
+                    @if(!$act->is_visible)
+                        <span class="bg-blue-600/90 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">À valider</span>
+                    @endif
                     @if($act->evaluation_status === \App\Enums\EvaluationStatus::COMPLIANT)
                         <span class="bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">Conforme ({{ $act->score }}%)</span>
                     @elseif($act->evaluation_status === \App\Enums\EvaluationStatus::WARNING)
@@ -55,18 +58,27 @@
                 
                 <!-- Actions -->
                 <div class="pt-4 border-t border-gray-100 flex justify-between gap-2 mt-auto">
-                    <form method="POST" action="{{ route('activites.warn', $act->id) }}" class="w-1/2">
+                    @if(!$act->is_visible)
+                    <form method="POST" action="{{ route('activites.publish', $act->id) }}" class="flex-grow">
                         @csrf 
-                        <button type="submit" title="Envoyer avertissement" class="w-full bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                            Avis
+                        <button type="submit" title="Publier l'activité" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Publier
                         </button>
                     </form>
-                    <form method="POST" action="{{ route('activites.destroy', $act->id) }}" onsubmit="return confirm('Retirer définitivement cette activité ?');" class="w-1/2">
+                    @endif
+                    <form method="POST" action="{{ route('activites.warn', $act->id) }}" class="{{ !$act->is_visible ? 'w-auto' : 'w-1/2' }}">
+                        @csrf 
+                        <button type="submit" title="Envoyer avertissement" class="w-full bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1 px-2">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            @if($act->is_visible) Avis @endif
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ route('activites.destroy', $act->id) }}" onsubmit="return confirm('Retirer définitivement cette activité ?');" class="{{ !$act->is_visible ? 'w-auto' : 'w-1/2' }}">
                         @csrf @method('DELETE')
-                        <button type="submit" title="Supprimer" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1">
+                        <button type="submit" title="Supprimer" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1 px-2">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            Del
+                            @if($act->is_visible) Del @endif
                         </button>
                     </form>
                 </div>

@@ -93,6 +93,14 @@ class ActivityController extends Controller
         return back()->with('success', "Activité retirée de l'interface.");
     }
 
+    public function publish($id)
+    {
+        $activity = Activity::findOrFail($id);
+        $activity->update(['is_visible' => true]);
+
+        return back()->with('success', "L'activité a été approuvée et publiée avec succès.");
+    }
+
     public function sendWarning($id)
     {
         $activity = Activity::with('user')->findOrFail($id);

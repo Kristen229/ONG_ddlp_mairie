@@ -154,42 +154,63 @@
     </div>
 </section>
 
-<!-- Activités Récentes (Scroll hz) -->
-<section id="activite" class="py-20 bg-white overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <h2 class="text-3xl font-bold text-gray-900">Activités Récentes</h2>
+<!-- Activités Récentes (Grille) -->
+<section id="activite" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 flex flex-col sm:flex-row justify-between items-end gap-4">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-900">Activités Récentes</h2>
+            <p class="mt-2 text-gray-600">Découvrez les dernières actions menées sur le terrain par nos partenaires.</p>
+        </div>
     </div>
 
-    <!-- Scroll Container -->
-    <div class="flex overflow-x-auto gap-6 px-4 sm:px-6 lg:px-8 pb-8 snap-x snap-mandatory hide-scrollbars">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         @php
             $visibleActivities = isset($users) ? collect($users)->flatMap->activities->where('is_visible', true)->sortByDesc('created_at')->take(6) : collect();
         @endphp
 
-        @forelse($visibleActivities as $activity)
-        <div class="min-w-[320px] md:min-w-[400px] flex-none snap-start">
-            <div class="bg-gray-900 rounded-3xl overflow-hidden shadow-xl text-white relative group">
-                <img src="{{ asset('storage/' . $activity->attachment) }}" alt="{{ $activity->titre }}" class="w-full h-56 object-cover opacity-80 group-hover:scale-105 transition-transform duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-6">
-                    <div class="flex items-center gap-3 mb-3">
-                        <img src="{{ $activity->user->attachment ? asset('storage/' . $activity->user->attachment) : asset('img/no-user.png') }}" class="w-10 h-10 rounded-full border-2 border-white object-cover">
-                        <div>
-                            <p class="text-sm font-bold">{{ $activity->user->name }}</p>
-                            <p class="text-xs text-teal-300">{{ $activity->user->domaine }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse($visibleActivities as $activity)
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer">
+                <!-- Image en 16:9 -->
+                <div class="relative w-full aspect-video overflow-hidden bg-gray-100">
+                    <img src="{{ asset('storage/' . $activity->attachment) }}" alt="{{ $activity->titre }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm border border-white/20">
+                        {{ $activity->created_at->format('d/m/Y') }}
+                    </div>
+                </div>
+                
+                <!-- Contenu de la carte -->
+                <div class="p-6 flex flex-col flex-grow">
+                    <!-- Auteur (ONG) -->
+                    <div class="flex items-center gap-3 mb-4 pb-4 border-b border-gray-50">
+                        <img src="{{ $activity->user->attachment ? asset('storage/' . $activity->user->attachment) : asset('img/no-user.png') }}" class="w-10 h-10 rounded-full border-2 border-gray-100 object-cover">
+                        <div class="text-xs">
+                            <p class="font-bold text-gray-900 line-clamp-1 text-sm">{{ $activity->user->name }}</p>
+                            <p class="text-teal-600 font-medium">{{ Str::title($activity->user->domaine) }}</p>
                         </div>
                     </div>
-                    <h3 class="text-lg font-bold leading-tight mb-2">{{ $activity->titre }}</h3>
-                    <p class="text-xs text-gray-300 mb-2">{{ $activity->created_at->format('d/m/Y') }}</p>
-                    <p class="text-sm text-gray-300 line-clamp-2">{{ $activity->description }}</p>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 leading-tight mb-3 group-hover:text-teal-600 transition-colors">{{ $activity->titre }}</h3>
+                    <p class="text-sm text-gray-600 line-clamp-3 mb-4 flex-grow">{{ $activity->description }}</p>
+                    
+                    <!-- Bouton en bas -->
+                    <div class="mt-auto pt-2">
+                        <span class="text-sm font-bold text-teal-600 flex items-center gap-1 group-hover:text-teal-700">
+                            Découvrir
+                            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </span>
+                    </div>
                 </div>
             </div>
+            @empty
+            <div class="col-span-full text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                <div class="mx-auto w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <p class="text-gray-500 font-medium">Aucune activité publique pour le moment.</p>
+            </div>
+            @endforelse
         </div>
-        @empty
-        <div class="w-full px-4 text-center">
-            <p class="text-gray-500 italic">Aucune activité publique pour le moment.</p>
-        </div>
-        @endforelse
     </div>
 </section>
 

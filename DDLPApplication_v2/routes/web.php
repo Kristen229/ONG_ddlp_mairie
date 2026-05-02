@@ -136,9 +136,15 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/activities', [AdminActivityController::class, 'index'])->name('admin.activities.index');
     Route::get('/admin/activities/create', [AdminActivityController::class, 'createAdmin'])->name('admin.activities.create');
     Route::post('/admin/activities/store', [AdminActivityController::class, 'storeAdmin'])->name('admin.activities.store');
+    Route::post('/activites/{id}/publish', [AdminActivityController::class, 'publish'])->name('activites.publish');
     Route::post('/activites/{id}/validate', [AdminActivityController::class, 'validatActivity'])->name('activites.validate');
     Route::delete('/activites/{id}', [AdminActivityController::class, 'destroy'])->name('activites.destroy');
     Route::post('/activites/{id}/warn', [AdminActivityController::class, 'sendWarning'])->name('activites.warn');
+
+    // Avis admin (Modération)
+    Route::get('/admin/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews.index');
+    Route::post('/admin/reviews/{id}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('admin.reviews.approve');
+    Route::delete('/admin/reviews/{id}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('admin.reviews.destroy');
 
     // Notifications
     Route::post('/notifications/send', [NotificationController::class, 'send'])->name('notifications.send');
