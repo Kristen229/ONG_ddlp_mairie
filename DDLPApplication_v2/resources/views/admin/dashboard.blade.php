@@ -17,7 +17,7 @@
     </div>
 
     <!-- Raccourcis Rapides -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
         <!-- Raccourci Associations -->
         <a href="{{ route('admin.associations.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-teal-500 hover:shadow-md transition-all flex flex-col justify-between">
             <div class="flex justify-between items-start mb-4">
@@ -61,6 +61,20 @@
             <div>
                 <h3 class="text-xl font-bold text-slate-800 group-hover:text-teal-600 transition-colors">Galerie des Activités</h3>
                 <p class="text-sm text-slate-500 mt-1">Modérer et valider les activités soumises sur la plateforme.</p>
+            </div>
+        </a>
+
+        <!-- Raccourci Avis Citoyens -->
+        <a href="{{ route('admin.reviews.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-purple-500 hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="flex justify-between items-start mb-4">
+                <div class="h-12 w-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                </div>
+                <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full">{{ $reviewCount }} Avis</span>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 group-hover:text-purple-600 transition-colors">Avis Citoyens</h3>
+                <p class="text-sm text-slate-500 mt-1">Consulter et modérer les retours laissés par le public.</p>
             </div>
         </a>
     </div>

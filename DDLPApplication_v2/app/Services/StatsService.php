@@ -29,6 +29,8 @@ class StatsService
         $activitysCount = Activity::whereHas('user', fn($q) => $q->where('groupe', 'ong'))->count();
         $activityseCount = Activity::whereHas('user', fn($q) => $q->where('groupe', 'association'))->count();
 
+        $reviewCount = \App\Models\Review::count();
+
         $countsByMonth = $this->monthly('users', null, $year);
         $countsAssociations = $this->monthly('users', ['groupe' => 'association'], $year);
         $countsOng = $this->monthly('users', ['groupe' => 'ong'], $year);
@@ -61,7 +63,7 @@ class StatsService
         return compact(
             'userCount', 'ongCount', 'associationCount',
             'requestCount', 'requestaCount', 'requestrCount', 'requesteCount', 'requesttCount',
-            'activityCount', 'activitysCount', 'activityseCount',
+            'activityCount', 'activitysCount', 'activityseCount', 'reviewCount',
             'countsByMonth', 'countsAssociations', 'countsOng', 'requestCounts',
             'labels', 'data', 'statsTotal', 'statsAsso', 'statsONG',
             'lastUsers', 'associations', 'userAssociations', 'adminAssociations',
