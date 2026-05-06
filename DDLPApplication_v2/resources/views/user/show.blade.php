@@ -343,6 +343,29 @@
                                     <input type="date" name="date" value="{{ old('date') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
                                 </div>
                             </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Budget prévu (FCFA) <span class="text-red-500">*</span></label>
+                                    <input type="number" name="budget_expected" value="{{ old('budget_expected') }}" required min="0" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Ex: 500000">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Bénéficiaires espérés <span class="text-red-500">*</span></label>
+                                    <input type="number" name="beneficiaries_expected" value="{{ old('beneficiaries_expected') }}" required min="1" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Ex: 150">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Public cible <span class="text-red-500">*</span></label>
+                                    <select name="target_audience" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                        <option value="">Sélectionner...</option>
+                                        <option value="Tout public" {{ old('target_audience') == 'Tout public' ? 'selected' : '' }}>Tout public</option>
+                                        <option value="Jeunes" {{ old('target_audience') == 'Jeunes' ? 'selected' : '' }}>Jeunes</option>
+                                        <option value="Femmes" {{ old('target_audience') == 'Femmes' ? 'selected' : '' }}>Femmes</option>
+                                        <option value="Enfants / Orphelins" {{ old('target_audience') == 'Enfants / Orphelins' ? 'selected' : '' }}>Enfants / Orphelins</option>
+                                        <option value="Personnes âgées" {{ old('target_audience') == 'Personnes âgées' ? 'selected' : '' }}>Personnes âgées</option>
+                                        <option value="Personnes en situation de handicap" {{ old('target_audience') == 'Personnes en situation de handicap' ? 'selected' : '' }}>Personnes en situation de handicap</option>
+                                        <option value="Autre" {{ old('target_audience') == 'Autre' ? 'selected' : '' }}>Autre</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Description détaillée <span class="text-red-500">*</span></label>
                                 <textarea name="description" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Décrivez l'impact de l'activité...">{{ old('description') }}</textarea>

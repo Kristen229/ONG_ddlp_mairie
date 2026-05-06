@@ -61,7 +61,7 @@
                 
                 <div class="mt-auto">
                     <button type="button" 
-                            data-activity="{{ json_encode(['titre' => $act->titre, 'description' => $act->description, 'lieu' => $act->lieu, 'date' => $act->date ? $act->date->format('d/m/Y') : null, 'beneficiaries_expected' => $act->beneficiaries_expected, 'budget_expected' => $act->budget_expected, 'created_at' => $act->created_at->format('d/m/Y H:i'), 'user_name' => $act->user->name ?? 'Inconnu', 'image' => asset('storage/'.$act->attachment)]) }}"
+                            data-activity="{{ json_encode(['titre' => $act->titre, 'description' => $act->description, 'lieu' => $act->lieu, 'date' => $act->date ? $act->date->format('d/m/Y') : null, 'beneficiaries_expected' => $act->beneficiaries_expected, 'target_audience' => $act->target_audience ?? 'Non spécifié', 'budget_expected' => $act->budget_expected, 'created_at' => $act->created_at->format('d/m/Y H:i'), 'user_name' => $act->user->name ?? 'Inconnu', 'image' => asset('storage/'.$act->attachment)]) }}"
                             @click.prevent.stop="selectedAct = JSON.parse($el.dataset.activity); showModal = true;" 
                             class="w-full text-sm font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl transition-colors flex justify-center items-center gap-2 mb-4">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
@@ -153,7 +153,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
                         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col justify-center">
                             <div class="flex items-center gap-2 mb-1 text-slate-500">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -178,9 +178,16 @@
                         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col justify-center">
                             <div class="flex items-center gap-2 mb-1 text-slate-500">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                <span class="text-xs font-bold uppercase">Public cible</span>
+                                <span class="text-xs font-bold uppercase">Bénéficiaires</span>
                             </div>
                             <p class="text-slate-800 font-bold" x-text="selectedAct?.beneficiaries_expected + ' pers.'"></p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col justify-center md:col-span-2">
+                            <div class="flex items-center gap-2 mb-1 text-slate-500">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                                <span class="text-xs font-bold uppercase">Public ciblé</span>
+                            </div>
+                            <p class="text-slate-800 font-bold" x-text="selectedAct?.target_audience"></p>
                         </div>
                     </div>
 

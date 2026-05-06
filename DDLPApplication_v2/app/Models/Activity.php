@@ -19,6 +19,7 @@ class Activity extends Model
         'attachment',
         'beneficiaries_expected',
         'beneficiaries_actual',
+        'target_audience',
         'budget_expected',
         'budget_actual',
         'actual_date',

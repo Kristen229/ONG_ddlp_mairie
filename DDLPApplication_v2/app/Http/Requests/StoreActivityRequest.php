@@ -14,8 +14,9 @@ class StoreActivityRequest extends FormRequest
             'lieu' => 'required|string',
             'date' => 'required|date',
             'attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,docx',
-            'beneficiaries_expected' => 'nullable|integer',
-            'budget_expected' => 'nullable|numeric',
+            'beneficiaries_expected' => 'required|integer|min:1',
+            'budget_expected' => 'required|numeric|min:0',
+            'target_audience' => 'required|string',
         ];
     }
 }

@@ -21,6 +21,8 @@ class ActivityController extends Controller
             'attachment' => $path,
             'beneficiaries_expected' => $request->beneficiaries_expected,
             'budget_expected' => $request->budget_expected,
+            'target_audience' => $request->target_audience,
+            'is_visible' => false, // Sécurité : Forcer l'invisibilité par défaut
         ]);
 
         return redirect()->back()->with('success', 'Activité créée avec succès.');
