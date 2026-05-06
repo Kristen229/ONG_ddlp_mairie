@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-50 flex min-h-[calc(100vh-4rem)]" x-data="{ tab: 'profil', showActivityModal: false, showRequestModal: false, mobileSidebar: false }">
+<div class="bg-gray-50 flex min-h-[calc(100vh-4rem)]" x-data="{ tab: '{{ $errors->any() ? 'activites' : 'profil' }}', showActivityModal: {{ $errors->any() ? 'true' : 'false' }}, showRequestModal: false, mobileSidebar: false }">
 
     <!-- OVERLAY POUR MOBILE -->
     <div x-show="mobileSidebar" class="fixed inset-0 bg-gray-900/50 z-40 lg:hidden" @click="mobileSidebar = false" style="display: none;"></div>
@@ -36,6 +36,15 @@
             <button @click="tab = 'demandes'; mobileSidebar = false" :class="tab === 'demandes' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 Mes Demandes
+            </button>
+            <button @click="tab = 'notifications'; mobileSidebar = false" :class="tab === 'notifications' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all text-left">
+                <div class="flex items-center gap-3">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    Mes Notifications
+                </div>
+                @if($user->notifications && $user->notifications->count() > 0)
+                    <span class="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{ $user->notifications->count() }}</span>
+                @endif
             </button>
         </nav>
 
@@ -126,7 +135,7 @@
                         <h2 class="text-3xl font-black text-gray-900">Mes Activités</h2>
                         <p class="text-gray-500 mt-1">Publiez vos actions pour qu'elles soient visibles de tous.</p>
                     </div>
-                    <button @click="showActivityModal = true" class="inline-flex items-center gap-2 px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold rounded-xl shadow-lg transition-transform hover:-translate-y-0.5">
+                    <button type="button" @click.prevent.stop="showActivityModal = true" class="inline-flex items-center gap-2 px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold rounded-xl shadow-lg transition-transform hover:-translate-y-0.5">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         Nouvelle Activité
                     </button>
@@ -166,7 +175,7 @@
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 mb-1">Aucune activité enregistrée</h3>
                             <p class="text-gray-500">Commencez par ajouter votre première activité pour la rendre publique.</p>
-                            <button @click="showActivityModal = true" class="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-teal-500 text-teal-600 text-sm font-bold rounded-xl transition-colors">
+                            <button type="button" @click.prevent.stop="showActivityModal = true" class="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-teal-500 text-teal-600 text-sm font-bold rounded-xl transition-colors">
                                 Ajouter une activité
                             </button>
                         </div>
@@ -181,7 +190,7 @@
                         <h2 class="text-3xl font-black text-gray-900">Demandes Officielles</h2>
                         <p class="text-gray-500 mt-1">Soumettez vos courriers et sollicitations à la Mairie.</p>
                     </div>
-                    <button @click="showRequestModal = true" class="inline-flex items-center gap-2 px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-teal-200 transition-transform hover:-translate-y-0.5">
+                    <button type="button" @click.prevent.stop="showRequestModal = true" class="inline-flex items-center gap-2 px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-teal-200 transition-transform hover:-translate-y-0.5">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                         Nouveau Courrier
                     </button>
@@ -244,28 +253,99 @@
                 </div>
             </div>
 
+            <!-- ONGLET 4 : NOTIFICATIONS -->
+            <div x-show="tab === 'notifications'" style="display: none;" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-black text-gray-900">Mes Notifications</h2>
+                    <p class="text-gray-500 mt-1">Retrouvez ici toutes les communications importantes de la Mairie.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+                    @if($user->notifications && $user->notifications->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($user->notifications->sortByDesc('created_at') as $notification)
+                                <div class="p-5 border {{ str_contains(strtolower($notification->title), 'suppression') ? 'border-rose-100 bg-rose-50/30' : (str_contains(strtolower($notification->title), 'avertissement') ? 'border-amber-100 bg-amber-50/30' : 'border-gray-100 bg-gray-50') }} rounded-2xl flex gap-4">
+                                    <div class="flex-shrink-0 mt-1">
+                                        @if(str_contains(strtolower($notification->title), 'suppression'))
+                                            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </div>
+                                        @elseif(str_contains(strtolower($notification->title), 'avertissement'))
+                                            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                            </div>
+                                        @else
+                                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-1">
+                                            <h4 class="font-bold text-gray-900">{{ $notification->title }}</h4>
+                                            <span class="text-xs font-medium text-gray-400">{{ $notification->created_at->format('d/m/Y à H:i') }}</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 leading-relaxed">{{ $notification->message }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                            <div class="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center shadow-sm mb-4">
+                                <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-1">Aucune notification</h3>
+                            <p class="text-gray-500">Vous n'avez reçu aucun message ou avertissement de la Mairie.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
         </div>
     </main>
 
     <!-- MODAL AJOUT ACTIVITÉ -->
-    <div x-show="showActivityModal" style="display: none;" class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="showActivityModal" x-transition.opacity class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" @click="showActivityModal = false"></div>
+    <div x-show="showActivityModal" style="display: none;" class="fixed z-[100] inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div x-show="showActivityModal" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click.stop="showActivityModal = false"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div x-show="showActivityModal" x-transition.scale class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
+            <div x-show="showActivityModal" 
+                 @click.stop
+                 x-transition.scale class="relative z-10 inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-gray-100">
                 <form action="{{ route('activites.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
                         <h3 class="text-2xl font-black text-gray-900 mb-6" id="modal-title">Publier une Activité</h3>
                         
+                        @if ($errors->any())
+                            <div class="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl">
+                                <ul class="list-disc list-inside text-sm text-red-600 font-medium">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Titre de l'action <span class="text-red-500">*</span></label>
-                                <input type="text" name="titre" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                <input type="text" name="titre" value="{{ old('titre') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Lieu <span class="text-red-500">*</span></label>
+                                    <input type="text" name="lieu" value="{{ old('lieu') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Ex: Cotonou, Quartier X">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Date prévue <span class="text-red-500">*</span></label>
+                                    <input type="date" name="date" value="{{ old('date') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Description détaillée <span class="text-red-500">*</span></label>
-                                <textarea name="description" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Décrivez l'impact de l'activité..."></textarea>
+                                <textarea name="description" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Décrivez l'impact de l'activité...">{{ old('description') }}</textarea>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Photo d'illustration <span class="text-red-500">*</span></label>
@@ -287,11 +367,13 @@
     </div>
 
     <!-- MODAL NOUVELLE DEMANDE (LETTRE) -->
-    <div x-show="showRequestModal" style="display: none;" class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="showRequestModal" x-transition.opacity class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" @click="showRequestModal = false"></div>
+    <div x-show="showRequestModal" style="display: none;" class="fixed z-[100] inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div x-show="showRequestModal" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click.stop="showRequestModal = false"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div x-show="showRequestModal" x-transition.scale class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
+            <div x-show="showRequestModal" 
+                 @click.stop
+                 x-transition.scale class="relative z-10 inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-gray-100">
                 <form action="{{ route('courrier.generate') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">

@@ -1,7 +1,12 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="space-y-6" x-data="{ showModal: false, selectedAct: null }">
+<div class="space-y-6" x-data="{ 
+    showModal: false, 
+    showWarningModal: false, 
+    showDeleteModal: false, 
+    selectedAct: null 
+}">
     <!-- En-tête -->
     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-4 lg:p-6 rounded-2xl shadow-sm border border-gray-200 gap-4">
         <div>
@@ -75,19 +80,17 @@
                         </button>
                     </form>
                     @endif
-                    <form method="POST" action="{{ route('activites.warn', $act->id) }}" class="flex-shrink-0" onsubmit="return confirm('Êtes-vous sûr de vouloir envoyer un avertissement par email à cette ONG ?');">
-                        @csrf 
-                        <button type="submit" title="Envoyer un avertissement" class="w-10 h-10 bg-amber-50 hover:bg-amber-100 text-amber-600 border border-amber-200 rounded-xl flex justify-center items-center transition-colors">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        </button>
-                    </form>
-                    <form method="POST" action="{{ route('activites.destroy', $act->id) }}" onsubmit="return confirm('Retirer définitivement cette activité ?');" class="flex-grow">
-                        @csrf @method('DELETE')
-                        <button type="submit" title="Supprimer" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1 px-2">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            Supprimer
-                        </button>
-                    </form>
+                    <button type="button" title="Envoyer un avertissement" 
+                            @click.prevent.stop="selectedAct = JSON.parse($el.closest('.mt-auto').previousElementSibling.querySelector('button[data-activity]').dataset.activity); selectedAct.id = {{ $act->id }}; showWarningModal = true;" 
+                            class="w-10 h-10 bg-amber-50 hover:bg-amber-100 text-amber-600 border border-amber-200 rounded-xl flex justify-center items-center transition-colors flex-shrink-0">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </button>
+                    <button type="button" title="Supprimer" 
+                            @click.prevent.stop="selectedAct = JSON.parse($el.closest('.mt-auto').previousElementSibling.querySelector('button[data-activity]').dataset.activity); selectedAct.id = {{ $act->id }}; showDeleteModal = true;" 
+                            class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 py-2 rounded-xl text-xs font-black transition-colors flex justify-center items-center gap-1 px-2 flex-grow">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        Supprimer
+                    </button>
                 </div>
             </div>
         </div>
@@ -192,5 +195,77 @@
             </div>
         </div>
     </div>
+    <!-- Modale d'Avertissement -->
+    <div x-show="showWarningModal" style="display: none;" class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div x-show="showWarningModal" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click.stop="showWarningModal = false"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div x-show="showWarningModal" 
+                 @click.stop
+                 x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                 class="relative inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-200">
+                <form :action="`/admin/activites/${selectedAct?.id}/warn`" method="POST">
+                    @csrf
+                    <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
+                        <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
+                            <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-600">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                            <h3 class="text-2xl font-black text-gray-900">Avertir l'ONG</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm text-slate-600">Vous êtes sur le point d'envoyer un avertissement concernant l'activité <strong class="text-slate-900" x-text="selectedAct?.titre"></strong> organisée par <strong class="text-slate-900" x-text="selectedAct?.user_name"></strong>.</p>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Motif de l'avertissement <span class="text-red-500">*</span></label>
+                                <textarea name="motif" rows="3" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-amber-500 focus:border-amber-500 transition-colors" placeholder="Veuillez expliquer pourquoi cette activité pose problème..."></textarea>
+                            </div>
+                            <p class="text-xs text-amber-600 font-medium">Ce motif sera envoyé par email à l'ONG et consigné dans ses notifications.</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-4 sm:px-8 border-t border-gray-100 flex justify-end gap-3">
+                        <button type="button" @click="showWarningModal = false" class="px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">Annuler</button>
+                        <button type="submit" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-colors">Envoyer l'avertissement</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale de Suppression -->
+    <div x-show="showDeleteModal" style="display: none;" class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div x-show="showDeleteModal" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click.stop="showDeleteModal = false"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div x-show="showDeleteModal" 
+                 @click.stop
+                 x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                 class="relative inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-200">
+                <form :action="`/admin/activites/${selectedAct?.id}`" method="POST">
+                    @csrf @method('DELETE')
+                    <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
+                        <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
+                            <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </div>
+                            <h3 class="text-2xl font-black text-gray-900">Retirer l'activité</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm text-slate-600">Vous êtes sur le point de supprimer définitivement l'activité <strong class="text-slate-900" x-text="selectedAct?.titre"></strong>.</p>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Raison de la suppression <span class="text-red-500">*</span></label>
+                                <textarea name="motif" rows="3" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-rose-500 focus:border-rose-500 transition-colors" placeholder="Veuillez justifier cette suppression..."></textarea>
+                            </div>
+                            <p class="text-xs text-rose-600 font-medium">Ce motif sera envoyé par email à l'ONG et consigné dans ses notifications.</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-4 sm:px-8 border-t border-gray-100 flex justify-end gap-3">
+                        <button type="button" @click="showDeleteModal = false" class="px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">Annuler</button>
+                        <button type="submit" class="px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-md transition-colors">Confirmer la suppression</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection

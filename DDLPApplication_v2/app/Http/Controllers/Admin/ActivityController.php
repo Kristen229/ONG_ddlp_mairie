@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\User;
 use App\Enums\EvaluationStatus;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -87,10 +88,33 @@ class ActivityController extends Controller
         return redirect()->route('admin.dashboard')->with('success', "Activité évaluée : {$totalScore}/100");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Activity::findOrFail($id)->delete();
-        return back()->with('success', "Activité retirée de l'interface.");
+        $activity = Activity::with('user')->findOrFail($id);
+        $user = $activity->user;
+
+        $motif = $request->input('motif', 'Non respect des règles de la plateforme.');
+
+        if ($user) {
+            // Créer la notification
+            Notification::create([
+                'user_id' => $user->id,
+                'title' => "Suppression d'activité",
+                'message' => "Votre activité '{$activity->titre}' a été supprimée. Motif : {$motif}",
+                'recipient_name' => $user->name,
+                'recipient_email' => $user->email,
+            ]);
+
+            // Envoyer l'email
+            if ($user->email) {
+                Mail::raw("Bonjour {$user->name},\n\nNous vous informons que votre activité intitulée '{$activity->titre}' a été supprimée de la plateforme.\n\nMotif de la suppression : {$motif}\n\nCordialement,\nLa Mairie", function ($msg) use ($user) {
+                    $msg->to($user->email)->subject("Suppression de votre activité");
+                });
+            }
+        }
+
+        $activity->delete();
+        return back()->with('success', "Activité retirée avec justification envoyée à l'ONG.");
     }
 
     public function publish($id)
@@ -101,17 +125,31 @@ class ActivityController extends Controller
         return back()->with('success', "L'activité a été approuvée et publiée avec succès.");
     }
 
-    public function sendWarning($id)
+    public function sendWarning(Request $request, $id)
     {
         $activity = Activity::with('user')->findOrFail($id);
         $user = $activity->user;
 
-        if ($user && $user->email) {
-            Mail::raw("Avertissement concernant votre activité : {$activity->titre}", function ($msg) use ($user) {
-                $msg->to($user->email)->subject('Avertissement - Activité');
-            });
+        $motif = $request->input('motif', 'Veuillez revoir les informations de cette activité.');
+
+        if ($user) {
+            // Créer la notification
+            Notification::create([
+                'user_id' => $user->id,
+                'title' => "Avertissement concernant une activité",
+                'message' => "Un avertissement a été émis pour votre activité '{$activity->titre}'. Motif : {$motif}",
+                'recipient_name' => $user->name,
+                'recipient_email' => $user->email,
+            ]);
+
+            // Envoyer l'email
+            if ($user->email) {
+                Mail::raw("Bonjour {$user->name},\n\nNous vous adressons un avertissement concernant votre activité intitulée '{$activity->titre}'.\n\nMotif de l'avertissement : {$motif}\n\nMerci de faire le nécessaire.\n\nCordialement,\nLa Mairie", function ($msg) use ($user) {
+                    $msg->to($user->email)->subject("Avertissement - Activité");
+                });
+            }
         }
 
-        return redirect()->route('admin.dashboard')->with('success', 'Avertissement envoyé.');
+        return back()->with('success', "Avertissement justifié envoyé à l'ONG.");
     }
 }
