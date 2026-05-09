@@ -44,6 +44,8 @@ class User extends Authenticatable
         'signature_data',
         'cachet',
         'created_by',
+        'is_approved',
+        'must_change_password',
     ];
 
     protected $hidden = [
@@ -57,6 +59,8 @@ class User extends Authenticatable
             'password' => 'hashed',
             'groupe' => UserGroup::class,
             'date' => 'date',
+            'is_approved' => 'boolean',
+            'must_change_password' => 'boolean',
         ];
     }
 

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserStep2Request;
 use App\Http\Requests\StoreUserStep3Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -41,7 +42,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'number1' => $request->number1,
             'number2' => $request->number2,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make(Str::random(16)), // Mot de passe temporaire (sera remplacé à l'approbation)
         ]);
 
         return redirect()->route('user.createForme3')->with('success', 'Formulaire 2 enregistré.');
@@ -71,8 +72,10 @@ class RegisterController extends Controller
             'attachment5' => $request->hasFile('attachment5') ? $request->file('attachment5')->store('attachments', 'public') : null,
             'lien' => $request->lien,
             'created_by' => 'user',
+            'is_approved' => false,
         ]);
 
-        return redirect()->route('connexion');
+        session()->forget('user_id');
+        return redirect()->route('inscription.confirmation');
     }
 }

@@ -23,13 +23,24 @@ class LoginController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            Auth::login($user);
-            return redirect()->route('user.show', ['id' => $user->id]);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'email' => 'Les informations de connexion ne correspondent pas.',
+            ]);
         }
 
-        return back()->withErrors([
-            'email' => 'Les informations de connexion ne correspondent pas.',
-        ]);
+        if (!$user->is_approved) {
+            return back()->withErrors([
+                'email' => 'Votre candidature est en cours d\'examen par la Mairie. Vous recevrez un email une fois votre inscription validée.',
+            ]);
+        }
+
+        Auth::login($user);
+
+        if ($user->must_change_password) {
+            return redirect()->route('password.change');
+        }
+
+        return redirect()->route('user.show', ['id' => $user->id]);
     }
 }

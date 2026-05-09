@@ -13,7 +13,7 @@ class AssociationController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(20);
+        $users = User::where('is_approved', true)->paginate(20);
         return view('admin.associations.index', compact('users'));
     }
 
@@ -105,6 +105,7 @@ class AssociationController extends Controller
             'signature_data' => $request->hasFile('signature_data') ? $request->file('signature_data')->store('attachments', 'public') : null,
             'cachet' => $request->hasFile('cachet') ? $request->file('cachet')->store('attachments', 'public') : null,
             'created_by' => 'admin',
+            'is_approved' => true,
         ]);
 
         session()->forget('admin_creating_user_id');

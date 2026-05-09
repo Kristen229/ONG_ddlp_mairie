@@ -17,7 +17,33 @@
     </div>
 
     <!-- Raccourcis Rapides -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mt-8">
+        <!-- Raccourci Candidatures -->
+        <a href="{{ route('admin.candidates.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-red-500 hover:shadow-md transition-all flex flex-col justify-between relative overflow-hidden">
+            @if($pendingCandidatesCount > 0)
+                <div class="absolute top-0 right-0 w-16 h-16 bg-red-50 text-red-500 rounded-bl-full flex items-start justify-end p-3 pointer-events-none">
+                    <span class="relative flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                    </span>
+                </div>
+            @endif
+            <div class="flex justify-between items-start mb-4">
+                <div class="h-12 w-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                </div>
+                @if($pendingCandidatesCount > 0)
+                    <span class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full z-10">{{ $pendingCandidatesCount }} En attente</span>
+                @else
+                    <span class="bg-gray-100 text-gray-800 text-xs font-bold px-3 py-1 rounded-full z-10">À jour</span>
+                @endif
+            </div>
+            <div class="z-10">
+                <h3 class="text-xl font-bold text-slate-800 group-hover:text-red-600 transition-colors">Candidatures</h3>
+                <p class="text-sm text-slate-500 mt-1">Examiner les nouvelles inscriptions.</p>
+            </div>
+        </a>
+
         <!-- Raccourci Associations -->
         <a href="{{ route('admin.associations.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-teal-500 hover:shadow-md transition-all flex flex-col justify-between">
             <div class="flex justify-between items-start mb-4">

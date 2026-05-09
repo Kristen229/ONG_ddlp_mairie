@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AssociationController;
 use App\Http\Controllers\Admin\RequestManagementController;
 use App\Http\Controllers\Admin\ActivityController as AdminActivityController;
+use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AssociationRequestController;
@@ -54,6 +55,7 @@ Route::get('/user/createForme3', fn() => view('auth.register-step3'))->name('use
 Route::post('/user/createUserPartie1', [RegisterController::class, 'createUserPartie1'])->name('user.createUserPartie1');
 Route::post('/user/createUserPartie2', [RegisterController::class, 'createUserPartie2'])->name('user.createUserPartie2');
 Route::post('/user/createUserPartie3', [RegisterController::class, 'createUserPartie3'])->name('user.createUserPartie3');
+Route::get('/inscription/confirmation', fn() => view('auth.inscription-confirmation'))->name('inscription.confirmation');
 
 // --- Auth Admin ---
 Route::get('/conAdmin', [AdminLoginController::class, 'showLoginForm'])->name('conAdmin');
@@ -98,6 +100,19 @@ Route::middleware('auth')->group(function () {
     })->name('user.logout');
 
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+
+    Route::get('/password/change', fn() => view('auth.change-password'))->name('password.change');
+    Route::post('/password/change', function (Request $request) {
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        $user = Auth::user();
+        $user->update([
+            'password' => Hash::make($request->password),
+            'must_change_password' => false,
+        ]);
+        return redirect()->route('user.show', ['id' => $user->id])->with('success', 'Mot de passe mis à jour avec succès.');
+    })->name('password.change.update');
 });
 
 /*
@@ -147,6 +162,11 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews.index');
     Route::post('/admin/reviews/{id}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('admin.reviews.approve');
     Route::delete('/admin/reviews/{id}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+
+    // Candidatures
+    Route::get('/admin/candidates', [CandidateController::class, 'index'])->name('admin.candidates.index');
+    Route::post('/admin/candidates/{id}/approve', [CandidateController::class, 'approve'])->name('admin.candidates.approve');
+    Route::post('/admin/candidates/{id}/reject', [CandidateController::class, 'reject'])->name('admin.candidates.reject');
 
     // Notifications
     Route::post('/notifications/send', [NotificationController::class, 'send'])->name('notifications.send');

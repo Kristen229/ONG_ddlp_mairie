@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function showAssociations()
     {
-        $users = User::all();
+        $users = User::where('is_approved', true)->get();
         $latestReviews = \App\Models\Review::with(['user', 'activity'])
             ->latest()
             ->take(6)
@@ -20,13 +20,13 @@ class UserController extends Controller
 
     public function indexe()
     {
-        $users = User::all();
+        $users = User::where('is_approved', true)->get();
         return view('pages.association-et-ong', compact('users'));
     }
 
     public function showDetails($id)
     {
-        $user = User::with(['activities' => function($query) {
+        $user = User::where('is_approved', true)->with(['activities' => function($query) {
             $query->where('is_visible', true);
         }, 'reviews'])->findOrFail($id);
         return view('pages.association-details', compact('user'));

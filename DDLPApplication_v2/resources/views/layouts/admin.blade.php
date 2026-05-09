@@ -43,6 +43,15 @@
                 <span x-show="sidebarOpen" class="ml-3 font-medium text-sm">Structures & ONG</span>
             </a>
 
+            <a href="{{ route('admin.candidates.index') }}" class="flex items-center px-3 py-3 rounded-xl transition-colors relative {{ request()->routeIs('admin.candidates.*') ? 'bg-teal-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}" title="Candidatures">
+                <svg class="h-6 w-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                <span x-show="sidebarOpen" class="ml-3 font-medium text-sm">Candidatures</span>
+                @php $pendingCount = \App\Models\User::where('is_approved', false)->count(); @endphp
+                @if($pendingCount > 0)
+                    <span class="absolute top-1 right-1 bg-red-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">{{ $pendingCount }}</span>
+                @endif
+            </a>
+
             <a href="{{ route('admin.requests.index') }}" class="flex items-center px-3 py-3 rounded-xl transition-colors {{ request()->routeIs('admin.requests.*') ? 'bg-teal-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}" title="Courriers & Demandes">
                 <svg class="h-6 w-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 <span x-show="sidebarOpen" class="ml-3 font-medium text-sm">Courriers & Demandes</span>

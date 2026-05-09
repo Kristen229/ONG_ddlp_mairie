@@ -170,7 +170,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($visibleActivities as $activity)
-            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer">
+            <a href="{{ route('association.details', $activity->user->id) }}" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer no-underline">
                 <!-- Image en 16:9 -->
                 <div class="relative w-full aspect-video overflow-hidden bg-gray-100">
                     <img src="{{ asset('storage/' . $activity->attachment) }}" alt="{{ $activity->titre }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -201,7 +201,7 @@
                         </span>
                     </div>
                 </div>
-            </div>
+            </a>
             @empty
             <div class="col-span-full text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
                 <div class="mx-auto w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mb-4">

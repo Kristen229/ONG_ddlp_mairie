@@ -15,9 +15,9 @@ class StatsService
     {
         $year = now()->year;
 
-        $userCount = User::count();
-        $ongCount = User::where('groupe', 'ong')->count();
-        $associationCount = User::where('groupe', 'association')->count();
+        $userCount = User::where('is_approved', true)->count();
+        $ongCount = User::where('groupe', 'ong')->where('is_approved', true)->count();
+        $associationCount = User::where('groupe', 'association')->where('is_approved', true)->count();
 
         $requestCount = AssociationRequest::count();
         $requestaCount = AssociationRequest::where('statut', RequestStatus::APPROVED)->count();
@@ -26,14 +26,14 @@ class StatsService
         $requesttCount = $requestaCount + $requestrCount;
 
         $activityCount = Activity::count();
-        $activitysCount = Activity::whereHas('user', fn($q) => $q->where('groupe', 'ong'))->count();
-        $activityseCount = Activity::whereHas('user', fn($q) => $q->where('groupe', 'association'))->count();
+        $activitysCount = Activity::whereHas('user', fn($q) => $q->where('groupe', 'ong')->where('is_approved', true))->count();
+        $activityseCount = Activity::whereHas('user', fn($q) => $q->where('groupe', 'association')->where('is_approved', true))->count();
 
         $reviewCount = \App\Models\Review::count();
 
-        $countsByMonth = $this->monthly('users', null, $year);
-        $countsAssociations = $this->monthly('users', ['groupe' => 'association'], $year);
-        $countsOng = $this->monthly('users', ['groupe' => 'ong'], $year);
+        $countsByMonth = $this->monthly('users', ['is_approved' => true], $year);
+        $countsAssociations = $this->monthly('users', ['groupe' => 'association', 'is_approved' => true], $year);
+        $countsOng = $this->monthly('users', ['groupe' => 'ong', 'is_approved' => true], $year);
         $requestCounts = $this->monthly('requests', null, $year);
 
         $requestTypes = DB::table('requests')
@@ -45,20 +45,21 @@ class StatsService
         $statsTotal = []; $statsAsso = []; $statsONG = [];
         for ($m = 1; $m <= 12; $m++) {
             $statsTotal[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->count();
-            $statsAsso[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->whereHas('user', fn($q) => $q->where('groupe', 'association'))->count();
-            $statsONG[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->whereHas('user', fn($q) => $q->where('groupe', 'ong'))->count();
+            $statsAsso[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->whereHas('user', fn($q) => $q->where('groupe', 'association')->where('is_approved', true))->count();
+            $statsONG[] = Activity::whereYear('created_at', $year)->whereMonth('created_at', $m)->whereHas('user', fn($q) => $q->where('groupe', 'ong')->where('is_approved', true))->count();
         }
 
-        $lastUsers = User::latest()->take(8)->get();
-        $associations = User::all();
-        $userAssociations = User::where('created_by', 'user')->get();
-        $adminAssociations = User::where('created_by', 'admin')->get();
+        $lastUsers = User::where('is_approved', true)->latest()->take(8)->get();
+        $associations = User::where('is_approved', true)->get();
+        $userAssociations = User::where('created_by', 'user')->where('is_approved', true)->get();
+        $adminAssociations = User::where('created_by', 'admin')->where('is_approved', true)->get();
         $requests = AssociationRequest::with('user')->get();
         $pendingRequestsCount = AssociationRequest::countPending();
         $notifications = Notification::latest()->take(5)->get();
         $allNotifications = Notification::latest()->skip(5)->take(100)->get();
-        $activities = Activity::when($search, fn($q, $s) => $q->whereHas('user', fn($u) => $u->where('name', 'like', "%{$s}%")))->with('user')->get();
-        $users = User::paginate(10);
+        $activities = Activity::when($search, fn($q, $s) => $q->whereHas('user', fn($u) => $u->where('name', 'like', "%{$s}%")->where('is_approved', true)))->with('user')->get();
+        $users = User::where('is_approved', true)->paginate(10);
+        $pendingCandidatesCount = User::where('is_approved', false)->count();
 
         return compact(
             'userCount', 'ongCount', 'associationCount',
@@ -68,7 +69,7 @@ class StatsService
             'labels', 'data', 'statsTotal', 'statsAsso', 'statsONG',
             'lastUsers', 'associations', 'userAssociations', 'adminAssociations',
             'requests', 'pendingRequestsCount', 'notifications', 'allNotifications',
-            'activities', 'users'
+            'activities', 'users', 'pendingCandidatesCount'
         );
     }
 
