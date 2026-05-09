@@ -211,7 +211,7 @@
                  @click.stop
                  x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
                  class="relative inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-200">
-                <form :action="`/admin/activites/${selectedAct?.id}/warn`" method="POST">
+                <form :action="`/activites/${selectedAct?.id}/warn`" method="POST">
                     @csrf
                     <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
                         <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
@@ -247,7 +247,7 @@
                  @click.stop
                  x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
                  class="relative inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-200">
-                <form :action="`/admin/activites/${selectedAct?.id}`" method="POST">
+                <form :action="`/activites/${selectedAct?.id}`" method="POST">
                     @csrf @method('DELETE')
                     <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
                         <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">

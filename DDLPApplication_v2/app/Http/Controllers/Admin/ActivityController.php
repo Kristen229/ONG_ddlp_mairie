@@ -50,7 +50,7 @@ class ActivityController extends Controller
 
     public function validatActivity(Request $request, $id)
     {
-        $activity = Activity::findOrFail($id);
+        $activity = Activity::with('user')->findOrFail($id);
 
         $beneficiaryScore = 0;
         if ($activity->beneficiaries_expected > 0 && $activity->beneficiaries_actual > 0) {
@@ -85,6 +85,18 @@ class ActivityController extends Controller
             'is_visible' => true,
         ]);
 
+        $user = $activity->user;
+        if ($user) {
+            $statusLabel = $status === EvaluationStatus::COMPLIANT ? 'Conforme' : ($status === EvaluationStatus::WARNING ? 'À suivre' : 'Non conforme');
+            Notification::create([
+                'user_id' => $user->id,
+                'title' => "Activité évaluée",
+                'message' => "Votre activité '{$activity->titre}' a été évaluée avec un score de {$totalScore}/100 ({$statusLabel}). Commentaire : " . ($request->evaluation_comment ?: 'Aucun commentaire.'),
+                'recipient_name' => $user->name,
+                'recipient_email' => $user->email,
+            ]);
+        }
+
         return redirect()->route('admin.dashboard')->with('success', "Activité évaluée : {$totalScore}/100");
     }
 
@@ -104,13 +116,6 @@ class ActivityController extends Controller
                 'recipient_name' => $user->name,
                 'recipient_email' => $user->email,
             ]);
-
-            // Envoyer l'email
-            if ($user->email) {
-                Mail::raw("Bonjour {$user->name},\n\nNous vous informons que votre activité intitulée '{$activity->titre}' a été supprimée de la plateforme.\n\nMotif de la suppression : {$motif}\n\nCordialement,\nLa Mairie", function ($msg) use ($user) {
-                    $msg->to($user->email)->subject("Suppression de votre activité");
-                });
-            }
         }
 
         $activity->delete();
@@ -119,8 +124,19 @@ class ActivityController extends Controller
 
     public function publish($id)
     {
-        $activity = Activity::findOrFail($id);
+        $activity = Activity::with('user')->findOrFail($id);
         $activity->update(['is_visible' => true]);
+
+        $user = $activity->user;
+        if ($user) {
+            Notification::create([
+                'user_id' => $user->id,
+                'title' => "Activité publiée",
+                'message' => "Félicitations, votre activité '{$activity->titre}' a été validée et est désormais visible par le public.",
+                'recipient_name' => $user->name,
+                'recipient_email' => $user->email,
+            ]);
+        }
 
         return back()->with('success', "L'activité a été approuvée et publiée avec succès.");
     }
@@ -141,13 +157,6 @@ class ActivityController extends Controller
                 'recipient_name' => $user->name,
                 'recipient_email' => $user->email,
             ]);
-
-            // Envoyer l'email
-            if ($user->email) {
-                Mail::raw("Bonjour {$user->name},\n\nNous vous adressons un avertissement concernant votre activité intitulée '{$activity->titre}'.\n\nMotif de l'avertissement : {$motif}\n\nMerci de faire le nécessaire.\n\nCordialement,\nLa Mairie", function ($msg) use ($user) {
-                    $msg->to($user->email)->subject("Avertissement - Activité");
-                });
-            }
         }
 
         return back()->with('success', "Avertissement justifié envoyé à l'ONG.");

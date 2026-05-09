@@ -42,8 +42,9 @@
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     Mes Notifications
                 </div>
-                @if($user->notifications && $user->notifications->count() > 0)
-                    <span class="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{ $user->notifications->count() }}</span>
+                @php $unreadCount = auth()->user()->notifications()->where('is_read', false)->count(); @endphp
+                @if($unreadCount > 0)
+                    <span id="global-unread-badge" class="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{ $unreadCount }}</span>
                 @endif
             </button>
         </nav>
@@ -260,45 +261,69 @@
                     <p class="text-gray-500 mt-1">Retrouvez ici toutes les communications importantes de la Mairie.</p>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-                    @if($user->notifications && $user->notifications->count() > 0)
-                        <div class="space-y-4">
-                            @foreach($user->notifications->sortByDesc('created_at') as $notification)
-                                <div class="p-5 border {{ str_contains(strtolower($notification->title), 'suppression') ? 'border-rose-100 bg-rose-50/30' : (str_contains(strtolower($notification->title), 'avertissement') ? 'border-amber-100 bg-amber-50/30' : 'border-gray-100 bg-gray-50') }} rounded-2xl flex gap-4">
-                                    <div class="flex-shrink-0 mt-1">
-                                        @if(str_contains(strtolower($notification->title), 'suppression'))
-                                            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
-                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </div>
-                                        @elseif(str_contains(strtolower($notification->title), 'avertissement'))
-                                            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
-                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                            </div>
-                                        @else
-                                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                            </div>
-                                        @endif
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    @forelse(auth()->user()->notifications()->orderBy('created_at', 'desc')->get() as $notif)
+                        <div x-data="{ isRead: {{ $notif->is_read ? 'true' : 'false' }}, expanded: false }"
+                             @click="
+                                expanded = !expanded; 
+                                if (!isRead) { 
+                                    isRead = true; 
+                                    fetch(`/notifications/{{ $notif->id }}/read`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        }
+                                    });
+                                    let badge = document.getElementById('global-unread-badge');
+                                    if (badge) {
+                                        let count = parseInt(badge.textContent) - 1;
+                                        badge.textContent = count;
+                                        if (count <= 0) badge.style.display = 'none';
+                                    }
+                                }
+                             "
+                             :class="{'bg-slate-50 border-l-4 border-l-teal-500': !isRead, 'bg-white hover:bg-slate-50': isRead}"
+                             class="p-6 border-b border-gray-100 last:border-0 transition-colors cursor-pointer group">
+                            <div class="flex items-start gap-4">
+                                <!-- Icône -->
+                                @if(str_contains(strtolower($notif->title), 'suppression') || str_contains(strtolower($notif->title), 'rejet'))
+                                    <div class="h-10 w-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </div>
-                                    <div>
-                                        <div class="flex items-center gap-3 mb-1">
-                                            <h4 class="font-bold text-gray-900">{{ $notification->title }}</h4>
-                                            <span class="text-xs font-medium text-gray-400">{{ $notification->created_at->format('d/m/Y à H:i') }}</span>
-                                        </div>
-                                        <p class="text-sm text-gray-600 leading-relaxed">{{ $notification->message }}</p>
+                                @elseif(str_contains(strtolower($notif->title), 'avertissement'))
+                                    <div class="h-10 w-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                                     </div>
+                                @else
+                                    <div class="h-10 w-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    </div>
+                                @endif
+
+                                <!-- Contenu -->
+                                <div class="flex-grow">
+                                    <div class="flex items-center justify-between gap-4 mb-1">
+                                        <h4 class="text-base font-black flex items-center gap-2" :class="{'text-slate-900': !isRead, 'text-slate-700': isRead}">
+                                            {{ $notif->title }}
+                                            <span x-show="!isRead" class="w-2 h-2 rounded-full bg-teal-500 inline-block"></span>
+                                        </h4>
+                                        <span class="text-xs font-bold text-slate-400 whitespace-nowrap">{{ $notif->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <p class="text-sm text-slate-600 leading-relaxed line-clamp-2" x-show="!expanded">{{ Str::limit($notif->message, 100) }}</p>
+                                    <p class="text-sm text-slate-800 leading-relaxed bg-slate-50 p-4 rounded-xl mt-3 border border-slate-100" x-show="expanded" x-cloak style="display: none;">{{ $notif->message }}</p>
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
-                    @else
-                        <div class="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                    @empty
+                        <div class="text-center py-16 bg-gray-50 rounded-2xl">
                             <div class="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center shadow-sm mb-4">
                                 <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 mb-1">Aucune notification</h3>
                             <p class="text-gray-500">Vous n'avez reçu aucun message ou avertissement de la Mairie.</p>
                         </div>
-                    @endif
+                    @endforelse
                 </div>
             </div>
 

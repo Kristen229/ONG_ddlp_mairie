@@ -15,6 +15,11 @@ class Notification extends Model
         'message',
         'recipient_name',
         'recipient_email',
+        'is_read',
+    ];
+
+    protected $casts = [
+        'is_read' => 'boolean',
     ];
 
     // ---- Relations ----

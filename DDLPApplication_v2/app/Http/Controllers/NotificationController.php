@@ -20,4 +20,12 @@ class NotificationController extends Controller
 
         return redirect()->back()->with('success', 'Notification envoyée.');
     }
+
+    public function markAsRead($id)
+    {
+        $notification = Notification::where('user_id', auth()->id())->findOrFail($id);
+        $notification->update(['is_read' => true]);
+
+        return response()->json(['success' => true]);
+    }
 }

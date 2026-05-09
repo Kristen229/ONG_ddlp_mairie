@@ -96,6 +96,8 @@ Route::middleware('auth')->group(function () {
         $request->session()->regenerateToken();
         return redirect()->route('connexion');
     })->name('user.logout');
+
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 });
 
 /*
