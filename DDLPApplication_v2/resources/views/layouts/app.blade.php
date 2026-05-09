@@ -125,8 +125,8 @@
             <div>
                 <h3 class="font-bold uppercase tracking-wider mb-4">Légal</h3>
                 <ul class="space-y-2 text-gray-400">
-                    <li><a href="#" class="hover:text-white">Politique de Confidentialité</a></li>
-                    <li><a href="#" class="hover:text-white">Conditions d'Utilisation</a></li>
+                    <li><a href="{{ route('confidentialite') }}" class="hover:text-white">Politique de Confidentialité</a></li>
+                    <li><a href="{{ route('conditions') }}" class="hover:text-white">Conditions d'Utilisation</a></li>
                 </ul>
             </div>
         </div>

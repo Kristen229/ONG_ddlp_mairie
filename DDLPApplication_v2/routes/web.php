@@ -36,6 +36,8 @@ Route::get('/association-et-ong', [UserController::class, 'indexe'])->name('asso
 Route::get('/apropos', function () { return view('pages.apropos'); })->name('apropos');
 Route::get('/faq', function () { return view('pages.faq'); })->name('faq');
 Route::get('/contact', function () { return view('pages.contact'); })->name('contact');
+Route::get('/confidentialite', function () { return view('pages.confidentialite'); })->name('confidentialite');
+Route::get('/conditions', function () { return view('pages.conditions'); })->name('conditions');
 Route::get('/api/associations/{id}/activities', [ReviewController::class, 'getActivitiesForAssociation'])->name('api.activities');
 Route::post('/reviews/store-from-home', [ReviewController::class, 'storeFromHome'])->name('reviews.storeFromHome');
 
