@@ -10,8 +10,6 @@ class AssociationRequest extends Model
 {
     use HasFactory;
 
-    protected $table = 'requests';
-
     protected $fillable = [
         'user_id',
         'title',

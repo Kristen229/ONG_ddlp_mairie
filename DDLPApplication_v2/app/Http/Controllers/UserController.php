@@ -18,10 +18,29 @@ class UserController extends Controller
         return view('pages.accueil', compact('users', 'latestReviews'));
     }
 
-    public function indexe()
+    public function indexe(Request $request)
     {
-        $users = User::where('is_approved', true)->get();
-        return view('pages.association-et-ong', compact('users'));
+        $query = User::where('is_approved', true);
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('domaine')) {
+            $query->where('domaine', $request->domaine);
+        }
+
+        $users = $query->paginate(12)->appends($request->query());
+
+        // Récupérer tous les domaines uniques des assos approuvées pour le filtre
+        $domaines = User::where('is_approved', true)
+                        ->whereNotNull('domaine')
+                        ->pluck('domaine')
+                        ->unique()
+                        ->sort()
+                        ->values();
+
+        return view('pages.association-et-ong', compact('users', 'domaines'));
     }
 
     public function showDetails($id)

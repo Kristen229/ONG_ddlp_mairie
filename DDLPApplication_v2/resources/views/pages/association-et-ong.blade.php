@@ -31,10 +31,6 @@
             <div class="w-full md:w-1/4">
                 <select name="domaine" class="block w-full py-3 px-4 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition">
                     <option value="">Tous les domaines</option>
-                    @php
-                        // Extraction et tri des domaines uniques (depuis le résultat du contrôleur)
-                        $domaines = isset($users) && count($users) > 0 ? collect($users)->pluck('domaine')->filter()->unique()->flatten()->sort() : [];
-                    @endphp
                     @foreach($domaines as $d)
                         <option value="{{ $d }}" {{ request('domaine') == $d ? 'selected' : '' }}>{{ $d }}</option>
                     @endforeach

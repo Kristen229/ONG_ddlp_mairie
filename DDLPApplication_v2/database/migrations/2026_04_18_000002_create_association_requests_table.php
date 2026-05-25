@@ -19,7 +19,7 @@ return new class extends Migration
                 'Secretaire exécutif',
             ])->default('Maire de la Commune de Cotonou');
             $table->string('location');
-            $table->string('status')->default('en_attente'); // Enum RequestStatus
+            $table->string('statut')->default('en_attente'); // Enum RequestStatus
             $table->string('pdf_path')->nullable();
             $table->string('reference')->nullable();
             $table->timestamps();
