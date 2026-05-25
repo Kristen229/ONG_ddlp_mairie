@@ -161,6 +161,14 @@ Route::middleware('auth:admin')->group(function () {
     Route::delete('/activites/{id}', [AdminActivityController::class, 'destroy'])->name('activites.destroy');
     Route::post('/activites/{id}/warn', [AdminActivityController::class, 'sendWarning'])->name('activites.warn');
 
+    // Super Admin Routes
+    Route::middleware('super_admin')->group(function () {
+        Route::get('/admin/super-admin', [\App\Http\Controllers\Admin\SuperAdminController::class, 'index'])->name('admin.superadmin.index');
+        Route::post('/admin/super-admin', [\App\Http\Controllers\Admin\SuperAdminController::class, 'store'])->name('admin.superadmin.store');
+        Route::put('/admin/super-admin/{id}', [\App\Http\Controllers\Admin\SuperAdminController::class, 'update'])->name('admin.superadmin.update');
+        Route::delete('/admin/super-admin/{id}', [\App\Http\Controllers\Admin\SuperAdminController::class, 'destroy'])->name('admin.superadmin.destroy');
+    });
+
     // Avis admin (Modération)
     Route::get('/admin/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews.index');
     Route::post('/admin/reviews/{id}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('admin.reviews.approve');
