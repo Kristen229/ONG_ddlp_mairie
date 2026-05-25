@@ -11,8 +11,8 @@
         <!-- En-tête Sidebar -->
         <div class="p-6 border-b border-gray-100 text-center">
             <div class="h-24 w-24 mx-auto rounded-full border-4 border-gray-50 bg-white shadow-sm overflow-hidden mb-3">
-                @if($user->attachment5)
-                    <img src="{{ asset('storage/' . $user->attachment5) }}" alt="Logo" class="w-full h-full object-cover">
+                @if($user->logo_path)
+                    <img src="{{ asset('storage/' . $user->logo_path) }}" alt="Logo" class="w-full h-full object-cover">
                 @else
                     <div class="w-full h-full bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-2xl">
                         {{ substr($user->name, 0, 1) }}
@@ -92,8 +92,8 @@
                             <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50">{{ $user->email }}</p>
                         </div>
                         <div>
-                            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Siège / Localisation</p>
-                            <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50">{{ $user->siege }}</p>
+                            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Adresse / Localisation</p>
+                            <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50">{{ $user->maison ?? '' }}, {{ $user->quartier ?? '' }}, {{ $user->arrondissement ?? '' }}, {{ $user->commune ?? 'Cotonou' }}</p>
                         </div>
                         <div>
                             <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Téléphones</p>
@@ -108,23 +108,21 @@
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Membres du Bureau</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                        @forelse($user->boardMembers as $member)
                         <div class="bg-gradient-to-br from-teal-50 to-white p-5 rounded-2xl border border-teal-100 text-center">
-                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-3">Président</p>
-                            <div class="w-12 h-12 bg-white rounded-full mx-auto mb-2 flex items-center justify-center font-bold text-teal-700 shadow-sm">{{ substr($user->name_president, 0, 1) }}</div>
-                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_president }} {{ $user->last_name_president }}</p>
+                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-3">{{ $member->role }}</p>
+                            <div class="w-12 h-12 bg-white rounded-full mx-auto mb-2 overflow-hidden shadow-sm border border-gray-100">
+                                @if($member->photo_path)
+                                    <img src="{{ asset('storage/' . $member->photo_path) }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center font-bold text-teal-700">{{ substr($member->nom, 0, 1) }}</div>
+                                @endif
+                            </div>
+                            <p class="font-bold text-gray-900 text-sm">{{ $member->nom }} {{ $member->prenom }}</p>
                         </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Vice-Président</p>
-                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_vice_president ?: '-' }} <br/> {{ $user->last_name_vice_president ?: '' }}</p>
-                        </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Secrétaire G.</p>
-                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_secretaire_general ?: '-' }} <br/> {{ $user->last_name_secretaire_general ?: '' }}</p>
-                        </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Trésorier</p>
-                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_tresorier_general ?: '-' }} <br/> {{ $user->last_name_tresorier_general ?: '' }}</p>
-                        </div>
+                        @empty
+                        <div class="col-span-full text-center py-4 text-gray-500">Aucun membre enregistré.</div>
+                        @endforelse
                     </div>
                 </div>
             </div>

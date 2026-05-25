@@ -51,6 +51,7 @@ Route::get('/connexion', [LoginController::class, 'showLoginForm'])->name('conne
 Route::post('/connexion', [LoginController::class, 'authenticate'])->name('user.login');
 
 // --- Inscription User (3 étapes) ---
+Route::get('/inscription', fn() => view('auth.register-prerequis'))->name('inscription.prerequis');
 Route::get('/user/createForme1', fn() => view('auth.register-step1'))->name('user.createForme1');
 Route::get('/user/createForme2', fn() => view('auth.register-step2'))->name('user.createForme2');
 Route::get('/user/createForme3', fn() => view('auth.register-step3'))->name('user.createForme3');

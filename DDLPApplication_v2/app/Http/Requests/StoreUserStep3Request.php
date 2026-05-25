@@ -8,21 +8,14 @@ class StoreUserStep3Request extends FormRequest
 
     public function rules(): array
     {
+        $isAdmin = request()->routeIs('admin.*');
+
         return [
-            'name_president' => 'required|string|max:255',
-            'last_name_president' => 'required|string|max:255',
-            'name_vice_president' => 'nullable|string|max:255',
-            'last_name_vice_president' => 'nullable|string|max:255',
-            'name_secretaire_general' => 'nullable|string|max:255',
-            'last_name_secretaire_general' => 'nullable|string|max:255',
-            'name_tresorier_general' => 'nullable|string|max:255',
-            'last_name_tresorier_general' => 'nullable|string|max:255',
-            'attachment' => 'required|file|mimes:pdf|max:5048',
-            'attachment1' => 'required|file|mimes:pdf|max:5048',
-            'attachment2' => 'required|file|mimes:pdf|max:5048',
-            'attachment3' => 'required|file|mimes:pdf|max:5048',
-            'attachment5' => 'required|image|max:2048',
-            'lien' => 'nullable|url|max:255',
+            'logo' => $isAdmin ? 'nullable|image|max:5048' : 'required|image|max:5048',
+            'doc_recepisse' => 'required|file|mimes:pdf|max:10048',
+            'doc_journal_officiel' => 'required|file|mimes:pdf|max:10048',
+            'doc_attestation' => 'required|file|mimes:pdf|max:10048',
+            'doc_reglement' => 'required|file|mimes:pdf|max:10048',
         ];
     }
 }

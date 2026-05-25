@@ -13,15 +13,27 @@ class RegisterController extends Controller
 {
     public function createUserPartie1(StoreUserStep1Request $request)
     {
+        $domaine = $request->domaine === 'Autre' && $request->filled('domaine_autre') 
+            ? $request->domaine_autre 
+            : $request->domaine;
+
         $user = User::create([
-            'groupe' => $request->group,
+            'groupe' => $request->groupe,
             'name' => $request->name,
-            'domaine' => $request->domaine,
+            'domaine' => $domaine,
             'denomination' => $request->denomination,
             'date' => $request->date,
-            'objectif1' => $request->objectif1,
-            'objectif2' => $request->objectif2,
-            'objectif3' => $request->objectif3,
+            'objectifs' => json_encode($request->objectifs),
+            'commune' => $request->commune,
+            'arrondissement' => $request->arrondissement,
+            'quartier' => $request->quartier,
+            'maison' => $request->maison,
+            'email' => $request->email,
+            'number1' => $request->number1,
+            'number2' => $request->number2,
+            'lien' => $request->lien,
+            'identifiant' => strtoupper(Str::random(8)), // Temporaire avant génération finale
+            'password' => Hash::make(Str::random(16)),
         ]);
 
         session(['user_id' => $user->id]);
@@ -37,15 +49,24 @@ class RegisterController extends Controller
             return redirect()->back()->withErrors('Utilisateur introuvable.');
         }
 
-        $user->update([
-            'siege' => $request->siege,
-            'email' => $request->email,
-            'number1' => $request->number1,
-            'number2' => $request->number2,
-            'password' => Hash::make(Str::random(16)), // Mot de passe temporaire (sera remplacé à l'approbation)
-        ]);
+        if ($request->has('members')) {
+            foreach ($request->members as $memberData) {
+                $photoPath = null;
+                if (isset($memberData['photo'])) {
+                    $photoPath = $memberData['photo']->store('board_members', 'public');
+                }
+                
+                $user->boardMembers()->create([
+                    'role' => $memberData['role'],
+                    'nom' => $memberData['nom'],
+                    'prenom' => $memberData['prenom'],
+                    'telephone' => $memberData['telephone'],
+                    'photo_path' => $photoPath,
+                ]);
+            }
+        }
 
-        return redirect()->route('user.createForme3')->with('success', 'Formulaire 2 enregistré.');
+        return redirect()->route('user.createForme3')->with('success', 'Bureau enregistré.');
     }
 
     public function createUserPartie3(StoreUserStep3Request $request)
@@ -57,25 +78,18 @@ class RegisterController extends Controller
         }
 
         $user->update([
-            'name_president' => $request->name_president,
-            'last_name_president' => $request->last_name_president,
-            'name_vice_president' => $request->name_vice_president,
-            'last_name_vice_president' => $request->last_name_vice_president,
-            'name_secretaire_general' => $request->name_secretaire_general,
-            'last_name_secretaire_general' => $request->last_name_secretaire_general,
-            'name_tresorier_general' => $request->name_tresorier_general,
-            'last_name_tresorier_general' => $request->last_name_tresorier_general,
-            'attachment' => $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null,
-            'attachment1' => $request->hasFile('attachment1') ? $request->file('attachment1')->store('attachments', 'public') : null,
-            'attachment2' => $request->hasFile('attachment2') ? $request->file('attachment2')->store('attachments', 'public') : null,
-            'attachment3' => $request->hasFile('attachment3') ? $request->file('attachment3')->store('attachments', 'public') : null,
-            'attachment5' => $request->hasFile('attachment5') ? $request->file('attachment5')->store('attachments', 'public') : null,
-            'lien' => $request->lien,
+            'logo_path' => $request->hasFile('logo') ? $request->file('logo')->store('attachments', 'public') : null,
+            'recepisse_path' => $request->hasFile('doc_recepisse') ? $request->file('doc_recepisse')->store('attachments', 'public') : null,
+            'journal_officiel_path' => $request->hasFile('doc_journal_officiel') ? $request->file('doc_journal_officiel')->store('attachments', 'public') : null,
+            'attestation_path' => $request->hasFile('doc_attestation') ? $request->file('doc_attestation')->store('attachments', 'public') : null,
+            'reglement_path' => $request->hasFile('doc_reglement') ? $request->file('doc_reglement')->store('attachments', 'public') : null,
             'created_by' => 'user',
             'is_approved' => false,
         ]);
 
+        // Nettoyer la session une fois terminé
         session()->forget('user_id');
-        return redirect()->route('inscription.confirmation');
+
+        return redirect()->route('inscription.confirmation')->with('success', 'Inscription finalisée. En attente de validation.');
     }
 }

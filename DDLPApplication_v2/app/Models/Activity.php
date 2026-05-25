@@ -23,9 +23,6 @@ class Activity extends Model
         'budget_expected',
         'budget_actual',
         'actual_date',
-        'evaluation_status',
-        'evaluation_comment',
-        'score',
         'is_visible',
     ];
 
@@ -34,9 +31,7 @@ class Activity extends Model
         return [
             'date' => 'date',
             'actual_date' => 'date',
-            'evaluation_status' => EvaluationStatus::class,
             'is_visible' => 'boolean',
-            'score' => 'float',
             'budget_expected' => 'float',
             'budget_actual' => 'float',
         ];
