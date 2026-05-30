@@ -76,7 +76,7 @@
                             {{ $admin->created_at->format('d M. Y - H:i') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                            <button @click="editAdmin = {{ json_encode(['id' => $admin->id, 'email' => $admin->email, 'is_super_admin' => $admin->is_super_admin]); }}; showEditModal = true;" class="inline-flex items-center justify-center text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 h-8 w-8 rounded-lg transition-colors border border-teal-100" title="Modifier">
+                            <button @click="editAdmin = {{ json_encode(['id' => $admin->id, 'email' => $admin->email, 'is_super_admin' => $admin->is_super_admin]) }}; showEditModal = true;" class="inline-flex items-center justify-center text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 h-8 w-8 rounded-lg transition-colors border border-teal-100" title="Modifier">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </button>
                             @if($admin->id !== auth('admin')->id())
