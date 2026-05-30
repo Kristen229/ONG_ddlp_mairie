@@ -61,6 +61,35 @@ class StatsService
         $users = User::where('is_approved', true)->paginate(10);
         $pendingCandidatesCount = User::where('is_approved', false)->count();
 
+        // NOUVELLES STATISTIQUES AVANCÉES (PHASE 6)
+        
+        // Top 5 Domaines d'intervention
+        $topDomaines = User::where('is_approved', true)
+            ->whereNotNull('domaine')
+            ->groupBy('domaine')
+            ->select('domaine', DB::raw('count(*) as total'))
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+
+        // Répartition Géographique (par arrondissement)
+        $repartitionGeo = User::where('is_approved', true)
+            ->whereNotNull('arrondissement')
+            ->groupBy('arrondissement')
+            ->select('arrondissement', DB::raw('count(*) as total'))
+            ->orderByDesc('total')
+            ->get();
+
+        // Bénéficiaires touchés (total annuel)
+        $totalBeneficiaries = Activity::whereYear('created_at', $year)
+            ->where('is_visible', true)
+            ->sum('beneficiaries_actual');
+
+        // Taux de résolution des courriers
+        $resolvedRequests = AssociationRequest::whereIn('statut', [RequestStatus::APPROVED, RequestStatus::REJECTED])->count();
+        $totalRequests = AssociationRequest::count();
+        $resolutionRate = $totalRequests > 0 ? round(($resolvedRequests / $totalRequests) * 100) : 0;
+
         return compact(
             'userCount', 'ongCount', 'associationCount',
             'requestCount', 'requestaCount', 'requestrCount', 'requesteCount', 'requesttCount',
@@ -69,7 +98,8 @@ class StatsService
             'labels', 'data', 'statsTotal', 'statsAsso', 'statsONG',
             'lastUsers', 'associations', 'userAssociations', 'adminAssociations',
             'requests', 'pendingRequestsCount', 'notifications', 'allNotifications',
-            'activities', 'users', 'pendingCandidatesCount'
+            'activities', 'users', 'pendingCandidatesCount',
+            'topDomaines', 'repartitionGeo', 'totalBeneficiaries', 'resolutionRate'
         );
     }
 

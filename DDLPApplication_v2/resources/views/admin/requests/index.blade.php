@@ -67,15 +67,13 @@
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             @if($req->statut === \App\Enums\RequestStatus::PENDING)
                                 <div class="flex justify-end gap-2">
-                                    <form method="POST" action="{{ route('admin.approve', $req->id) }}">
-                                        @csrf <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-lg transition-colors" title="Accepter"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></button>
-                                    </form>
-                                    <form method="POST" action="{{ route('admin.reject', $req->id) }}">
-                                        @csrf <button type="submit" class="bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-lg transition-colors" title="Refuser"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-                                    </form>
+                                    <a href="{{ route('requests.show', $req->id) }}" class="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-bold shadow-md">
+                                        Traiter
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                    </a>
                                 </div>
                             @else
-                                <span class="text-xs font-bold text-slate-400">Traité</span>
+                                <a href="{{ route('requests.show', $req->id) }}" class="text-xs font-bold text-teal-600 hover:underline">Voir détails</a>
                             @endif
                         </td>
                     </tr>

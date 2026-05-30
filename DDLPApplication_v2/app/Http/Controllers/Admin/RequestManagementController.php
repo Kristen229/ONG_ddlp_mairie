@@ -21,31 +21,48 @@ class RequestManagementController extends Controller
     public function approve(Request $request, $id)
     {
         $assocRequest = AssociationRequest::findOrFail($id);
-        $assocRequest->update(['statut' => RequestStatus::APPROVED]);
-
-        if ($request->hasFile('attachment')) {
-            $pdfPath = $request->file('attachment')->store('courriers', 'public');
-            $assocRequest->update(['pdf_path' => $pdfPath]);
+        
+        $adminAttachmentPath = $assocRequest->admin_attachment;
+        if ($request->hasFile('admin_attachment')) {
+            $adminAttachmentPath = $request->file('admin_attachment')->store('courriers/responses', 'public');
         }
+
+        $assocRequest->update([
+            'statut' => RequestStatus::APPROVED,
+            'admin_response' => $request->admin_response ?? $request->motif,
+            'admin_attachment' => $adminAttachmentPath,
+            'responded_at' => now(),
+        ]);
 
         $user = $assocRequest->user;
         if ($user && $user->email) {
-            Mail::to($user->email)->send(new RequestApproved($assocRequest, $request->motif));
+            Mail::to($user->email)->send(new RequestApproved($assocRequest, $request->admin_response ?? $request->motif));
         }
 
-        return redirect()->route('admin.dashboard')->with('success', 'Demande approuvée.');
+        return redirect()->route('admin.requests.index')->with('success', 'Courrier approuvé et réponse envoyée.');
     }
 
     public function reject(Request $request, $id)
     {
         $assocRequest = AssociationRequest::findOrFail($id);
-        $assocRequest->update(['statut' => RequestStatus::REJECTED]);
+        
+        $adminAttachmentPath = $assocRequest->admin_attachment;
+        if ($request->hasFile('admin_attachment')) {
+            $adminAttachmentPath = $request->file('admin_attachment')->store('courriers/responses', 'public');
+        }
+
+        $assocRequest->update([
+            'statut' => RequestStatus::REJECTED,
+            'admin_response' => $request->admin_response ?? $request->motif,
+            'admin_attachment' => $adminAttachmentPath,
+            'responded_at' => now(),
+        ]);
 
         $user = $assocRequest->user;
         if ($user && $user->email) {
-            Mail::to($user->email)->send(new RequestRejected($assocRequest, $request->motif));
+            Mail::to($user->email)->send(new RequestRejected($assocRequest, $request->admin_response ?? $request->motif));
         }
 
-        return redirect()->route('admin.dashboard')->with('success', 'Demande rejetée.');
+        return redirect()->route('admin.requests.index')->with('success', 'Courrier rejeté et réponse envoyée.');
     }
 }

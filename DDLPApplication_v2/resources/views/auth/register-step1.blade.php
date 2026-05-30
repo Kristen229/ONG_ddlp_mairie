@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="bg-gray-50 py-12 min-h-screen" x-data="{ domaine: '{{ old('domaine', '') }}' }">
+<section class="bg-gray-50 py-12 min-h-screen" x-data="{ domaine: {{ json_encode(old('domaine', [])) }} }">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Carte principale -->
@@ -67,55 +67,56 @@
 
                         <!-- Domaine d'intervention -->
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Domaine d'intervention <span class="text-red-500">*</span></label>
-                            <select name="domaine" x-model="domaine" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
-                                <option value="">Choisir un domaine...</option>
+                            <label class="block text-base font-bold text-gray-700 mb-1">Domaine d'intervention (Maintenez Ctrl/Cmd pour sélectionner plusieurs) <span class="text-red-500">*</span></label>
+                            <select name="domaine[]" multiple x-model="domaine" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base h-48">
+                                <option value="" disabled>Choisir un ou plusieurs domaines...</option>
                                 @php
                                 $domaines = [
-                                    'Sport de masse et d\'animation',
-                                    'Sport au féminin',
-                                    'Sport-Loisir et Fitness',
-                                    'Sport et Handicap (handisport, sport adapté)',
-                                    'Sport et Éducation (sport scolaire, périscolaire)',
-                                    'Sport et Santé (activités physiques adaptées)',
-                                    'Sport et Numérique (e-sport, innovation digitale)',
-                                    'Sport et Environnement (éco-sport, activités nature)',
-                                    'Sport et Culture (danses traditionnelles, arts martiaux)',
-                                    'Sport et Tourisme (randonnée, activités balnéaires)',
-                                    'Sport de haut niveau et élite',
-                                    'Sport et Citoyenneté (fair-play, valeurs olympiques)',
-                                    'Formation et Certification (arbitres, entraîneurs)',
-                                    'Médecine et Sciences du sport',
-                                    'Infrastructure et Équipements sportifs',
-                                    'Sport et Développement local',
-                                    'Gestion et Administration sportive',
-                                    'Sport et Médias (communication, promotion)',
-                                    'Sport et Économie (entrepreneuriat sportif)',
-                                    'Sport et Sécurité (prévention, secourisme sportif)',
-                                    'Sport et Coopération internationale',
-                                    'Sport et Jeunesse (animation, insertion)',
-                                    'Sport et 3ème âge (activités seniors)',
-                                    'Sport et Nutrition',
-                                    'Sport et Psychologie (performance mentale)',
-                                    'Sport et Droit (réglementation, contentieux)',
-                                    'Sport et Genre (égalité, mixité)',
-                                    'Sport et Patrimoine (jeux traditionnels)',
-                                    'Sport et Recherche (R&D, innovation)',
-                                    'Sport et Technologie (wearables, data)',
-                                    'Sport et Solidarité (actions humanitaires)',
-                                    'Autre',
+                                    "Sport de masse et d'animation (tournois locaux, maracana, football, basketball)",
+                                    "Sport au féminin (promotion du sport chez les filles, lutte contre les stéréotypes)",
+                                    "Sport-Loisir et Fitness (clubs de marche, gymnastique d'entretien, bien-être)",
+                                    "Handisport (pratique sportive adaptée aux personnes en situation de handicap)",
+                                    "Infrastructures sportives (aménagement de terrains de proximité, dons d'équipements)",
+                                    "Enseignement primaire et secondaire (construction de classes, dons de fournitures, parrainages)",
+                                    "Éducation des filles (maintien à l'école, lutte contre le décrochage précoce)",
+                                    "Alphabétisation des adultes (cours de lecture/écriture en langues nationales : Fon, Adja, Yoruba...)",
+                                    "Formation professionnelle (appui aux apprentis en couture, coiffure, mécanique, soudure)",
+                                    "Soutien scolaire et Excellence (cours de renforcement, bibliothèques, prix d'excellence)",
+                                    "Santé maternelle et infantile (suivi des grossesses, accouchements sécurisés, vaccination)",
+                                    "Lutte contre les maladies (prévention du paludisme, du VIH/SIDA, des IST, du diabète)",
+                                    "Santé sexuelle des jeunes (contraception, gestion des menstrues, éviter les grossesses précoces)",
+                                    "Nutrition communautaire (lutte contre la malnutrition des enfants, bouillies enrichies)",
+                                    "Santé mentale (prise en charge et déstigmatisation des troubles psychiques)",
+                                    "Protection de l'enfance (lutte contre le trafic d'enfants/Vidomégons, la maltraitance)",
+                                    "Droits des femmes et VBG (assistance juridique et écoute pour les victimes de violences)",
+                                    "Droits des détenus (amélioration des conditions de vie en prison, réinsertion)",
+                                    "Inclusion sociale (défense des droits des personnes marginalisées ou handicapées)",
+                                    "Microfinance et Épargne (groupements d'épargne type AVEC pour l'autonomie des femmes)",
+                                    "Agriculture et Maraîchage (appui technique aux producteurs, agroécologie, semences résilientes)",
+                                    "Transformation locale (modernisation de la production de gari, huile de palme, beurre de karité)",
+                                    "Entrepreneuriat des jeunes (incubateurs, aide à la création de micro-entreprises, kits d'installation)",
+                                    "Eau potable (WASH) (forages, puits, gestion des points d'eau villageois)",
+                                    "Assainissement et Déchets (collecte des ordures, salubrité publique, latrines scolaires)",
+                                    "Biodiversité et Nature (protection des mangroves, zones humides, forêts sacrées, parcs)",
+                                    "Changement climatique (reboisement, lutte contre l'érosion côtière, foyers améliorés)",
+                                    "Gouvernance locale (contrôle citoyen de l'action publique, veille sur les budgets des mairies)",
+                                    "Éducation civique (sensibilisation aux droits et devoirs, culture de la paix)",
+                                    "Art et Patrimoine (valorisation des danses traditionnelles, artisanat d'art, festivals)",
+                                    "Tourisme communautaire (écotourisme géré par les populations villageoises)",
+                                    "Inclusion numérique (alphabétisation digitale, initiation informatique en milieu rural)",
+                                    "Autre"
                                 ];
                                 @endphp
                                 @foreach($domaines as $d)
-                                    <option value="{{ $d }}" {{ old('domaine') == $d ? 'selected' : '' }}>{{ $d }}</option>
+                                    <option value="{{ $d }}" {{ is_array(old('domaine')) && in_array($d, old('domaine')) ? 'selected' : '' }}>{{ $d }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <!-- Champ "Autre" conditionnel -->
-                        <div class="md:col-span-2" x-show="domaine === 'Autre'" x-transition>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Précisez votre domaine <span class="text-red-500">*</span></label>
-                            <input type="text" name="domaine_autre" value="{{ old('domaine_autre') }}" placeholder="Décrivez votre domaine d'intervention..." class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm" :required="domaine === 'Autre'">
+                        <div class="md:col-span-2" x-show="Array.isArray(domaine) ? domaine.includes('Autre') : domaine === 'Autre'" x-transition>
+                            <label class="block text-base font-bold text-gray-700 mb-1">Précisez votre domaine <span class="text-red-500">*</span></label>
+                            <input type="text" name="domaine_autre" value="{{ old('domaine_autre') }}" placeholder="Décrivez votre domaine d'intervention..." class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base" :required="Array.isArray(domaine) ? domaine.includes('Autre') : domaine === 'Autre'">
                         </div>
 
                         <!-- Date de création légale -->

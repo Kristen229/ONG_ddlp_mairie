@@ -51,6 +51,8 @@ class User extends Authenticatable
             'date' => 'date',
             'is_approved' => 'boolean',
             'must_change_password' => 'boolean',
+            'objectifs' => 'array',
+            'domaine' => 'array',
         ];
     }
 

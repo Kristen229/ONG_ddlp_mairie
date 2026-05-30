@@ -21,6 +21,11 @@ class AssociationRequest extends Model
         'destinataire',
         'motif',
         'reference',
+        'objet',
+        'attachment',
+        'admin_response',
+        'admin_attachment',
+        'responded_at',
     ];
 
     protected function casts(): array

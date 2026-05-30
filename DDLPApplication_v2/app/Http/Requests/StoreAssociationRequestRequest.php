@@ -9,12 +9,8 @@ class StoreAssociationRequestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'type' => 'required|string',
-            'location' => 'required|string|max:255',
-            'description' => 'required|string',
-            'destinataire' => 'required|in:Maire de la Commune de Cotonou,Secretaire exécutif',
-            'reference' => 'required|string',
+            'objet' => 'required|string|max:255',
+            'attachment' => 'required|file|mimes:pdf|max:10240',
         ];
     }
 }
