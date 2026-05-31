@@ -23,3 +23,13 @@ Corriger les urgences securite, base de donnees, configuration, emails, statisti
 - `php artisan route:list`
 - `php artisan migrate:fresh --seed`
 - `php artisan test`
+
+## Plan additionnel valide: uploads inscription a 20 Mo
+
+1. Passer les validations Laravel des photos, logos et documents d'inscription a `max:20480`.
+2. Ajouter les limites PHP CLI actives dans `/home/kristen/.config/herd-lite/bin/php.ini`:
+   - `upload_max_filesize=20M`
+   - `post_max_size=120M`
+   - `memory_limit=256M`
+3. Verifier les valeurs actives avec `php -i`.
+4. Relancer les tests Laravel.

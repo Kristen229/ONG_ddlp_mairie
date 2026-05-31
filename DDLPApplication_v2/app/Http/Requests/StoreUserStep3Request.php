@@ -11,11 +11,11 @@ class StoreUserStep3Request extends FormRequest
         $isAdmin = request()->routeIs('admin.*');
 
         return [
-            'logo' => $isAdmin ? 'nullable|image|max:5048' : 'required|image|max:5048',
-            'doc_recepisse' => 'required|file|mimes:pdf|max:10048',
-            'doc_journal_officiel' => 'required|file|mimes:pdf|max:10048',
-            'doc_attestation' => 'required|file|mimes:pdf|max:10048',
-            'doc_reglement' => 'required|file|mimes:pdf|max:10048',
+            'logo' => $isAdmin ? 'nullable|image|max:20480' : 'required|image|max:20480',
+            'doc_recepisse' => 'required|file|mimes:pdf|max:20480',
+            'doc_journal_officiel' => 'required|file|mimes:pdf|max:20480',
+            'doc_attestation' => 'required|file|mimes:pdf|max:20480',
+            'doc_reglement' => 'required|file|mimes:pdf|max:20480',
         ];
     }
 }

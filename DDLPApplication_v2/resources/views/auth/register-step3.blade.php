@@ -39,7 +39,7 @@
                     <div class="p-6 border-2 border-dashed border-teal-300 rounded-2xl bg-teal-50/50">
                         <label class="block text-sm font-bold text-gray-700 mb-2">Logo (Image PNG/JPG) <span class="text-red-500">*</span></label>
                         <input type="file" name="logo" accept="image/*" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-100 file:text-teal-800 hover:file:bg-teal-200">
-                        <p class="text-xs text-gray-500 mt-2">Format accepté : PNG, JPG, JPEG. Taille max : 5 Mo.</p>
+                        <p class="text-xs text-gray-500 mt-2">Format accepté : PNG, JPG, JPEG. Taille max : 20 Mo.</p>
                     </div>
 
                     <hr class="border-gray-200">

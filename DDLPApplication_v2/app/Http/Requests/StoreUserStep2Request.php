@@ -16,7 +16,7 @@ class StoreUserStep2Request extends FormRequest
             'members.*.nom' => 'required|string|max:255',
             'members.*.prenom' => 'required|string|max:255',
             'members.*.telephone' => 'required|string|max:255',
-            'members.*.photo' => $isAdmin ? 'nullable|image|max:5048' : 'required|image|max:5048',
+            'members.*.photo' => $isAdmin ? 'nullable|image|max:20480' : 'required|image|max:20480',
         ];
     }
 }

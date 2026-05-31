@@ -15,3 +15,6 @@ Date: 2026-05-31
 - [x] Dette - `objectifs` stocke proprement
 - [x] Tests - Suite de tests reparable et executee
 - [x] Rapport final redige
+- [x] Uploads inscription - Limites Laravel passees a 20 Mo
+- [x] Uploads inscription - Limites PHP CLI passees a 20 Mo
+- [x] Uploads inscription - Verification executee
