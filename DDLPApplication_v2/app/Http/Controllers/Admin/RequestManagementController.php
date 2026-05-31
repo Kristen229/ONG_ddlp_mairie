@@ -21,6 +21,7 @@ class RequestManagementController extends Controller
     public function approve(Request $request, $id)
     {
         $assocRequest = AssociationRequest::findOrFail($id);
+        $response = $request->input('admin_response') ?: $request->input('motif', 'Votre courrier a été approuvé.');
         
         $adminAttachmentPath = $assocRequest->admin_attachment;
         if ($request->hasFile('admin_attachment')) {
@@ -29,14 +30,14 @@ class RequestManagementController extends Controller
 
         $assocRequest->update([
             'statut' => RequestStatus::APPROVED,
-            'admin_response' => $request->admin_response ?? $request->motif,
+            'admin_response' => $response,
             'admin_attachment' => $adminAttachmentPath,
             'responded_at' => now(),
         ]);
 
         $user = $assocRequest->user;
         if ($user && $user->email) {
-            Mail::to($user->email)->send(new RequestApproved($assocRequest, $request->admin_response ?? $request->motif));
+            Mail::to($user->email)->send(new RequestApproved($assocRequest, $response));
         }
 
         return redirect()->route('admin.requests.index')->with('success', 'Courrier approuvé et réponse envoyée.');
@@ -45,6 +46,7 @@ class RequestManagementController extends Controller
     public function reject(Request $request, $id)
     {
         $assocRequest = AssociationRequest::findOrFail($id);
+        $response = $request->input('admin_response') ?: $request->input('motif', 'Votre courrier a été refusé.');
         
         $adminAttachmentPath = $assocRequest->admin_attachment;
         if ($request->hasFile('admin_attachment')) {
@@ -53,14 +55,14 @@ class RequestManagementController extends Controller
 
         $assocRequest->update([
             'statut' => RequestStatus::REJECTED,
-            'admin_response' => $request->admin_response ?? $request->motif,
+            'admin_response' => $response,
             'admin_attachment' => $adminAttachmentPath,
             'responded_at' => now(),
         ]);
 
         $user = $assocRequest->user;
         if ($user && $user->email) {
-            Mail::to($user->email)->send(new RequestRejected($assocRequest, $request->admin_response ?? $request->motif));
+            Mail::to($user->email)->send(new RequestRejected($assocRequest, $response));
         }
 
         return redirect()->route('admin.requests.index')->with('success', 'Courrier rejeté et réponse envoyée.');

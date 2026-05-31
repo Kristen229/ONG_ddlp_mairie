@@ -13,15 +13,21 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('type');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->enum('destinataire', [
                 'Maire de la Commune de Cotonou',
                 'Secretaire exécutif',
             ])->default('Maire de la Commune de Cotonou');
-            $table->string('location');
+            $table->string('location')->nullable();
             $table->string('statut')->default('en_attente'); // Enum RequestStatus
             $table->string('pdf_path')->nullable();
             $table->string('reference')->nullable();
+            $table->string('objet')->nullable();
+            $table->string('attachment')->nullable();
+            $table->text('motif')->nullable();
+            $table->text('admin_response')->nullable();
+            $table->string('admin_attachment')->nullable();
+            $table->timestamp('responded_at')->nullable();
             $table->timestamps();
         });
     }

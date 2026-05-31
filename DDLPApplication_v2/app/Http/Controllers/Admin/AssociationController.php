@@ -13,26 +13,32 @@ class AssociationController extends Controller
 {
     public function index()
     {
-        $users = User::where('is_approved', true)->paginate(20);
+        $users = User::where('is_approved', true)->with('domaines')->paginate(20);
         return view('admin.associations.index', compact('users'));
     }
 
     public function showPage($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with(['domaines', 'boardMembers'])->findOrFail($id);
         return view('admin.associations.show', compact('user'));
     }
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('domaines')->findOrFail($id);
         return view('admin.associations.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $user->update($request->except(['_token', '_method']));
+        
+        $data = $request->except(['_token', '_method', 'domaine', 'domaine_autre']);
+        $domaines = $this->normalizeDomaines($request->input('domaine', []), $request->input('domaine_autre'));
+
+        $user->update($data);
+        $user->syncDomainesByNames($domaines);
+
         return redirect()->route('admin.dashboard')->with('success', 'Association mise à jour.');
     }
 
@@ -45,17 +51,14 @@ class AssociationController extends Controller
     // --- Inscription par l'admin (3 étapes) ---
     public function createUserType1(StoreUserStep1Request $request)
     {
-        $domaine = $request->domaine === 'Autre' && $request->filled('domaine_autre') 
-            ? $request->domaine_autre 
-            : $request->domaine;
+        $domaines = $this->normalizeDomaines($request->input('domaine', []), $request->input('domaine_autre'));
 
         $user = User::create([
             'groupe' => $request->groupe,
             'name' => $request->name,
-            'domaine' => $domaine,
             'denomination' => $request->denomination,
             'date' => $request->date,
-            'objectifs' => json_encode($request->objectifs),
+            'objectifs' => $request->objectifs,
             'commune' => $request->commune,
             'arrondissement' => $request->arrondissement,
             'quartier' => $request->quartier,
@@ -67,6 +70,8 @@ class AssociationController extends Controller
             'identifiant' => strtoupper(\Illuminate\Support\Str::random(8)),
             'password' => Hash::make(\Illuminate\Support\Str::random(16)),
         ]);
+
+        $user->syncDomainesByNames($domaines);
 
         session(['admin_creating_user_id' => $user->id]);
         return redirect()->route('admin.createForm2');
@@ -114,5 +119,17 @@ class AssociationController extends Controller
 
         session()->forget('admin_creating_user_id');
         return redirect()->route('admin.dashboard')->with('success', 'Association créée avec succès.');
+    }
+
+    private function normalizeDomaines(array $domaines, ?string $autre): array
+    {
+        return collect($domaines)
+            ->map(fn ($domaine) => $domaine === 'Autre' && filled($autre) ? $autre : $domaine)
+            ->reject(fn ($domaine) => $domaine === 'Autre')
+            ->filter(fn ($domaine) => is_string($domaine) && trim($domaine) !== '')
+            ->map(fn ($domaine) => trim($domaine))
+            ->unique()
+            ->values()
+            ->all();
     }
 }

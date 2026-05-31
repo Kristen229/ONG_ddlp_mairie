@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Domaine;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,8 +11,12 @@ class UserController extends Controller
 {
     public function showAssociations()
     {
-        $users = User::where('is_approved', true)->get();
+        $users = User::where('is_approved', true)
+            ->with(['domaines', 'activities.user.domaines'])
+            ->get();
+
         $latestReviews = \App\Models\Review::with(['user', 'activity'])
+            ->where('is_approved', true)
             ->latest()
             ->take(6)
             ->get();
@@ -27,33 +32,35 @@ class UserController extends Controller
         }
 
         if ($request->filled('domaine')) {
-            $query->where('domaine', $request->domaine);
+            $query->whereHas('domaines', fn ($domaine) => $domaine->where('nom', $request->domaine));
         }
 
+        $query->with('domaines');
         $users = $query->paginate(12)->appends($request->query());
 
         // Récupérer tous les domaines uniques des assos approuvées pour le filtre
-        $domaines = User::where('is_approved', true)
-                        ->whereNotNull('domaine')
-                        ->pluck('domaine')
-                        ->unique()
-                        ->sort()
-                        ->values();
+        $domaines = Domaine::whereHas('users', fn ($user) => $user->where('is_approved', true))
+            ->orderBy('nom')
+            ->pluck('nom');
 
         return view('pages.association-et-ong', compact('users', 'domaines'));
     }
 
     public function showDetails($id)
     {
-        $user = User::where('is_approved', true)->with(['activities' => function($query) {
+        $user = User::where('is_approved', true)->with(['domaines', 'activities' => function($query) {
             $query->where('is_visible', true);
-        }, 'reviews'])->findOrFail($id);
+        }, 'reviews' => function ($query) {
+            $query->where('is_approved', true)->latest();
+        }])->findOrFail($id);
         return view('pages.association-details', compact('user'));
     }
 
     public function shows($id)
     {
-        $user = User::findOrFail($id);
+        abort_unless((int) $id === Auth::id(), 403);
+
+        $user = User::with(['domaines', 'activities', 'requests', 'notifications', 'boardMembers'])->findOrFail($id);
         return view('user.show', compact('user'));
     }
 
@@ -86,6 +93,8 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        abort_unless((int) $id === Auth::id(), 403);
+
         $user = User::findOrFail($id);
         $data = $request->except(['_token', '_method']);
 
@@ -99,6 +108,8 @@ class UserController extends Controller
 
     public function updateInfos(Request $request, $id)
     {
+        abort_unless((int) $id === Auth::id(), 403);
+
         $user = User::findOrFail($id);
         $data = $request->except(['_token', '_method']);
         $user->update($data);

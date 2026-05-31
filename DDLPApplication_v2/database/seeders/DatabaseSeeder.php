@@ -15,6 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        foreach (\App\Models\Domaine::DEFAULT_NAMES as $nom) {
+            \App\Models\Domaine::firstOrCreate(['nom' => $nom]);
+        }
+
         // Créer un Super Admin
         \App\Models\Admin::create([
             'email' => 'superadmin@cotonou.bj',

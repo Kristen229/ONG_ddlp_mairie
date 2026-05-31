@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->json('domaine')->nullable()->change();
+        Schema::create('domaines', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom')->unique();
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('domaine')->nullable()->change();
-        });
+        Schema::dropIfExists('domaines');
     }
 };

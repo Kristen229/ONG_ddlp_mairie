@@ -13,7 +13,7 @@ class CandidateController extends Controller
 {
     public function index()
     {
-        $pendingUsers = User::where('is_approved', false)->orderBy('created_at', 'desc')->get();
+        $pendingUsers = User::where('is_approved', false)->with('domaines')->orderBy('created_at', 'desc')->get();
         return view('admin.candidates.index', compact('pendingUsers'));
     }
 

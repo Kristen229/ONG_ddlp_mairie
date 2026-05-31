@@ -12,7 +12,7 @@ class ExportController extends Controller
 {
     public function downloadAssociationPdf($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('domaines')->findOrFail($id);
         $pdf = Pdf::loadView('pdf.association', compact('user'));
         return $pdf->download("association_{$user->name}.pdf");
     }
@@ -21,8 +21,8 @@ class ExportController extends Controller
     {
         $domaine = $request->query('domaine', 'all');
         $users = $domaine === 'all'
-            ? User::all()
-            : User::where('domaine', 'like', "%{$domaine}%")->get();
+            ? User::with('domaines')->get()
+            : User::whereHas('domaines', fn ($query) => $query->where('nom', $domaine))->with('domaines')->get();
 
         $pdf = Pdf::loadView('pdf.export-domaine', compact('users', 'domaine'));
         return $pdf->download("associations_{$domaine}.pdf");

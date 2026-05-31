@@ -14,7 +14,6 @@ return new class extends Migration
             // Informations générales
             $table->string('groupe'); // ONG ou Association
             $table->string('name');
-            $table->string('domaine');
             $table->string('denomination');
             $table->date('date');
             $table->json('objectifs')->nullable(); // Stockage propre des 5 objectifs

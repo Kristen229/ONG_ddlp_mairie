@@ -14,7 +14,6 @@ class User extends Authenticatable
     protected $fillable = [
         'groupe',
         'name',
-        'domaine',
         'denomination',
         'date',
         'objectifs',
@@ -52,7 +51,6 @@ class User extends Authenticatable
             'is_approved' => 'boolean',
             'must_change_password' => 'boolean',
             'objectifs' => 'array',
-            'domaine' => 'array',
         ];
     }
 
@@ -78,8 +76,34 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
+    public function domaines()
+    {
+        return $this->belongsToMany(Domaine::class)->withTimestamps();
+    }
+
     public function boardMembers()
     {
         return $this->hasMany(BoardMember::class);
+    }
+
+    public function getDomaineAttribute(): string
+    {
+        $domaines = $this->relationLoaded('domaines')
+            ? $this->domaines
+            : $this->domaines()->get();
+
+        return $domaines->pluck('nom')->implode(', ');
+    }
+
+    public function syncDomainesByNames(array $names): void
+    {
+        $ids = collect($names)
+            ->filter(fn ($name) => is_string($name) && trim($name) !== '')
+            ->map(fn ($name) => trim($name))
+            ->unique()
+            ->map(fn ($name) => Domaine::firstOrCreate(['nom' => $name])->id)
+            ->all();
+
+        $this->domaines()->sync($ids);
     }
 }

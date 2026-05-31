@@ -11,7 +11,8 @@ class StoreUserStep1Request extends FormRequest
         return [
             'groupe' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'domaine' => 'required|string|max:255',
+            'domaine' => 'required|array',
+            'domaine.*' => 'string|max:255',
             'domaine_autre' => 'nullable|string|max:255',
             'denomination' => 'required|string|max:255',
             'date' => 'required|date',

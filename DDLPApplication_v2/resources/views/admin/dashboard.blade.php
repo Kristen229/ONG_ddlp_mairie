@@ -181,7 +181,7 @@
                 <div class="space-y-4">
                     @forelse($topDomaines as $domaine)
                         <div class="flex items-center justify-between">
-                            <span class="text-sm font-bold text-slate-600 truncate mr-4">{{ $domaine->domaine }}</span>
+                            <span class="text-sm font-bold text-slate-600 truncate mr-4">{{ $domaine->nom }}</span>
                             <span class="text-sm font-black text-slate-800 bg-slate-100 px-3 py-1 rounded-full">{{ $domaine->total }}</span>
                         </div>
                         <div class="w-full bg-slate-100 rounded-full h-2">

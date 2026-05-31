@@ -13,17 +13,14 @@ class RegisterController extends Controller
 {
     public function createUserPartie1(StoreUserStep1Request $request)
     {
-        $domaine = $request->domaine === 'Autre' && $request->filled('domaine_autre') 
-            ? $request->domaine_autre 
-            : $request->domaine;
+        $domaines = $this->normalizeDomaines($request->input('domaine', []), $request->input('domaine_autre'));
 
         $user = User::create([
             'groupe' => $request->groupe,
             'name' => $request->name,
-            'domaine' => $domaine,
             'denomination' => $request->denomination,
             'date' => $request->date,
-            'objectifs' => json_encode($request->objectifs),
+            'objectifs' => $request->objectifs,
             'commune' => $request->commune,
             'arrondissement' => $request->arrondissement,
             'quartier' => $request->quartier,
@@ -35,6 +32,8 @@ class RegisterController extends Controller
             'identifiant' => strtoupper(Str::random(8)), // Temporaire avant génération finale
             'password' => Hash::make(Str::random(16)),
         ]);
+
+        $user->syncDomainesByNames($domaines);
 
         session(['user_id' => $user->id]);
         return redirect()->route('user.createForme2');
@@ -91,5 +90,17 @@ class RegisterController extends Controller
         session()->forget('user_id');
 
         return redirect()->route('inscription.confirmation')->with('success', 'Inscription finalisée. En attente de validation.');
+    }
+
+    private function normalizeDomaines(array $domaines, ?string $autre): array
+    {
+        return collect($domaines)
+            ->map(fn ($domaine) => $domaine === 'Autre' && filled($autre) ? $autre : $domaine)
+            ->reject(fn ($domaine) => $domaine === 'Autre')
+            ->filter(fn ($domaine) => is_string($domaine) && trim($domaine) !== '')
+            ->map(fn ($domaine) => trim($domaine))
+            ->unique()
+            ->values()
+            ->all();
     }
 }

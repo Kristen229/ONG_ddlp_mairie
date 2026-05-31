@@ -42,14 +42,14 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Nom de la structure -->
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Nom de la structure <span class="text-red-500">*</span></label>
-                            <input type="text" name="name" value="{{ old('name') }}" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Nom de la structure <span class="text-red-500">*</span></label>
+                            <input type="text" name="name" value="{{ old('name') }}" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
 
                         <!-- Catégorie (Group) -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Catégorie <span class="text-red-500">*</span></label>
-                            <select name="groupe" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Catégorie <span class="text-red-500">*</span></label>
+                            <select name="groupe" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                                 <option value="">Choisir une catégorie...</option>
                                 @foreach(\App\Enums\UserGroup::cases() as $group)
                                     <option value="{{ $group->value }}" {{ old('groupe') == $group->value ? 'selected' : '' }}>
@@ -61,15 +61,15 @@
 
                         <!-- Acronyme / Sigle -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Acronyme / Sigle <span class="text-red-500">*</span></label>
-                            <input type="text" name="denomination" value="{{ old('denomination') }}" placeholder="Ex: DDLP" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Acronyme / Sigle <span class="text-red-500">*</span></label>
+                            <input type="text" name="denomination" value="{{ old('denomination') }}" placeholder="Ex: DDLP" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
 
                         <!-- Domaine d'intervention -->
                         <div class="md:col-span-2">
-                            <label class="block text-base font-bold text-gray-700 mb-1">Domaine d'intervention (Maintenez Ctrl/Cmd pour sélectionner plusieurs) <span class="text-red-500">*</span></label>
-                            <select name="domaine[]" multiple x-model="domaine" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base h-48">
-                                <option value="" disabled>Choisir un ou plusieurs domaines...</option>
+                            <label class="block text-base font-bold text-gray-700 mb-3">Domaines d'intervention (Cochez toutes les cases applicables) <span class="text-red-500">*</span></label>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-96 overflow-y-auto p-2 border border-gray-200 rounded-xl bg-gray-50/50">
                                 @php
                                 $domaines = [
                                     "Sport de masse et d'animation (tournois locaux, maracana, football, basketball)",
@@ -107,10 +107,20 @@
                                     "Autre"
                                 ];
                                 @endphp
-                                @foreach($domaines as $d)
-                                    <option value="{{ $d }}" {{ is_array(old('domaine')) && in_array($d, old('domaine')) ? 'selected' : '' }}>{{ $d }}</option>
+                                @foreach($domaines as $index => $d)
+                                    <label class="cursor-pointer relative">
+                                        <input type="checkbox" name="domaine[]" value="{{ $d }}" x-model="domaine" class="peer sr-only">
+                                        <div class="h-full rounded-xl border-2 border-gray-200 bg-white p-4 transition-all hover:border-teal-300 peer-checked:border-teal-600 peer-checked:bg-teal-50 peer-focus:ring-2 peer-focus:ring-teal-500 peer-focus:ring-offset-2 flex items-start gap-3 shadow-sm">
+                                            <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 border-gray-300 peer-checked:border-teal-600 peer-checked:bg-teal-600 mt-0.5 transition-colors">
+                                                <svg class="h-3 w-3 text-white opacity-0 peer-checked:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="domaine.includes('{{ addslashes($d) }}')"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                            </div>
+                                            <span class="text-sm font-semibold text-gray-700 leading-snug">{{ $d }}</span>
+                                        </div>
+                                    </label>
                                 @endforeach
-                            </select>
+                            </div>
+                            <!-- Validation fallback (hidden input for required constraint if none selected) -->
+                            <input type="checkbox" class="sr-only" required :checked="domaine.length > 0">
                         </div>
 
                         <!-- Champ "Autre" conditionnel -->
@@ -121,14 +131,14 @@
 
                         <!-- Date de création légale -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Date de création légale <span class="text-red-500">*</span></label>
-                            <input type="date" name="date" value="{{ old('date') }}" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Date de création légale <span class="text-red-500">*</span></label>
+                            <input type="date" name="date" value="{{ old('date') }}" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
 
                         <!-- Lien site web -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Site Web / Réseaux sociaux</label>
-                            <input type="url" name="lien" value="{{ old('lien') }}" placeholder="https://..." class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Site Web / Réseaux sociaux</label>
+                            <input type="url" name="lien" value="{{ old('lien') }}" placeholder="https://..." class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
                     </div>
 
@@ -142,16 +152,16 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Commune -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Commune <span class="text-red-500">*</span></label>
-                            <select name="commune" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Commune <span class="text-red-500">*</span></label>
+                            <select name="commune" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                                 <option value="Cotonou" selected>Cotonou</option>
                             </select>
                         </div>
 
                         <!-- Arrondissement -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Arrondissement <span class="text-red-500">*</span></label>
-                            <select name="arrondissement" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Arrondissement <span class="text-red-500">*</span></label>
+                            <select name="arrondissement" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                                 <option value="">Choisir un arrondissement...</option>
                                 @for($i = 1; $i <= 13; $i++)
                                     <option value="{{ $i }}ème Arrondissement" {{ old('arrondissement') == $i.'ème Arrondissement' ? 'selected' : '' }}>{{ $i }}{{ $i == 1 ? 'er' : 'ème' }} Arrondissement</option>
@@ -161,14 +171,14 @@
 
                         <!-- Quartier -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Quartier <span class="text-red-500">*</span></label>
-                            <input type="text" name="quartier" value="{{ old('quartier') }}" placeholder="Nom du quartier" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Quartier <span class="text-red-500">*</span></label>
+                            <input type="text" name="quartier" value="{{ old('quartier') }}" placeholder="Nom du quartier" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
 
                         <!-- Maison / Repère -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Maison / Repère <span class="text-red-500">*</span></label>
-                            <input type="text" name="maison" value="{{ old('maison') }}" placeholder="Lot, immeuble, repère..." required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Maison / Repère <span class="text-red-500">*</span></label>
+                            <input type="text" name="maison" value="{{ old('maison') }}" placeholder="Lot, immeuble, repère..." required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
                     </div>
 
@@ -182,20 +192,20 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Email -->
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Adresse e-mail <span class="text-red-500">*</span></label>
-                            <input type="email" name="email" value="{{ old('email') }}" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Adresse e-mail <span class="text-red-500">*</span></label>
+                            <input type="email" name="email" value="{{ old('email') }}" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
 
                         <!-- Téléphone 1 -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Téléphone principal <span class="text-red-500">*</span></label>
-                            <input type="text" name="number1" value="{{ old('number1') }}" placeholder="+229 XX XX XX XX" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Téléphone principal <span class="text-red-500">*</span></label>
+                            <input type="text" name="number1" value="{{ old('number1') }}" placeholder="+229 XX XX XX XX" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
 
                         <!-- Téléphone 2 -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Téléphone secondaire <span class="text-gray-400 text-xs font-normal">(optionnel)</span></label>
-                            <input type="text" name="number2" value="{{ old('number2') }}" placeholder="+229 XX XX XX XX" class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Téléphone secondaire <span class="text-gray-400 text-sm font-normal">(optionnel)</span></label>
+                            <input type="text" name="number2" value="{{ old('number2') }}" placeholder="+229 XX XX XX XX" class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base">
                         </div>
                     </div>
 
@@ -209,8 +219,8 @@
                     <div class="space-y-4">
                         @for($i = 0; $i < 5; $i++)
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Objectif {{ $i + 1 }} <span class="text-red-500">*</span></label>
-                            <input type="text" name="objectifs[]" value="{{ old('objectifs.'.$i) }}" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Décrivez l'objectif {{ $i + 1 }}">
+                            <label class="block text-base font-bold text-gray-700 mb-1">Objectif {{ $i + 1 }} <span class="text-red-500">*</span></label>
+                            <input type="text" name="objectifs[]" value="{{ old('objectifs.'.$i) }}" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 text-base" placeholder="Décrivez l'objectif {{ $i + 1 }}">
                         </div>
                         @endfor
                     </div>
