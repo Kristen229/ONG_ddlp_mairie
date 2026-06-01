@@ -139,7 +139,7 @@
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-2">
-                                {{ Str::title($user->group) }}
+                                {{ Str::title($user->groupe?->value ?? 'structure') }}
                             </span>
                             <h3 class="text-xl font-bold text-gray-900 leading-tight">{{ $user->name }}</h3>
                             <p class="mt-2 text-sm text-gray-500 line-clamp-2"><span class="font-semibold">Domaine :</span> {{ is_array($user->domaine) ? implode(', ', $user->domaine) : $user->domaine }}</p>
@@ -176,7 +176,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($visibleActivities as $activity)
-            <a href="{{ route('association.details', $activity->user->id) }}" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer no-underline">
+            <a href="{{ route('activites.show', $activity->id) }}" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer no-underline">
                 <!-- Image en 16:9 -->
                 <div class="relative w-full aspect-video overflow-hidden bg-gray-100">
                     <img src="{{ asset('storage/' . $activity->attachment) }}" alt="{{ $activity->titre }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -189,10 +189,10 @@
                 <div class="p-6 flex flex-col flex-grow">
                     <!-- Auteur (ONG) -->
                     <div class="flex items-center gap-3 mb-4 pb-4 border-b border-gray-50">
-                        <img src="{{ $activity->user->attachment ? asset('storage/' . $activity->user->attachment) : asset('img/no-user.png') }}" class="w-10 h-10 rounded-full border-2 border-gray-100 object-cover">
+                        <img src="{{ $activity->user->logo_path ? asset('storage/' . $activity->user->logo_path) : asset('img/no-user.png') }}" class="w-10 h-10 rounded-full border-2 border-gray-100 object-cover">
                         <div class="text-xs">
                             <p class="font-bold text-gray-900 line-clamp-1 text-sm">{{ $activity->user->name }}</p>
-                            <p class="text-blue-600 font-medium">{{ Str::title($activity->user->domaine) }}</p>
+                            <p class="text-blue-600 font-medium">{{ is_array($activity->user->domaine) ? implode(', ', $activity->user->domaine) : $activity->user->domaine }}</p>
                         </div>
                     </div>
                     

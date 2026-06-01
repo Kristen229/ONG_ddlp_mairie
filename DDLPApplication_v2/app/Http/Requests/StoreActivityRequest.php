@@ -13,7 +13,7 @@ class StoreActivityRequest extends FormRequest
             'description' => 'required|string',
             'lieu' => 'required|string',
             'date' => 'required|date',
-            'attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,docx',
+            'attachment' => 'required|file|mimes:jpg,jpeg,png|max:20480',
             'beneficiaries_expected' => 'required|integer|min:1',
             'budget_expected' => 'required|numeric|min:0',
             'target_audience' => 'required|string',

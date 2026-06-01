@@ -10,7 +10,7 @@ class StoreAssociationRequestRequest extends FormRequest
     {
         return [
             'objet' => 'required|string|max:255',
-            'attachment' => 'required|file|mimes:pdf|max:10240',
+            'attachment' => 'required|file|mimes:pdf|max:20480',
         ];
     }
 }

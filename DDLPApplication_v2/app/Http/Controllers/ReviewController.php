@@ -24,10 +24,10 @@ class ReviewController extends Controller
             'author_name' => $request->author_name,
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'is_approved' => false,
+            'is_approved' => true,
         ]);
 
-        return redirect()->back()->with('success', 'Votre avis a été soumis et sera visible après validation.');
+        return redirect()->back()->with('success', 'Votre avis a été publié.');
     }
 
     public function getActivitiesForAssociation($id)
@@ -56,9 +56,9 @@ class ReviewController extends Controller
             'author_name' => $request->author_name,
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'is_approved' => false,
+            'is_approved' => true,
         ]);
 
-        return redirect()->back()->with('success', 'Votre avis a été soumis et sera visible après validation.');
+        return redirect()->back()->with('success', 'Votre avis a été publié.');
     }
 }

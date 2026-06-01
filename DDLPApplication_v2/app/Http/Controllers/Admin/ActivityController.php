@@ -3,11 +3,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\AuditLog;
 use App\Models\User;
-use App\Enums\EvaluationStatus;
 use App\Models\Notification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class ActivityController extends Controller
 {
@@ -36,14 +35,18 @@ class ActivityController extends Controller
 
         $path = $request->file('attachment')->store('activities', 'public');
 
-        Activity::create([
+        $activity = Activity::create([
             'user_id' => $validated['user_id'],
             'titre' => $validated['titre'],
             'description' => $validated['description'],
             'lieu' => $validated['lieu'],
             'date' => $validated['date'],
             'attachment' => $path,
+            'status' => Activity::STATUS_PENDING,
+            'is_visible' => false,
         ]);
+
+        AuditLog::record('activity.create_admin', "Activité créée par admin: {$activity->titre}", ['activity_id' => $activity->id, 'user_id' => $activity->user_id]);
 
         return redirect()->route('admin.dashboard')->with('success', 'Activité créée.');
     }
@@ -54,6 +57,8 @@ class ActivityController extends Controller
 
         $activity->update([
             'is_visible' => true,
+            'status' => Activity::STATUS_PUBLISHED,
+            'last_admin_feedback' => null,
         ]);
 
         $user = $activity->user;
@@ -67,6 +72,8 @@ class ActivityController extends Controller
             ]);
         }
 
+        AuditLog::record('activity.validate', "Activité validée: {$activity->titre}", ['activity_id' => $activity->id, 'user_id' => $user?->id]);
+
         return redirect()->route('admin.dashboard')->with('success', "Activité validée avec succès.");
     }
 
@@ -75,27 +82,47 @@ class ActivityController extends Controller
         $activity = Activity::with('user')->findOrFail($id);
         $user = $activity->user;
 
-        $motif = $request->input('motif', 'Non respect des règles de la plateforme.');
+        $request->validate([
+            'motif' => ['required', 'string', 'max:5000'],
+        ]);
+
+        if ($activity->correction_count >= 3) {
+            return back()->withErrors(['motif' => "Cette activité a déjà atteint la limite de 3 rejets ou corrections."]);
+        }
+
+        $motif = $request->input('motif');
+
+        $activity->update([
+            'is_visible' => false,
+            'status' => Activity::STATUS_REJECTED,
+            'correction_count' => $activity->correction_count + 1,
+            'last_admin_feedback' => $motif,
+        ]);
 
         if ($user) {
             // Créer la notification
             Notification::create([
                 'user_id' => $user->id,
-                'title' => "Suppression d'activité",
-                'message' => "Votre activité '{$activity->titre}' a été supprimée. Motif : {$motif}",
+                'title' => "Activité rejetée",
+                'message' => "Votre activité '{$activity->titre}' a été rejetée. Motif : {$motif}",
                 'recipient_name' => $user->name,
                 'recipient_email' => $user->email,
             ]);
         }
 
-        $activity->delete();
-        return back()->with('success', "Activité retirée avec justification envoyée à l'ONG.");
+        AuditLog::record('activity.reject', "Activité rejetée: {$activity->titre}", ['activity_id' => $activity->id, 'user_id' => $user?->id, 'motif' => $motif]);
+
+        return back()->with('success', "Activité rejetée avec justification envoyée à l'ONG.");
     }
 
     public function publish($id)
     {
         $activity = Activity::with('user')->findOrFail($id);
-        $activity->update(['is_visible' => true]);
+        $activity->update([
+            'is_visible' => true,
+            'status' => Activity::STATUS_PUBLISHED,
+            'last_admin_feedback' => null,
+        ]);
 
         $user = $activity->user;
         if ($user) {
@@ -108,6 +135,8 @@ class ActivityController extends Controller
             ]);
         }
 
+        AuditLog::record('activity.publish', "Activité publiée: {$activity->titre}", ['activity_id' => $activity->id, 'user_id' => $user?->id]);
+
         return back()->with('success', "L'activité a été approuvée et publiée avec succès.");
     }
 
@@ -116,19 +145,36 @@ class ActivityController extends Controller
         $activity = Activity::with('user')->findOrFail($id);
         $user = $activity->user;
 
-        $motif = $request->input('motif', 'Veuillez revoir les informations de cette activité.');
+        $request->validate([
+            'motif' => ['required', 'string', 'max:5000'],
+        ]);
+
+        if ($activity->correction_count >= 3) {
+            return back()->withErrors(['motif' => "Cette activité a déjà atteint la limite de 3 rejets ou corrections."]);
+        }
+
+        $motif = $request->input('motif');
+
+        $activity->update([
+            'is_visible' => false,
+            'status' => Activity::STATUS_CORRECTION_REQUESTED,
+            'correction_count' => $activity->correction_count + 1,
+            'last_admin_feedback' => $motif,
+        ]);
 
         if ($user) {
             // Créer la notification
             Notification::create([
                 'user_id' => $user->id,
-                'title' => "Avertissement concernant une activité",
-                'message' => "Un avertissement a été émis pour votre activité '{$activity->titre}'. Motif : {$motif}",
+                'title' => "Correction demandée pour une activité",
+                'message' => "La mairie demande une correction pour votre activité '{$activity->titre}'. Motif : {$motif}. Modifiez l'activité puis renvoyez-la pour validation.",
                 'recipient_name' => $user->name,
                 'recipient_email' => $user->email,
             ]);
         }
 
-        return back()->with('success', "Avertissement justifié envoyé à l'ONG.");
+        AuditLog::record('activity.correction_requested', "Correction demandée: {$activity->titre}", ['activity_id' => $activity->id, 'user_id' => $user?->id, 'motif' => $motif]);
+
+        return back()->with('success', "Demande de correction envoyée à l'ONG.");
     }
 }

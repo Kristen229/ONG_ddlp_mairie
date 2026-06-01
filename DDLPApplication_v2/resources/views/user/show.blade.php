@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-50 flex min-h-[calc(100vh-4rem)]" x-data="{ tab: '{{ $errors->any() ? 'activites' : 'profil' }}', showActivityModal: {{ $errors->any() ? 'true' : 'false' }}, showRequestModal: false, mobileSidebar: false }">
+<div class="bg-gray-50 flex min-h-[calc(100vh-4rem)]" x-data="{ tab: '{{ $errors->any() ? 'activites' : 'profil' }}', showActivityModal: {{ $errors->any() ? 'true' : 'false' }}, showRequestModal: false, mobileSidebar: false, requestFileName: '' }">
 
     <!-- OVERLAY POUR MOBILE -->
     <div x-show="mobileSidebar" class="fixed inset-0 bg-gray-900/50 z-40 lg:hidden" @click="mobileSidebar = false" style="display: none;"></div>
@@ -80,9 +80,9 @@
                     <p class="text-gray-500 mt-1">Consultez les informations de votre structure.</p>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Informations Générales</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+	                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+	                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Informations Générales</h3>
+	                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
                             <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Domaine d'intervention</p>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100">{{ is_array($user->domaine) ? implode(', ', $user->domaine) : $user->domaine }}</span>
@@ -101,11 +101,72 @@
                                 <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                                 {{ $user->number1 }} @if($user->number2) / {{ $user->number2 }} @endif
                             </p>
-                        </div>
-                    </div>
-                </div>
+	                        </div>
+	                    </div>
+	                </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+	                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+	                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Modifier mes informations</h3>
+	                    <form method="POST" action="{{ route('user.updateInfos', $user->id) }}" enctype="multipart/form-data" class="space-y-5">
+	                        @csrf
+	                        @method('PUT')
+	                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+	                            <div class="md:col-span-2">
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Nom de la structure</label>
+	                                <input type="text" name="name" value="{{ old('name', $user->name) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Sigle</label>
+	                                <input type="text" name="denomination" value="{{ old('denomination', $user->denomination) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Email</label>
+	                                <input type="email" name="email" value="{{ old('email', $user->email) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Téléphone principal</label>
+	                                <input type="text" name="number1" value="{{ old('number1', $user->number1) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Téléphone secondaire</label>
+	                                <input type="text" name="number2" value="{{ old('number2', $user->number2) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Commune</label>
+	                                <input type="text" name="commune" value="{{ old('commune', $user->commune ?? 'Cotonou') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Arrondissement</label>
+	                                <input type="text" name="arrondissement" value="{{ old('arrondissement', $user->arrondissement) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Quartier</label>
+	                                <input type="text" name="quartier" value="{{ old('quartier', $user->quartier) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Maison / repère</label>
+	                                <input type="text" name="maison" value="{{ old('maison', $user->maison) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div class="md:col-span-2">
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Domaines d'intervention</label>
+	                                <input type="text" name="domaine_text" value="{{ old('domaine_text', $user->domaine) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Séparez les domaines par des virgules">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Lien web / réseau</label>
+	                                <input type="url" name="lien" value="{{ old('lien', $user->lien) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="https://...">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Logo</label>
+	                                <input type="file" name="logo_path" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+	                            </div>
+	                        </div>
+	                        <div class="flex justify-end">
+	                            <button type="submit" class="px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-xl shadow-sm transition-colors">Enregistrer</button>
+	                        </div>
+	                    </form>
+	                </div>
+
+	                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Membres du Bureau</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                         @forelse($user->boardMembers as $member)
@@ -148,8 +209,12 @@
                                 <div class="relative h-48 overflow-hidden">
                                     <img src="{{ asset('storage/' . $activity->attachment) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                     <div class="absolute top-3 right-3">
-                                        @if($activity->is_visible)
+                                        @if($activity->status === \App\Models\Activity::STATUS_PUBLISHED)
                                             <span class="px-3 py-1 text-xs font-black tracking-wider bg-green-500 text-white rounded-full shadow-md">Publié</span>
+                                        @elseif($activity->status === \App\Models\Activity::STATUS_CORRECTION_REQUESTED)
+                                            <span class="px-3 py-1 text-xs font-black tracking-wider bg-amber-400 text-amber-950 rounded-full shadow-md">Correction</span>
+                                        @elseif($activity->status === \App\Models\Activity::STATUS_REJECTED)
+                                            <span class="px-3 py-1 text-xs font-black tracking-wider bg-red-500 text-white rounded-full shadow-md">Rejeté</span>
                                         @else
                                             <span class="px-3 py-1 text-xs font-black tracking-wider bg-yellow-400 text-yellow-900 rounded-full shadow-md">Modération</span>
                                         @endif
@@ -160,6 +225,33 @@
                                         <h4 class="font-bold text-gray-900 text-lg leading-tight mb-2">{{ $activity->titre }}</h4>
                                         <p class="text-sm text-gray-500 line-clamp-3">{{ $activity->description }}</p>
                                     </div>
+                                    @if($activity->last_admin_feedback)
+                                        <div class="mt-4 rounded-xl border border-amber-100 bg-amber-50 p-3 text-sm text-amber-900">
+                                            <p class="font-black mb-1">Message de la mairie</p>
+                                            <p>{{ $activity->last_admin_feedback }}</p>
+                                            <p class="text-xs font-bold mt-2">Corrections/rejets: {{ $activity->correction_count }}/3</p>
+                                        </div>
+                                    @endif
+
+                                    @if($activity->status === \App\Models\Activity::STATUS_CORRECTION_REQUESTED && $activity->correction_count <= 3)
+                                        <form action="{{ route('activites.update', $activity->id) }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-3 rounded-2xl border border-teal-100 bg-teal-50/50 p-4">
+                                            @csrf
+                                            @method('PUT')
+                                            <p class="text-sm font-black text-teal-800">Modifier et resoumettre</p>
+                                            <input type="text" name="titre" value="{{ old('titre', $activity->titre) }}" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm">
+                                            <textarea name="description" rows="3" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm">{{ old('description', $activity->description) }}</textarea>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <input type="text" name="lieu" value="{{ old('lieu', $activity->lieu) }}" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm" placeholder="Lieu">
+                                                <input type="date" name="date" value="{{ old('date', optional($activity->date)->format('Y-m-d')) }}" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm">
+                                                <input type="number" name="budget_expected" value="{{ old('budget_expected', $activity->budget_expected) }}" required min="0" class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm" placeholder="Budget">
+                                                <input type="number" name="beneficiaries_expected" value="{{ old('beneficiaries_expected', $activity->beneficiaries_expected) }}" required min="1" class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm" placeholder="Bénéficiaires">
+                                            </div>
+                                            <input type="text" name="target_audience" value="{{ old('target_audience', $activity->target_audience) }}" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm" placeholder="Public cible">
+                                            <input type="file" name="attachment" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-white file:text-teal-700">
+                                            <button type="submit" class="w-full rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-black text-white hover:bg-teal-800">Renvoyer pour validation</button>
+                                        </form>
+                                    @endif
+
                                     <div class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-xs font-medium text-gray-400">
                                         <span>Ajouté le {{ $activity->created_at->format('d/m/Y') }}</span>
                                     </div>
@@ -454,10 +546,16 @@
                                         <div class="flex text-sm text-gray-600 justify-center">
                                             <label class="relative cursor-pointer bg-white rounded-md font-bold text-blue-600 hover:text-blue-500 focus-within:outline-none px-2">
                                                 <span>Importer un fichier</span>
-                                                <input type="file" name="attachment" accept="application/pdf" class="sr-only" required>
+                                                <input type="file" name="attachment" accept="application/pdf" class="sr-only" required @change="requestFileName = $event.target.files[0]?.name || ''">
                                             </label>
                                         </div>
-                                        <p class="text-xs text-gray-500">PDF uniquement jusqu'à 10MB</p>
+                                        <template x-if="requestFileName">
+                                            <div class="mt-3 inline-flex max-w-full items-center gap-2 rounded-lg border border-teal-200 bg-teal-50 px-3 py-2 text-sm font-bold text-teal-800">
+                                                <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                <span class="truncate" x-text="requestFileName"></span>
+                                            </div>
+                                        </template>
+                                        <p class="text-xs text-gray-500">PDF uniquement jusqu'à 20MB</p>
                                     </div>
                                 </div>
                             </div>

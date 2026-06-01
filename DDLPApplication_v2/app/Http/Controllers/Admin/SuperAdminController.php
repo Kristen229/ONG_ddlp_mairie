@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\AuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -28,7 +29,6 @@ class SuperAdminController extends Controller
         ]);
 
         $plainPassword = Str::random(10);
-
         $admin = Admin::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -53,6 +53,8 @@ class SuperAdminController extends Controller
             }
         );
 
+        AuditLog::record('admin.create', "Administrateur créé: {$admin->email}", ['admin_id' => $admin->id]);
+
         return redirect()->route('admin.superadmin.index')->with('success', 'Administrateur créé avec succès. Un email avec le mot de passe a été envoyé.');
     }
 
@@ -61,8 +63,8 @@ class SuperAdminController extends Controller
         $admin = Admin::findOrFail($id);
 
         $rules = [
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
+            'nom' => ['required', 'string', 'max:255'],
+            'prenom' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', Rule::unique('admins')->ignore($admin->id)],
             'is_super_admin' => 'boolean',
         ];
@@ -73,11 +75,19 @@ class SuperAdminController extends Controller
 
         $request->validate($rules);
 
+        $isSuperAdmin = $admin->id === auth('admin')->id()
+            ? $admin->is_super_admin
+            : $request->boolean('is_super_admin', false);
+
+        if ($admin->is_super_admin && !$isSuperAdmin && Admin::where('is_super_admin', true)->count() <= 1) {
+            return back()->withErrors('Impossible de retirer le rôle du dernier super admin.');
+        }
+
         $data = [
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
-            'is_super_admin' => $request->boolean('is_super_admin', false),
+            'is_super_admin' => $isSuperAdmin,
         ];
 
         // Generate a random password ONLY if explicitly requested (e.g. by a reset password button)
@@ -111,6 +121,8 @@ class SuperAdminController extends Controller
 
         $admin->update($data);
 
+        AuditLog::record('admin.update', "Administrateur modifié: {$admin->email}", ['admin_id' => $admin->id]);
+
         $msg = 'Administrateur mis à jour.';
         if ($request->filled('password')) {
             $msg .= ' Un email avec le nouveau mot de passe a été envoyé.';
@@ -126,6 +138,12 @@ class SuperAdminController extends Controller
         if ($admin->id === auth('admin')->id()) {
             return redirect()->back()->withErrors('Vous ne pouvez pas vous supprimer vous-même.');
         }
+
+        if ($admin->is_super_admin && Admin::where('is_super_admin', true)->count() <= 1) {
+            return redirect()->back()->withErrors('Impossible de supprimer le dernier super admin.');
+        }
+
+        AuditLog::record('admin.delete', "Administrateur supprimé: {$admin->email}", ['admin_id' => $admin->id]);
 
         $admin->delete();
 

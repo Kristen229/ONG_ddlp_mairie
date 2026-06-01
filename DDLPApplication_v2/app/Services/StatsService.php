@@ -99,7 +99,7 @@ class StatsService
             'lastUsers', 'associations', 'userAssociations', 'adminAssociations',
             'requests', 'pendingRequestsCount', 'notifications', 'allNotifications',
             'activities', 'users', 'pendingCandidatesCount',
-            'topDomaines', 'repartitionGeo', 'totalBeneficiaries', 'resolutionRate'
+            'topDomaines', 'repartitionGeo', 'totalBeneficiaries', 'resolvedRequests', 'totalRequests', 'resolutionRate'
         );
     }
 

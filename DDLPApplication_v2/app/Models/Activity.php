@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\EvaluationStatus;
-
 class Activity extends Model
 {
     use HasFactory;
+
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_PUBLISHED = 'published';
+    public const STATUS_CORRECTION_REQUESTED = 'correction_requested';
+    public const STATUS_REJECTED = 'rejected';
 
     protected $fillable = [
         'user_id',
@@ -24,6 +27,9 @@ class Activity extends Model
         'budget_actual',
         'actual_date',
         'is_visible',
+        'status',
+        'correction_count',
+        'last_admin_feedback',
     ];
 
     protected function casts(): array
@@ -34,6 +40,7 @@ class Activity extends Model
             'is_visible' => 'boolean',
             'budget_expected' => 'float',
             'budget_actual' => 'float',
+            'correction_count' => 'integer',
         ];
     }
 
