@@ -22,3 +22,31 @@ Date: 2026-05-31
 - [x] Candidatures - Liste compacte creee
 - [x] Candidatures - Page detail complete creee
 - [x] Candidatures - Verification et rapport executes
+- [x] UX admin - Remplacer le popup d'approbation ONG par un modal
+- [x] UX auth - Ajouter l'oeil sur les champs de changement de mot de passe
+- [x] Courriers - Afficher le fichier selectionne avant envoi
+- [x] Courriers - Rendre le message admin obligatoire pour approbation/rejet
+- [x] Accueil - Corriger l'affichage des logos ONG
+- [x] Accueil - Retirer les domaines des cartes ONG publiques
+- [x] Avis - Rendre les avis visibles immediatement et garder la suppression admin
+- [x] Notifications admin - Ajouter les compteurs courriers, candidatures et activites
+- [x] Notifications admin - Donner une utilite a la cloche du header
+- [x] Notifications ONG - Creer une notification interne quand un mail important est envoye
+- [x] Activites - Creer une page publique de detail activite
+- [x] Activites - Faire pointer la decouverte vers le detail activite
+- [x] Activites - Ajouter un statut de traitement
+- [x] Activites - Permettre la correction et resoumission apres blame
+- [x] Activites - Limiter les corrections/rejets a 3 par activite
+- [x] Profil ONG - Permettre la modification des informations
+- [x] Profil admin - Ajouter un onglet profil et changement de mot de passe
+- [x] Super admin - Ajouter nom et prenom aux admins
+- [x] Super admin - Revoir le CRUD admin
+- [x] Export PDF - Diagnostiquer et corriger l'export ONG
+- [x] Export PDF - Remplir les vues PDF vides
+- [x] Export dashboard - Ajouter l'export tableau de bord super admin
+- [x] Audit logs - Creer la table et le modele de logs
+- [x] Audit logs - Journaliser les actions importantes
+- [x] Audit logs - Ajouter consultation super admin
+- [x] Audit logs - Ajouter export CSV/Excel par periode
+- [x] Verification - Executer les commandes de verification possibles
+- [x] Rapport - Rediger le rapport final Markdown

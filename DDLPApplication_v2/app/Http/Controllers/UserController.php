@@ -2,10 +2,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Domaine;
+use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -111,8 +113,39 @@ class UserController extends Controller
         abort_unless((int) $id === Auth::id(), 403);
 
         $user = User::findOrFail($id);
-        $data = $request->except(['_token', '_method']);
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'denomination' => ['nullable', 'string', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'number1' => ['required', 'string', 'max:30'],
+            'number2' => ['nullable', 'string', 'max:30'],
+            'commune' => ['required', 'string', 'max:255'],
+            'arrondissement' => ['required', 'string', 'max:255'],
+            'quartier' => ['required', 'string', 'max:255'],
+            'maison' => ['required', 'string', 'max:255'],
+            'lien' => ['nullable', 'url', 'max:255'],
+            'domaine_text' => ['nullable', 'string', 'max:2000'],
+            'logo_path' => ['nullable', 'image', 'max:20480'],
+        ]);
+
+        $data = collect($validated)->except(['domaine_text', 'logo_path'])->all();
+
+        if ($request->hasFile('logo_path')) {
+            $data['logo_path'] = $request->file('logo_path')->store('logos', 'public');
+        }
+
         $user->update($data);
+
+        if ($request->filled('domaine_text')) {
+            $domaines = collect(explode(',', $request->input('domaine_text')))
+                ->map(fn ($domaine) => trim($domaine))
+                ->filter()
+                ->all();
+            $user->syncDomainesByNames($domaines);
+        }
+
+        AuditLog::record('user.profile_update', "Profil ONG modifié: {$user->name}", ['user_id' => $user->id]);
+
         return redirect()->route('user.show', ['id' => $user->id])->with('success', 'Informations mises à jour.');
     }
 }

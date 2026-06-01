@@ -10,9 +10,19 @@
             <p class="text-slate-500 mt-2">Gérez les structures, suivez les activités et traitez les courriers depuis votre barre de navigation.</p>
         </div>
         <div class="flex-shrink-0">
-            <div class="h-20 w-20 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z"></path></svg>
-            </div>
+            @if(auth('admin')->user()?->is_super_admin)
+                <form method="POST" action="{{ route('admin.stats.pdf') }}">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-teal-700 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-teal-800 transition-colors">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Exporter le tableau de bord
+                    </button>
+                </form>
+            @else
+                <div class="h-20 w-20 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+            @endif
         </div>
     </div>
 

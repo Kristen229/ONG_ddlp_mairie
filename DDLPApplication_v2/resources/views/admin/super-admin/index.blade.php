@@ -44,6 +44,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-slate-50">
                     <tr>
+                        <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Administrateur</th>
                         <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Email</th>
                         <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Rôle</th>
                         <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Date de création</th>
@@ -58,9 +59,10 @@
                                 <div class="h-8 w-8 rounded-full bg-teal-100 text-teal-700 font-bold flex items-center justify-center shrink-0">
                                     {{ strtoupper(substr($admin->email, 0, 1)) }}
                                 </div>
-                                <span class="font-bold text-slate-800">{{ $admin->email }}</span>
+                                <span class="font-bold text-slate-800">{{ trim(($admin->prenom ?? '') . ' ' . ($admin->nom ?? '')) ?: 'Nom non renseigné' }}</span>
                             </div>
                         </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-700">{{ $admin->email }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($admin->is_super_admin)
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-black rounded-full bg-purple-100 text-purple-800 border border-purple-200">
@@ -76,7 +78,7 @@
                             {{ $admin->created_at->format('d M. Y - H:i') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                            <button @click="editAdmin = {{ json_encode(['id' => $admin->id, 'email' => $admin->email, 'is_super_admin' => $admin->is_super_admin]) }}; showEditModal = true;" class="inline-flex items-center justify-center text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 h-8 w-8 rounded-lg transition-colors border border-teal-100" title="Modifier">
+                            <button @click="editAdmin = {{ json_encode(['id' => $admin->id, 'nom' => $admin->nom, 'prenom' => $admin->prenom, 'email' => $admin->email, 'is_super_admin' => $admin->is_super_admin]) }}; showEditModal = true;" class="inline-flex items-center justify-center text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 h-8 w-8 rounded-lg transition-colors border border-teal-100" title="Modifier">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </button>
                             @if($admin->id !== auth('admin')->id())
@@ -112,8 +114,18 @@
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                                 <h3 class="text-lg leading-6 font-black text-gray-900" id="modal-title">Nouvel Administrateur</h3>
-                                <div class="mt-4 space-y-4">
-                                    <div>
+	                                <div class="mt-4 space-y-4">
+	                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+	                                        <div>
+	                                            <label class="block text-sm font-bold text-gray-700 mb-1">Nom <span class="text-red-500">*</span></label>
+	                                            <input type="text" name="nom" required class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+	                                        </div>
+	                                        <div>
+	                                            <label class="block text-sm font-bold text-gray-700 mb-1">Prénom <span class="text-red-500">*</span></label>
+	                                            <input type="text" name="prenom" required class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+	                                        </div>
+	                                    </div>
+	                                    <div>
                                         <label class="block text-sm font-bold text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
                                         <input type="email" name="email" required class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                                     </div>
@@ -160,8 +172,18 @@
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                                 <h3 class="text-lg leading-6 font-black text-gray-900" id="modal-title">Modifier l'Administrateur</h3>
-                                <div class="mt-4 space-y-4">
-                                    <div>
+	                                <div class="mt-4 space-y-4">
+	                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+	                                        <div>
+	                                            <label class="block text-sm font-bold text-gray-700 mb-1">Nom <span class="text-red-500">*</span></label>
+	                                            <input type="text" name="nom" x-model="editAdmin ? editAdmin.nom : ''" required class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+	                                        </div>
+	                                        <div>
+	                                            <label class="block text-sm font-bold text-gray-700 mb-1">Prénom <span class="text-red-500">*</span></label>
+	                                            <input type="text" name="prenom" x-model="editAdmin ? editAdmin.prenom : ''" required class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+	                                        </div>
+	                                    </div>
+	                                    <div>
                                         <label class="block text-sm font-bold text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
                                         <input type="email" name="email" x-model="editAdmin ? editAdmin.email : ''" required class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                                     </div>

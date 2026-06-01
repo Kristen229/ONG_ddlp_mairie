@@ -159,7 +159,7 @@
                     @if($user->activities && $user->activities->count() > 0)
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             @foreach($user->activities as $activity)
-                            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                            <a href="{{ route('activites.show', $activity->id) }}" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow no-underline">
                                 <div class="h-48 relative overflow-hidden bg-gray-100">
                                     <img src="{{ asset('storage/' . $activity->attachment) }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
                                 </div>
@@ -172,7 +172,7 @@
                                         {{ $activity->created_at->translatedFormat('d F Y') }}
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                             @endforeach
                         </div>
                     @else

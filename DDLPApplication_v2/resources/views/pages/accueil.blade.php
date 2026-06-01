@@ -129,14 +129,13 @@
             @if(isset($users) && $users->count() > 0)
                 @foreach ($users->take(3) as $user)
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-gray-100 flex flex-col h-full">
-                    <img src="{{ $user->attachment5 ? asset('storage/' . $user->attachment5) : asset('img/no-image.jpg') }}" alt="{{ $user->name }}" class="w-full h-48 object-cover">
+                    <img src="{{ $user->logo_path ? asset('storage/' . $user->logo_path) : asset('img/no-image.jpg') }}" alt="{{ $user->name }}" class="w-full h-48 object-cover">
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800 mb-2">
-                                {{ Str::title($user->group) }}
+                                {{ Str::title($user->groupe?->value ?? 'structure') }}
                             </span>
                             <h3 class="text-xl font-bold text-gray-900 leading-tight">{{ $user->name }}</h3>
-                            <p class="mt-2 text-sm text-gray-500 line-clamp-2"><span class="font-semibold">Domaine :</span> {{ $user->domaine }}</p>
                         </div>
                         <a href="{{ route('association.details', $user->id) }}" class="mt-6 inline-flex w-full justify-center items-center px-4 py-2 border border-teal-600 text-teal-600 rounded-xl hover:bg-teal-50 transition-colors font-medium">
                             En savoir plus
@@ -170,7 +169,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($visibleActivities as $activity)
-            <a href="{{ route('association.details', $activity->user->id) }}" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer no-underline">
+            <a href="{{ route('activites.show', $activity->id) }}" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer no-underline">
                 <!-- Image en 16:9 -->
                 <div class="relative w-full aspect-video overflow-hidden bg-gray-100">
                     <img src="{{ asset('storage/' . $activity->attachment) }}" alt="{{ $activity->titre }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -183,10 +182,9 @@
                 <div class="p-6 flex flex-col flex-grow">
                     <!-- Auteur (ONG) -->
                     <div class="flex items-center gap-3 mb-4 pb-4 border-b border-gray-50">
-                        <img src="{{ $activity->user->attachment ? asset('storage/' . $activity->user->attachment) : asset('img/no-user.png') }}" class="w-10 h-10 rounded-full border-2 border-gray-100 object-cover">
+                        <img src="{{ $activity->user->logo_path ? asset('storage/' . $activity->user->logo_path) : asset('img/no-user.png') }}" class="w-10 h-10 rounded-full border-2 border-gray-100 object-cover">
                         <div class="text-xs">
                             <p class="font-bold text-gray-900 line-clamp-1 text-sm">{{ $activity->user->name }}</p>
-                            <p class="text-teal-600 font-medium">{{ Str::title($activity->user->domaine) }}</p>
                         </div>
                     </div>
                     

@@ -12,7 +12,7 @@
     ];
 @endphp
 
-<div class="max-w-7xl mx-auto space-y-6" x-data="{ showRejectModal: false }">
+<div class="max-w-7xl mx-auto space-y-6" x-data="{ showApproveModal: false, showRejectModal: false }">
     <div class="flex items-center justify-between gap-4">
         <a href="{{ route('admin.candidates.index') }}" class="inline-flex items-center gap-2 text-slate-600 hover:text-teal-700 font-bold bg-white px-4 py-2.5 rounded-xl shadow-sm border border-gray-200 transition-colors">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -46,13 +46,10 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <form method="POST" action="{{ route('admin.candidates.approve', $candidate->id) }}" onsubmit="return confirm('Approuver cette candidature ?');">
-                        @csrf
-                        <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            Approuver
-                        </button>
-                    </form>
+                    <button type="button" @click="showApproveModal = true" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Approuver
+                    </button>
                     <button type="button" @click="showRejectModal = true" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-sm font-bold rounded-xl transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         Rejeter
@@ -195,16 +192,42 @@
             </section>
 
             <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col sm:flex-row justify-end gap-3">
-                <form method="POST" action="{{ route('admin.candidates.approve', $candidate->id) }}" onsubmit="return confirm('Approuver cette candidature ?');">
-                    @csrf
-                    <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors">
-                        Approuver la candidature
-                    </button>
-                </form>
+                <button type="button" @click="showApproveModal = true" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors">
+                    Approuver la candidature
+                </button>
                 <button type="button" @click="showRejectModal = true" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-sm font-bold rounded-xl transition-colors">
                     Rejeter la candidature
                 </button>
             </section>
+        </div>
+    </div>
+
+    <div x-show="showApproveModal" style="display: none;" class="fixed inset-0 z-[100] overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen p-4 text-center">
+            <div x-show="showApproveModal" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click.stop="showApproveModal = false"></div>
+            <div x-show="showApproveModal" @click.stop
+                 x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                 x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 translate-y-4 scale-95"
+                 class="relative inline-block bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:max-w-lg w-full border border-slate-200">
+                <form action="{{ route('admin.candidates.approve', $candidate->id) }}" method="POST">
+                    @csrf
+                    <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
+                        <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
+                            <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <h3 class="text-2xl font-black text-gray-900">Approuver la candidature</h3>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            Vous allez approuver <strong class="text-slate-900">{{ $candidate->name }}</strong>. Le compte sera active et un email sera envoye a l'association.
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-4 sm:px-8 border-t border-gray-100 flex justify-end gap-3">
+                        <button type="button" @click="showApproveModal = false" class="px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">Annuler</button>
+                        <button type="submit" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-colors">Confirmer l'approbation</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

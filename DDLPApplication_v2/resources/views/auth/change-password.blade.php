@@ -23,15 +23,27 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('password.change.update') }}" class="space-y-6">
+                <form method="POST" action="{{ route('password.change.update') }}" class="space-y-6" x-data="{ showPassword: false, showConfirmation: false }">
                     @csrf
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Nouveau mot de passe <span class="text-red-500">*</span></label>
-                        <input type="password" name="password" required minlength="8" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Minimum 8 caractères">
+                        <div class="relative">
+                            <input :type="showPassword ? 'text' : 'password'" name="password" required minlength="8" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 pl-4 pr-12 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Minimum 8 caractères">
+                            <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 right-0 px-4 text-gray-400 hover:text-teal-700 transition-colors" :aria-label="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'">
+                                <svg x-show="!showPassword" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <svg x-show="showPassword" style="display: none;" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.584 10.587A2 2 0 0012 14a2 2 0 001.414-.586M9.88 4.24A10.116 10.116 0 0112 4c4.478 0 8.268 2.943 9.542 7a10.51 10.51 0 01-3.052 4.568M6.228 6.228A10.57 10.57 0 002.458 12c.716 2.282 2.19 4.214 4.095 5.47A9.957 9.957 0 0012 19c.736 0 1.454-.079 2.145-.229"></path></svg>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Confirmer le mot de passe <span class="text-red-500">*</span></label>
-                        <input type="password" name="password_confirmation" required minlength="8" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Retapez votre mot de passe">
+                        <div class="relative">
+                            <input :type="showConfirmation ? 'text' : 'password'" name="password_confirmation" required minlength="8" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 pl-4 pr-12 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Retapez votre mot de passe">
+                            <button type="button" @click="showConfirmation = !showConfirmation" class="absolute inset-y-0 right-0 px-4 text-gray-400 hover:text-teal-700 transition-colors" :aria-label="showConfirmation ? 'Masquer la confirmation' : 'Afficher la confirmation'">
+                                <svg x-show="!showConfirmation" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <svg x-show="showConfirmation" style="display: none;" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.584 10.587A2 2 0 0012 14a2 2 0 001.414-.586M9.88 4.24A10.116 10.116 0 0112 4c4.478 0 8.268 2.943 9.542 7a10.51 10.51 0 01-3.052 4.568M6.228 6.228A10.57 10.57 0 002.458 12c.716 2.282 2.19 4.214 4.095 5.47A9.957 9.957 0 0012 19c.736 0 1.454-.079 2.145-.229"></path></svg>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="w-full py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-xl transition-colors shadow-lg">
                         Définir mon mot de passe
