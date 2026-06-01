@@ -85,7 +85,7 @@
 
                 <div class="mt-6">
                     <!-- Lien vers inscription Etape 1 -->
-                    <a href="{{ route('user.createForme1') }}"
+                    <a href="{{ route('inscription.prerequis') }}"
                         class="w-full flex justify-center py-3 px-4 border-2 border-teal-600 text-sm font-medium rounded-xl text-teal-700 bg-white hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors">
                         Inscrire mon association
                     </a>

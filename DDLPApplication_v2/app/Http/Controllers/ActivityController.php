@@ -31,6 +31,7 @@ class ActivityController extends Controller
     public function update(UpdateActivityRequest $request, $id)
     {
         $activity = Activity::findOrFail($id);
+        abort_unless($activity->user_id === Auth::id(), 403);
 
         $data = [
             'titre' => $request->titre,

@@ -12,55 +12,62 @@ return new class extends Migration
             $table->id();
 
             // Informations générales
-            $table->string('group'); // association ou ong (Enum UserGroup)
+            $table->string('groupe'); // ONG ou Association
             $table->string('name');
-            $table->string('domaine');
             $table->string('denomination');
             $table->date('date');
-            $table->string('objectif1');
-            $table->string('objectif2');
-            $table->string('objectif3');
+            $table->json('objectifs')->nullable(); // Stockage propre des 5 objectifs
 
-            // Coordonnées
-            $table->string('siege')->default('Non spécifié');
-            $table->string('email')->nullable();
-            $table->string('number1')->default('Non spécifié');
-            $table->string('number2')->default('Non spécifié');
-            $table->string('attachment')->default('Non spécifié'); // logo
-            $table->string('identifiant')->default('Non spécifié');
+            // Localisation
+            $table->string('commune')->default('Cotonou');
+            $table->string('arrondissement');
+            $table->string('quartier');
+            $table->string('maison');
+
+            // Contacts
+            $table->string('email')->unique()->nullable();
+            $table->string('number1'); // Obligatoire
+            $table->string('number2')->nullable(); // Optionnel
+            $table->string('lien')->nullable(); // Optionnel
+
+            // Fichiers Administratifs Obligatoires
+            $table->string('logo_path')->nullable(); // Optionnel si admin crée
+            $table->string('recepisse_path')->nullable();
+            $table->string('journal_officiel_path')->nullable();
+            $table->string('attestation_path')->nullable();
+            $table->string('reglement_path')->nullable();
+
+            // Identification
+            $table->string('identifiant')->unique();
             $table->string('password')->nullable();
-            $table->string('lien')->default('Non spécifié');
 
-            // Bureau exécutif (snake_case)
-            $table->string('name_president')->default('Non spécifié');
-            $table->string('last_name_president')->default('Non spécifié');
-            $table->string('attachment1')->default('Non spécifié');
-
-            $table->string('name_vice_president')->default('Non spécifié');
-            $table->string('last_name_vice_president')->default('Non spécifié');
-            $table->string('attachment2')->default('Non spécifié');
-
-            $table->string('name_secretaire_general')->default('Non spécifié');
-            $table->string('last_name_secretaire_general')->default('Non spécifié');
-            $table->string('attachment3')->default('Non spécifié');
-
-            $table->string('name_tresorier_general')->default('Non spécifié');
-            $table->string('last_name_tresorier_general')->default('Non spécifié');
-            $table->string('attachment4')->default('Non spécifié');
-
-            $table->string('attachment5')->default('Non spécifié'); // couverture
-            $table->string('signature_data')->nullable();
-            $table->string('cachet')->nullable();
-
-            // Métadonnées
+            // Métadonnées & Sécurité
             $table->string('created_by')->default('user'); // 'user' ou 'admin'
+            $table->boolean('is_approved')->default(false);
+            $table->boolean('must_change_password')->default(false);
             $table->rememberToken();
             $table->timestamps();
+        });
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
         });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
     }
 };

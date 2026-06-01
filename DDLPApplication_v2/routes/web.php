@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 
@@ -39,18 +40,23 @@ Route::get('/contact', function () { return view('pages.contact'); })->name('con
 Route::get('/confidentialite', function () { return view('pages.confidentialite'); })->name('confidentialite');
 Route::get('/conditions', function () { return view('pages.conditions'); })->name('conditions');
 Route::get('/api/associations/{id}/activities', [ReviewController::class, 'getActivitiesForAssociation'])->name('api.activities');
-Route::post('/reviews/store-from-home', [ReviewController::class, 'storeFromHome'])->name('reviews.storeFromHome');
+Route::post('/reviews/store-from-home', [ReviewController::class, 'storeFromHome'])
+    ->middleware('throttle:5,1')
+    ->name('reviews.storeFromHome');
 
 Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/association/{id}', [UserController::class, 'showDetails'])->name('association.details');
-Route::post('/association/{id}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::post('/association/{id}/reviews', [ReviewController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('reviews.store');
 
 // --- Auth User ---
 Route::get('/connexion', [LoginController::class, 'showLoginForm'])->name('connexion');
 Route::post('/connexion', [LoginController::class, 'authenticate'])->name('user.login');
 
 // --- Inscription User (3 étapes) ---
+Route::get('/inscription', fn() => view('auth.register-prerequis'))->name('inscription.prerequis');
 Route::get('/user/createForme1', fn() => view('auth.register-step1'))->name('user.createForme1');
 Route::get('/user/createForme2', fn() => view('auth.register-step2'))->name('user.createForme2');
 Route::get('/user/createForme3', fn() => view('auth.register-step3'))->name('user.createForme3');
@@ -62,8 +68,6 @@ Route::get('/inscription/confirmation', fn() => view('auth.inscription-confirmat
 // --- Auth Admin ---
 Route::get('/conAdmin', [AdminLoginController::class, 'showLoginForm'])->name('conAdmin');
 Route::post('/conAdmin', [AdminLoginController::class, 'authenticate'])->name('admin.login');
-Route::get('/admin/createForme', fn() => view('auth.admin-login'))->name('admin.createForme');
-Route::post('/admin/createAdmin', [AdminLoginController::class, 'createAdmin'])->name('admin.createAdmin');
 
 // --- Mot de passe oublié ---
 Route::get('/password/reset', fn() => view('auth.passwords.email'))->name('password.request');
@@ -83,7 +87,7 @@ Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name(
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'force_password_change'])->group(function () {
     Route::get('/user/{id}', [UserController::class, 'shows'])->name('user.show');
     Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::put('/user/modifier-infos/{id}', [UserController::class, 'updateInfos'])->name('user.updateInfos');
@@ -159,6 +163,14 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/activites/{id}/validate', [AdminActivityController::class, 'validatActivity'])->name('activites.validate');
     Route::delete('/activites/{id}', [AdminActivityController::class, 'destroy'])->name('activites.destroy');
     Route::post('/activites/{id}/warn', [AdminActivityController::class, 'sendWarning'])->name('activites.warn');
+
+    // Super Admin Routes
+    Route::middleware('super_admin')->group(function () {
+        Route::get('/admin/super-admin', [\App\Http\Controllers\Admin\SuperAdminController::class, 'index'])->name('admin.superadmin.index');
+        Route::post('/admin/super-admin', [\App\Http\Controllers\Admin\SuperAdminController::class, 'store'])->name('admin.superadmin.store');
+        Route::put('/admin/super-admin/{id}', [\App\Http\Controllers\Admin\SuperAdminController::class, 'update'])->name('admin.superadmin.update');
+        Route::delete('/admin/super-admin/{id}', [\App\Http\Controllers\Admin\SuperAdminController::class, 'destroy'])->name('admin.superadmin.destroy');
+    });
 
     // Avis admin (Modération)
     Route::get('/admin/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews.index');

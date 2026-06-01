@@ -52,52 +52,22 @@ class ActivityController extends Controller
     {
         $activity = Activity::with('user')->findOrFail($id);
 
-        $beneficiaryScore = 0;
-        if ($activity->beneficiaries_expected > 0 && $activity->beneficiaries_actual > 0) {
-            $ratio = $activity->beneficiaries_actual / $activity->beneficiaries_expected;
-            $beneficiaryScore = min($ratio, 1) * 40;
-        }
-
-        $budgetScore = 0;
-        if ($activity->budget_expected > 0 && $activity->budget_actual > 0) {
-            $ratio = $activity->budget_actual / $activity->budget_expected;
-            $budgetScore = ($ratio <= 1) ? 30 : max(0, 30 - (($ratio - 1) * 30));
-        }
-
-        $delayScore = 0;
-        if ($activity->date && $activity->actual_date) {
-            $diff = $activity->date->diffInDays($activity->actual_date, false);
-            $delayScore = ($diff <= 0) ? 30 : max(0, 30 - ($diff * 2));
-        }
-
-        $totalScore = $beneficiaryScore + $budgetScore + $delayScore;
-
-        $status = match (true) {
-            $totalScore >= 70 => EvaluationStatus::COMPLIANT,
-            $totalScore >= 40 => EvaluationStatus::WARNING,
-            default => EvaluationStatus::NON_COMPLIANT,
-        };
-
         $activity->update([
-            'score' => $totalScore,
-            'evaluation_status' => $status,
-            'evaluation_comment' => $request->evaluation_comment,
             'is_visible' => true,
         ]);
 
         $user = $activity->user;
         if ($user) {
-            $statusLabel = $status === EvaluationStatus::COMPLIANT ? 'Conforme' : ($status === EvaluationStatus::WARNING ? 'À suivre' : 'Non conforme');
             Notification::create([
                 'user_id' => $user->id,
-                'title' => "Activité évaluée",
-                'message' => "Votre activité '{$activity->titre}' a été évaluée avec un score de {$totalScore}/100 ({$statusLabel}). Commentaire : " . ($request->evaluation_comment ?: 'Aucun commentaire.'),
+                'title' => "Activité validée",
+                'message' => "Votre activité '{$activity->titre}' a été validée et est désormais publique.",
                 'recipient_name' => $user->name,
                 'recipient_email' => $user->email,
             ]);
         }
 
-        return redirect()->route('admin.dashboard')->with('success', "Activité évaluée : {$totalScore}/100");
+        return redirect()->route('admin.dashboard')->with('success', "Activité validée avec succès.");
     }
 
     public function destroy(Request $request, $id)

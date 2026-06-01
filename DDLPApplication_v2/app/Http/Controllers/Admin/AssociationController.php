@@ -13,26 +13,32 @@ class AssociationController extends Controller
 {
     public function index()
     {
-        $users = User::where('is_approved', true)->paginate(20);
+        $users = User::where('is_approved', true)->with('domaines')->paginate(20);
         return view('admin.associations.index', compact('users'));
     }
 
     public function showPage($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with(['domaines', 'boardMembers'])->findOrFail($id);
         return view('admin.associations.show', compact('user'));
     }
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('domaines')->findOrFail($id);
         return view('admin.associations.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $user->update($request->except(['_token', '_method']));
+        
+        $data = $request->except(['_token', '_method', 'domaine', 'domaine_autre']);
+        $domaines = $this->normalizeDomaines($request->input('domaine', []), $request->input('domaine_autre'));
+
+        $user->update($data);
+        $user->syncDomainesByNames($domaines);
+
         return redirect()->route('admin.dashboard')->with('success', 'Association mise à jour.');
     }
 
@@ -45,16 +51,27 @@ class AssociationController extends Controller
     // --- Inscription par l'admin (3 étapes) ---
     public function createUserType1(StoreUserStep1Request $request)
     {
+        $domaines = $this->normalizeDomaines($request->input('domaine', []), $request->input('domaine_autre'));
+
         $user = User::create([
-            'group' => $request->groupe,
+            'groupe' => $request->groupe,
             'name' => $request->name,
-            'domaine' => implode(',', $request->domaine),
             'denomination' => $request->denomination,
             'date' => $request->date,
-            'objectif1' => $request->objectif1,
-            'objectif2' => $request->objectif2,
-            'objectif3' => $request->objectif3,
+            'objectifs' => $request->objectifs,
+            'commune' => $request->commune,
+            'arrondissement' => $request->arrondissement,
+            'quartier' => $request->quartier,
+            'maison' => $request->maison,
+            'email' => $request->email,
+            'number1' => $request->number1,
+            'number2' => $request->number2,
+            'lien' => $request->lien,
+            'identifiant' => strtoupper(\Illuminate\Support\Str::random(8)),
+            'password' => Hash::make(\Illuminate\Support\Str::random(16)),
         ]);
+
+        $user->syncDomainesByNames($domaines);
 
         session(['admin_creating_user_id' => $user->id]);
         return redirect()->route('admin.createForm2');
@@ -65,20 +82,22 @@ class AssociationController extends Controller
         $user = User::find(session('admin_creating_user_id'));
         if (!$user) return redirect()->back()->withErrors('Utilisateur introuvable.');
 
-        $path = $request->hasFile('attachment')
-            ? $request->file('attachment')->store('attachments', 'public')
-            : $user->attachment;
-
-        $user->update([
-            'siege' => $request->siege,
-            'email' => $request->email,
-            'number1' => $request->number1,
-            'number2' => $request->number2,
-            'attachment' => $path,
-            'identifiant' => $request->identifiant,
-            'password' => Hash::make($request->password),
-            'lien' => $request->lien,
-        ]);
+        if ($request->has('members')) {
+            foreach ($request->members as $memberData) {
+                $photoPath = null;
+                if (isset($memberData['photo'])) {
+                    $photoPath = $memberData['photo']->store('board_members', 'public');
+                }
+                
+                $user->boardMembers()->create([
+                    'role' => $memberData['role'],
+                    'nom' => $memberData['nom'],
+                    'prenom' => $memberData['prenom'],
+                    'telephone' => $memberData['telephone'],
+                    'photo_path' => $photoPath,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.createForm3');
     }
@@ -89,26 +108,28 @@ class AssociationController extends Controller
         if (!$user) return redirect()->back()->withErrors('Utilisateur introuvable.');
 
         $user->update([
-            'name_president' => $request->name_president,
-            'last_name_president' => $request->last_name_president,
-            'attachment1' => $request->hasFile('attachment1') ? $request->file('attachment1')->store('attachments', 'public') : 'attachments/user.jpg',
-            'name_vice_president' => $request->name_vice_president,
-            'last_name_vice_president' => $request->last_name_vice_president,
-            'attachment2' => $request->hasFile('attachment2') ? $request->file('attachment2')->store('attachments', 'public') : 'attachments/user.jpg',
-            'name_secretaire_general' => $request->name_secretaire_general,
-            'last_name_secretaire_general' => $request->last_name_secretaire_general,
-            'attachment3' => $request->hasFile('attachment3') ? $request->file('attachment3')->store('attachments', 'public') : 'attachments/user.jpg',
-            'name_tresorier_general' => $request->name_tresorier_general,
-            'last_name_tresorier_general' => $request->last_name_tresorier_general,
-            'attachment4' => $request->hasFile('attachment4') ? $request->file('attachment4')->store('attachments', 'public') : 'attachments/user.jpg',
-            'attachment5' => $request->file('attachment5')->store('attachments', 'public'),
-            'signature_data' => $request->hasFile('signature_data') ? $request->file('signature_data')->store('attachments', 'public') : null,
-            'cachet' => $request->hasFile('cachet') ? $request->file('cachet')->store('attachments', 'public') : null,
+            'logo_path' => $request->hasFile('logo') ? $request->file('logo')->store('attachments', 'public') : null,
+            'recepisse_path' => $request->hasFile('doc_recepisse') ? $request->file('doc_recepisse')->store('attachments', 'public') : null,
+            'journal_officiel_path' => $request->hasFile('doc_journal_officiel') ? $request->file('doc_journal_officiel')->store('attachments', 'public') : null,
+            'attestation_path' => $request->hasFile('doc_attestation') ? $request->file('doc_attestation')->store('attachments', 'public') : null,
+            'reglement_path' => $request->hasFile('doc_reglement') ? $request->file('doc_reglement')->store('attachments', 'public') : null,
             'created_by' => 'admin',
             'is_approved' => true,
         ]);
 
         session()->forget('admin_creating_user_id');
         return redirect()->route('admin.dashboard')->with('success', 'Association créée avec succès.');
+    }
+
+    private function normalizeDomaines(array $domaines, ?string $autre): array
+    {
+        return collect($domaines)
+            ->map(fn ($domaine) => $domaine === 'Autre' && filled($autre) ? $autre : $domaine)
+            ->reject(fn ($domaine) => $domaine === 'Autre')
+            ->filter(fn ($domaine) => is_string($domaine) && trim($domaine) !== '')
+            ->map(fn ($domaine) => trim($domaine))
+            ->unique()
+            ->values()
+            ->all();
     }
 }

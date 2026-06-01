@@ -10,22 +10,18 @@ class AssociationRequestController extends Controller
 {
     public function store(StoreAssociationRequestRequest $request)
     {
+        $attachmentPath = null;
+        if ($request->hasFile('attachment')) {
+            $attachmentPath = $request->file('attachment')->store('courriers', 'public');
+        }
+
         $assocRequest = AssociationRequest::create([
             'user_id' => Auth::id(),
-            'title' => $request->title,
-            'type' => $request->type,
-            'description' => $request->description,
-            'location' => $request->location,
-            'destinataire' => $request->destinataire,
-            'reference' => $request->reference,
+            'objet' => $request->objet,
+            'title' => $request->objet, // keep title for backward compatibility if needed, or remove if not used elsewhere
+            'type' => 'Courrier',
+            'attachment' => $attachmentPath,
         ]);
-
-        $user = Auth::user();
-        $pdf = Pdf::loadView('pdf.courrier', compact('assocRequest', 'user'));
-        $pdfPath = 'courriers/courrier_' . $assocRequest->id . '.pdf';
-        \Storage::disk('public')->put($pdfPath, $pdf->output());
-
-        $assocRequest->update(['pdf_path' => $pdfPath]);
 
         return redirect()->back()->with('success', 'Demande soumise avec succès.');
     }

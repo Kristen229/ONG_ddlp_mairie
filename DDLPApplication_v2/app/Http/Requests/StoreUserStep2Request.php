@@ -8,11 +8,15 @@ class StoreUserStep2Request extends FormRequest
 
     public function rules(): array
     {
+        $isAdmin = request()->routeIs('admin.*');
+
         return [
-            'siege' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'number1' => 'required|string|max:20',
-            'number2' => 'nullable|string|max:20',
+            'members' => 'required|array|min:3',
+            'members.*.role' => 'required|string|max:255',
+            'members.*.nom' => 'required|string|max:255',
+            'members.*.prenom' => 'required|string|max:255',
+            'members.*.telephone' => 'required|string|max:255',
+            'members.*.photo' => $isAdmin ? 'nullable|image|max:20480' : 'required|image|max:20480',
         ];
     }
 }

@@ -31,10 +31,6 @@
             <div class="w-full md:w-1/4">
                 <select name="domaine" class="block w-full py-3 px-4 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition">
                     <option value="">Tous les domaines</option>
-                    @php
-                        // Extraction et tri des domaines uniques (depuis le résultat du contrôleur)
-                        $domaines = isset($users) && count($users) > 0 ? collect($users)->pluck('domaine')->filter()->unique()->flatten()->sort() : [];
-                    @endphp
                     @foreach($domaines as $d)
                         <option value="{{ $d }}" {{ request('domaine') == $d ? 'selected' : '' }}>{{ $d }}</option>
                     @endforeach
@@ -65,8 +61,8 @@
                         
                         <!-- Image ou Placeholder -->
                         <div class="relative h-48 bg-gray-100 border-b border-gray-100">
-                            @if($user->attachment5)
-                                <img src="{{ asset('storage/' . $user->attachment5) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                            @if($user->logo_path)
+                                <img src="{{ asset('storage/' . $user->logo_path) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
                             @else
                                 <div class="flex items-center justify-center w-full h-full text-gray-300">
                                     <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
@@ -75,7 +71,7 @@
                             <!-- Badge Type (ONG / ASSOC / FONDATION) -->
                             <div class="absolute top-4 right-4">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-white/90 text-teal-800 shadow-sm backdrop-blur-sm">
-                                    {{ Str::upper($user->group) }}
+                                    {{ Str::upper($user->groupe ? $user->groupe->value : 'ONG') }}
                                 </span>
                             </div>
                         </div>
@@ -90,10 +86,10 @@
                                     <span class="line-clamp-2"><span class="font-semibold text-gray-700">Domaine :</span> {{ $user->domaine }}</span>
                                 </div>
                                 
-                                @if($user->siege)
+                                @if($user->commune)
                                 <div class="flex items-start gap-2 text-sm text-gray-500 mb-4">
                                     <svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                    <span class="line-clamp-1"><span class="font-semibold text-gray-700">Siège :</span> {{ $user->siege }}</span>
+                                    <span class="line-clamp-1"><span class="font-semibold text-gray-700">Siège :</span> {{ $user->arrondissement }}, {{ $user->commune }}</span>
                                 </div>
                                 @endif
                             </div>

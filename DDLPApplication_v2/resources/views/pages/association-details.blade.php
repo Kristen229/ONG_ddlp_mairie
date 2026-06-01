@@ -10,8 +10,8 @@
             <div class="px-8 pb-8 relative">
                 <div class="flex flex-col sm:flex-row items-center sm:items-end -mt-16 sm:-mt-20 gap-6">
                     <div class="h-32 w-32 sm:h-40 sm:w-40 rounded-full border-4 border-white bg-white shadow-md overflow-hidden flex-shrink-0">
-                        @if($user->attachment5)
-                            <img src="{{ asset('storage/' . $user->attachment5) }}" alt="Logo" class="w-full h-full object-cover">
+                        @if($user->logo_path)
+                            <img src="{{ asset('storage/' . $user->logo_path) }}" alt="Logo" class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-4xl">
                                 {{ substr($user->name, 0, 1) }}
@@ -44,12 +44,12 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <h3 class="text-lg font-bold text-gray-900 mb-4 border-b border-gray-100 pb-3">Informations Pratiques</h3>
                     <div class="space-y-4 text-sm">
-                        @if($user->siege)
+                        @if($user->commune)
                         <div class="flex items-start gap-3 text-gray-600">
                             <svg class="w-5 h-5 text-teal-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             <div>
                                 <span class="block font-bold text-gray-900">Siège social</span>
-                                {{ $user->siege }}
+                                {{ $user->arrondissement }}, {{ $user->commune }}
                             </div>
                         </div>
                         @endif
@@ -138,24 +138,17 @@
                         Missions et Objectifs
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        @if($user->objectif1)
+                        @php
+                            $objectifs = is_string($user->objectifs) ? json_decode($user->objectifs, true) : ($user->objectifs ?? []);
+                        @endphp
+                        @forelse($objectifs as $index => $objectif)
                         <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
-                            <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-700 font-black flex items-center justify-center mb-3">1</span>
-                            <p class="text-gray-700 text-sm">{{ $user->objectif1 }}</p>
+                            <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-700 font-black flex items-center justify-center mb-3">{{ $index + 1 }}</span>
+                            <p class="text-gray-700 text-sm">{{ $objectif }}</p>
                         </div>
-                        @endif
-                        @if($user->objectif2)
-                        <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
-                            <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-700 font-black flex items-center justify-center mb-3">2</span>
-                            <p class="text-gray-700 text-sm">{{ $user->objectif2 }}</p>
-                        </div>
-                        @endif
-                        @if($user->objectif3)
-                        <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
-                            <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-700 font-black flex items-center justify-center mb-3">3</span>
-                            <p class="text-gray-700 text-sm">{{ $user->objectif3 }}</p>
-                        </div>
-                        @endif
+                        @empty
+                        <div class="col-span-full text-gray-500 text-sm">Aucun objectif défini.</div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -208,6 +201,7 @@
                 <div @click.away="showReviewModal = false" class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-gray-100">
                     <form action="{{ route('reviews.store', $user->id) }}" method="POST">
                         @csrf
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
                         <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
                             <h3 class="text-2xl font-black text-gray-900 mb-6" id="modal-title">Laisser un avis</h3>
                             

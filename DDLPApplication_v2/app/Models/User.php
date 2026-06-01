@@ -14,35 +14,24 @@ class User extends Authenticatable
     protected $fillable = [
         'groupe',
         'name',
-        'domaine',
         'denomination',
         'date',
-        'objectif1',
-        'objectif2',
-        'objectif3',
-        'siege',
+        'objectifs',
+        'commune',
+        'arrondissement',
+        'quartier',
+        'maison',
         'email',
         'number1',
         'number2',
-        'attachment',
+        'lien',
+        'logo_path',
+        'recepisse_path',
+        'journal_officiel_path',
+        'attestation_path',
+        'reglement_path',
         'identifiant',
         'password',
-        'lien',
-        'name_president',
-        'last_name_president',
-        'attachment1',
-        'name_vice_president',
-        'last_name_vice_president',
-        'attachment2',
-        'name_secretaire_general',
-        'last_name_secretaire_general',
-        'attachment3',
-        'name_tresorier_general',
-        'last_name_tresorier_general',
-        'attachment4',
-        'attachment5',
-        'signature_data',
-        'cachet',
         'created_by',
         'is_approved',
         'must_change_password',
@@ -61,6 +50,7 @@ class User extends Authenticatable
             'date' => 'date',
             'is_approved' => 'boolean',
             'must_change_password' => 'boolean',
+            'objectifs' => 'array',
         ];
     }
 
@@ -84,5 +74,36 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function domaines()
+    {
+        return $this->belongsToMany(Domaine::class)->withTimestamps();
+    }
+
+    public function boardMembers()
+    {
+        return $this->hasMany(BoardMember::class);
+    }
+
+    public function getDomaineAttribute(): string
+    {
+        $domaines = $this->relationLoaded('domaines')
+            ? $this->domaines
+            : $this->domaines()->get();
+
+        return $domaines->pluck('nom')->implode(', ');
+    }
+
+    public function syncDomainesByNames(array $names): void
+    {
+        $ids = collect($names)
+            ->filter(fn ($name) => is_string($name) && trim($name) !== '')
+            ->map(fn ($name) => trim($name))
+            ->unique()
+            ->map(fn ($name) => Domaine::firstOrCreate(['nom' => $name])->id)
+            ->all();
+
+        $this->domaines()->sync($ids);
     }
 }

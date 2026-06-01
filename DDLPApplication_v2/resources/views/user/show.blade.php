@@ -11,8 +11,8 @@
         <!-- En-tête Sidebar -->
         <div class="p-6 border-b border-gray-100 text-center">
             <div class="h-24 w-24 mx-auto rounded-full border-4 border-gray-50 bg-white shadow-sm overflow-hidden mb-3">
-                @if($user->attachment5)
-                    <img src="{{ asset('storage/' . $user->attachment5) }}" alt="Logo" class="w-full h-full object-cover">
+                @if($user->logo_path)
+                    <img src="{{ asset('storage/' . $user->logo_path) }}" alt="Logo" class="w-full h-full object-cover">
                 @else
                     <div class="w-full h-full bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-2xl">
                         {{ substr($user->name, 0, 1) }}
@@ -92,8 +92,8 @@
                             <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50">{{ $user->email }}</p>
                         </div>
                         <div>
-                            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Siège / Localisation</p>
-                            <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50">{{ $user->siege }}</p>
+                            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Adresse / Localisation</p>
+                            <p class="font-medium text-gray-900 border border-gray-100 p-3 rounded-xl bg-gray-50">{{ $user->maison ?? '' }}, {{ $user->quartier ?? '' }}, {{ $user->arrondissement ?? '' }}, {{ $user->commune ?? 'Cotonou' }}</p>
                         </div>
                         <div>
                             <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Téléphones</p>
@@ -108,23 +108,21 @@
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Membres du Bureau</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                        @forelse($user->boardMembers as $member)
                         <div class="bg-gradient-to-br from-teal-50 to-white p-5 rounded-2xl border border-teal-100 text-center">
-                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-3">Président</p>
-                            <div class="w-12 h-12 bg-white rounded-full mx-auto mb-2 flex items-center justify-center font-bold text-teal-700 shadow-sm">{{ substr($user->name_president, 0, 1) }}</div>
-                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_president }} {{ $user->last_name_president }}</p>
+                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-3">{{ $member->role }}</p>
+                            <div class="w-12 h-12 bg-white rounded-full mx-auto mb-2 overflow-hidden shadow-sm border border-gray-100">
+                                @if($member->photo_path)
+                                    <img src="{{ asset('storage/' . $member->photo_path) }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center font-bold text-teal-700">{{ substr($member->nom, 0, 1) }}</div>
+                                @endif
+                            </div>
+                            <p class="font-bold text-gray-900 text-sm">{{ $member->nom }} {{ $member->prenom }}</p>
                         </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Vice-Président</p>
-                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_vice_president ?: '-' }} <br/> {{ $user->last_name_vice_president ?: '' }}</p>
-                        </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Secrétaire G.</p>
-                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_secretaire_general ?: '-' }} <br/> {{ $user->last_name_secretaire_general ?: '' }}</p>
-                        </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 text-center">
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Trésorier</p>
-                            <p class="font-bold text-gray-900 text-sm">{{ $user->name_tresorier_general ?: '-' }} <br/> {{ $user->last_name_tresorier_general ?: '' }}</p>
-                        </div>
+                        @empty
+                        <div class="col-span-full text-center py-4 text-gray-500">Aucun membre enregistré.</div>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -235,6 +233,14 @@
                                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Rejeté
                                             </span>
+                                        @endif
+                                        
+                                        @if($request->admin_response || $request->admin_attachment)
+                                            <div class="mt-2 text-xs">
+                                                <button @click="$dispatch('open-response-modal', {{ json_encode(['objet' => $request->objet, 'response' => $request->admin_response, 'attachment' => $request->admin_attachment ? asset('storage/' . $request->admin_attachment) : null]) }})" class="text-teal-600 hover:text-teal-800 font-medium underline">
+                                                    Voir la réponse
+                                                </button>
+                                            </div>
                                         @endif
                                     </td>
                                 </tr>
@@ -416,6 +422,7 @@
 
     <!-- MODAL NOUVELLE DEMANDE (LETTRE) -->
     <div x-show="showRequestModal" style="display: none;" class="fixed z-[100] inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- ... existing request modal code ... -->
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
             <div x-show="showRequestModal" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click.stop="showRequestModal = false"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
@@ -466,6 +473,50 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL REPONSE ADMIN -->
+    <div x-data="{ showResponseModal: false, responseData: null }"
+         @open-response-modal.window="showResponseModal = true; responseData = $event.detail"
+         x-show="showResponseModal" style="display: none;" class="fixed z-[100] inset-0 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div x-show="showResponseModal" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click="showResponseModal = false"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div x-show="showResponseModal" x-transition.scale class="relative z-10 inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-gray-100">
+                <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
+                    <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
+                        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-black text-gray-900">Réponse de la Mairie</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Objet</span>
+                            <p class="font-bold text-gray-900" x-text="responseData?.objet"></p>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Message</span>
+                            <p class="text-gray-700 whitespace-pre-wrap" x-text="responseData?.response || 'Aucun message.'"></p>
+                        </div>
+                        <template x-if="responseData?.attachment">
+                            <div>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Fichier joint</span>
+                                <a :href="responseData.attachment" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold rounded-xl transition-colors">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    Télécharger le document
+                                </a>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 sm:px-8 border-t border-gray-100 flex justify-end">
+                    <button type="button" @click="showResponseModal = false" class="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">
+                        Fermer
+                    </button>
+                </div>
             </div>
         </div>
     </div>

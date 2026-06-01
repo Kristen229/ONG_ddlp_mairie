@@ -39,8 +39,8 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center gap-4">
                                 <div class="h-12 w-12 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 flex items-center justify-center">
-                                    @if($u->attachment5) 
-                                        <img src="{{ asset('storage/' . $u->attachment5) }}" class="w-full h-full object-cover">
+                                    @if($u->logo_path) 
+                                        <img src="{{ asset('storage/' . $u->logo_path) }}" class="w-full h-full object-cover">
                                     @else
                                         <span class="text-slate-400 font-bold text-lg">{{ strtoupper(substr($u->name, 0, 1)) }}</span>
                                     @endif

@@ -23,10 +23,7 @@ return new class extends Migration
             $table->decimal('budget_expected', 10, 2)->nullable();
             $table->decimal('budget_actual', 10, 2)->nullable();
             $table->date('actual_date')->nullable();
-
-            $table->string('evaluation_status')->default('en_attente'); // Enum EvaluationStatus
-            $table->text('evaluation_comment')->nullable();
-            $table->float('score')->nullable();
+            
             $table->boolean('is_visible')->default(false);
 
             $table->timestamps();

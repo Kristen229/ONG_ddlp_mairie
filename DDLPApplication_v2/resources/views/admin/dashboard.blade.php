@@ -105,5 +105,167 @@
         </a>
     </div>
 
+    <!-- STATISTIQUES AVANCÉES -->
+    <div class="mt-8 space-y-6">
+        <h2 class="text-2xl font-black text-slate-800 flex items-center gap-2">
+            <svg class="h-6 w-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            Statistiques Avancées
+        </h2>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="h-12 w-12 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-slate-500">Bénéficiaires touchés</p>
+                    <p class="text-2xl font-black text-slate-800">{{ number_format($totalBeneficiaries, 0, ',', ' ') }}</p>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-slate-500">Taux de résolution (Courriers)</p>
+                    <p class="text-2xl font-black text-slate-800">{{ $resolutionRate }}%</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="h-12 w-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-slate-500">ONG Enregistrées</p>
+                    <p class="text-2xl font-black text-slate-800">{{ $ongCount }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="h-12 w-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-slate-500">Associations Enregistrées</p>
+                    <p class="text-2xl font-black text-slate-800">{{ $associationCount }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRAPHIQUES -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Camembert ONG vs Associations -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">Répartition des Structures</h3>
+                <div class="relative h-64 w-full">
+                    <canvas id="repartitionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Inscriptions mensuelles -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">Inscriptions Mensuelles</h3>
+                <div class="relative h-64 w-full">
+                    <canvas id="inscriptionsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Top 5 Domaines -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">Top 5 - Domaines d'Intervention</h3>
+                <div class="space-y-4">
+                    @forelse($topDomaines as $domaine)
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-slate-600 truncate mr-4">{{ $domaine->nom }}</span>
+                            <span class="text-sm font-black text-slate-800 bg-slate-100 px-3 py-1 rounded-full">{{ $domaine->total }}</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div class="bg-teal-500 h-2 rounded-full" style="width: {{ $userCount > 0 ? ($domaine->total / $userCount) * 100 : 0 }}%"></div>
+                        </div>
+                    @empty
+                        <p class="text-sm text-slate-500">Aucune donnée disponible.</p>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Répartition géographique -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">Répartition par Arrondissement</h3>
+                <div class="space-y-4 max-h-64 overflow-y-auto pr-2">
+                    @forelse($repartitionGeo as $geo)
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-slate-600">{{ $geo->arrondissement }}</span>
+                            <span class="text-sm font-black text-slate-800">{{ $geo->total }} str.</span>
+                        </div>
+                    @empty
+                        <p class="text-sm text-slate-500">Aucune donnée géographique.</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
+
+<!-- INITIALISATION DES GRAPHIQUES -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Camembert
+        const ctxRep = document.getElementById('repartitionChart').getContext('2d');
+        new Chart(ctxRep, {
+            type: 'doughnut',
+            data: {
+                labels: ['ONG', 'Associations'],
+                datasets: [{
+                    data: [{{ $ongCount }}, {{ $associationCount }}],
+                    backgroundColor: ['#14b8a6', '#6366f1'], // Teal & Indigo
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                cutout: '70%'
+            }
+        });
+
+        // Line Chart Inscriptions
+        const ctxIns = document.getElementById('inscriptionsChart').getContext('2d');
+        new Chart(ctxIns, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+                datasets: [{
+                    label: 'Nouvelles Inscriptions',
+                    data: {{ json_encode(array_values($countsByMonth)) }},
+                    borderColor: '#f43f5e', // Rose
+                    backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+    });
+</script>
 @endsection

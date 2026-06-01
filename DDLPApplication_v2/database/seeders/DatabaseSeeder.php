@@ -15,11 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        foreach (\App\Models\Domaine::DEFAULT_NAMES as $nom) {
+            \App\Models\Domaine::firstOrCreate(['nom' => $nom]);
+        }
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Créer un Super Admin
+        \App\Models\Admin::create([
+            'email' => 'superadmin@cotonou.bj',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'), // A changer en prod
+            'is_super_admin' => true,
+        ]);
+
+        // Créer un Admin normal pour tester
+        \App\Models\Admin::create([
+            'email' => 'admin@cotonou.bj',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'is_super_admin' => false,
         ]);
     }
 }

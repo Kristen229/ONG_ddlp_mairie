@@ -22,19 +22,12 @@
             <!-- Visuel -->
             <div class="h-56 bg-slate-100 relative w-full overflow-hidden shrink-0">
                 <img src="{{ asset('storage/'.$act->attachment) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                <!-- Badges Status (Evaluation) sur l'image -->
+                <!-- Badge Status -->
                 <div class="absolute top-3 left-3 flex flex-col gap-2">
                     @if(!$act->is_visible)
                         <span class="bg-blue-600/90 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">À valider</span>
-                    @endif
-                    @if($act->evaluation_status === \App\Enums\EvaluationStatus::COMPLIANT)
-                        <span class="bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">Conforme ({{ $act->score }}%)</span>
-                    @elseif($act->evaluation_status === \App\Enums\EvaluationStatus::WARNING)
-                        <span class="bg-amber-500/90 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">À suivre ({{ $act->score }}%)</span>
-                    @elseif($act->evaluation_status === \App\Enums\EvaluationStatus::NON_COMPLIANT)
-                        <span class="bg-rose-500/90 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">Non Conforme</span>
                     @else
-                        <span class="bg-slate-900/80 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">Non évalué</span>
+                        <span class="bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">Publiée</span>
                     @endif
                 </div>
             </div>
