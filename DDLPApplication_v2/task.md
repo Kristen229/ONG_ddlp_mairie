@@ -18,3 +18,7 @@ Date: 2026-05-31
 - [x] Uploads inscription - Limites Laravel passees a 20 Mo
 - [x] Uploads inscription - Limites PHP CLI passees a 20 Mo
 - [x] Uploads inscription - Verification executee
+- [x] Candidatures - Route et controleur detail ajoutes
+- [x] Candidatures - Liste compacte creee
+- [x] Candidatures - Page detail complete creee
+- [x] Candidatures - Verification et rapport executes

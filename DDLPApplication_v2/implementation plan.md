@@ -33,3 +33,12 @@ Corriger les urgences securite, base de donnees, configuration, emails, statisti
    - `memory_limit=256M`
 3. Verifier les valeurs actives avec `php -i`.
 4. Relancer les tests Laravel.
+
+## Plan additionnel valide: examen detaille des candidatures
+
+1. Ajouter une route admin de detail `admin.candidates.show`.
+2. Ajouter une methode `show` dans `CandidateController` pour charger une candidature non approuvee avec `domaines` et `boardMembers`.
+3. Transformer la liste des candidatures en vue compacte avec un bouton `Examiner`.
+4. Creer une page detail complete affichant toutes les informations, objectifs, membres du bureau, photos et documents uploades.
+5. Mettre les actions `Approuver` et `Rejeter` sur la page detail.
+6. Verifier les routes et les tests.

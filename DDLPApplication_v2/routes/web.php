@@ -179,6 +179,7 @@ Route::middleware('auth:admin')->group(function () {
 
     // Candidatures
     Route::get('/admin/candidates', [CandidateController::class, 'index'])->name('admin.candidates.index');
+    Route::get('/admin/candidates/{id}', [CandidateController::class, 'show'])->name('admin.candidates.show');
     Route::post('/admin/candidates/{id}/approve', [CandidateController::class, 'approve'])->name('admin.candidates.approve');
     Route::post('/admin/candidates/{id}/reject', [CandidateController::class, 'reject'])->name('admin.candidates.reject');
 
