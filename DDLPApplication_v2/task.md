@@ -22,3 +22,7 @@ Date: 2026-05-31
 - [x] Super Admin - Mot de passe généré automatiquement et envoyé par email
 - [x] Super Admin - Force du changement de mot de passe à la première connexion d'un admin
 - [x] Super Admin - Envoi d'email à l'admin lors d'une réinitialisation de mot de passe par le super admin
+- [x] Candidatures - Route et controleur detail ajoutes
+- [x] Candidatures - Liste compacte creee
+- [x] Candidatures - Page detail complete creee
+- [x] Candidatures - Verification et rapport executes
