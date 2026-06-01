@@ -4,7 +4,7 @@
 <div class="space-y-6" x-data="{ 
     showCreateModal: false, 
     showEditModal: false, 
-    editAdmin: null 
+    editAdmin: { id: null, email: '', is_super_admin: false }
 }">
     
     <!-- En-tête -->
@@ -76,7 +76,7 @@
                             {{ $admin->created_at->format('d M. Y - H:i') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                            <button @click="editAdmin = {{ json_encode(['id' => $admin->id, 'email' => $admin->email, 'is_super_admin' => $admin->is_super_admin]) }}; showEditModal = true;" class="inline-flex items-center justify-center text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 h-8 w-8 rounded-lg transition-colors border border-teal-100" title="Modifier">
+                            <button @click="editAdmin = { id: {{ $admin->id }}, email: '{{ addslashes($admin->email) }}', is_super_admin: {{ $admin->is_super_admin ? 'true' : 'false' }} }; showEditModal = true;" class="inline-flex items-center justify-center text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 h-8 w-8 rounded-lg transition-colors border border-teal-100" title="Modifier">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </button>
                             @if($admin->id !== auth('admin')->id())
@@ -96,13 +96,16 @@
     </div>
 
     <!-- MODAL CREATE -->
-    <div x-show="showCreateModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div x-show="showCreateModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="showCreateModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="showCreateModal = false" aria-hidden="true"></div>
+            <div x-show="showCreateModal" x-transition.opacity class="fixed inset-0 bg-gray-900/75 transition-opacity" @click="showCreateModal = false" aria-hidden="true"></div>
 
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             
-            <div x-show="showCreateModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div x-show="showCreateModal" @click.stop
+                 x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <form method="POST" action="{{ route('admin.superadmin.store') }}">
                     @csrf
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -143,14 +146,17 @@
     </div>
 
     <!-- MODAL EDIT -->
-    <div x-show="showEditModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div x-show="showEditModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="showEditModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="showEditModal = false" aria-hidden="true"></div>
+            <div x-show="showEditModal" x-transition.opacity class="fixed inset-0 bg-gray-900/75 transition-opacity" @click="showEditModal = false" aria-hidden="true"></div>
 
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             
-            <div x-show="showEditModal" class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <form method="POST" :action="editAdmin ? '/admin/super-admin/' + editAdmin.id : '#'">
+            <div x-show="showEditModal" @click.stop
+                 x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <form method="POST" :action="'/admin/super-admin/' + editAdmin.id">
                     @csrf
                     @method('PUT')
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -163,14 +169,14 @@
                                 <div class="mt-4 space-y-4">
                                     <div>
                                         <label class="block text-sm font-bold text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
-                                        <input type="email" name="email" x-model="editAdmin ? editAdmin.email : ''" required class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                                        <input type="email" name="email" :value="editAdmin.email" required class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-bold text-gray-700 mb-1">Nouveau mot de passe <span class="text-xs text-gray-500 font-normal">(laisser vide pour ne pas modifier)</span></label>
                                         <input type="password" name="password" minlength="8" class="block w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                                     </div>
-                                    <div class="flex items-center gap-2 mt-4" x-show="editAdmin && editAdmin.id !== {{ auth('admin')->id() }}">
-                                        <input type="checkbox" id="edit_is_super_admin" name="is_super_admin" value="1" x-bind:checked="editAdmin && editAdmin.is_super_admin" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500 h-4 w-4">
+                                    <div class="flex items-center gap-2 mt-4" x-show="editAdmin.id !== {{ auth('admin')->id() }}">
+                                        <input type="checkbox" id="edit_is_super_admin" name="is_super_admin" value="1" :checked="editAdmin.is_super_admin" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500 h-4 w-4">
                                         <label for="edit_is_super_admin" class="text-sm font-bold text-gray-700">Rôle Super Administrateur</label>
                                     </div>
                                 </div>
