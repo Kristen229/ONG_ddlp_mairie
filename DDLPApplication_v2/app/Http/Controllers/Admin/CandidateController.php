@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Http\Request;
@@ -17,9 +18,18 @@ class CandidateController extends Controller
         return view('admin.candidates.index', compact('pendingUsers'));
     }
 
+    public function show($id)
+    {
+        $candidate = User::where('is_approved', false)
+            ->with(['domaines', 'boardMembers'])
+            ->findOrFail($id);
+
+        return view('admin.candidates.show', compact('candidate'));
+    }
+
     public function approve($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('is_approved', false)->findOrFail($id);
 
         // Générer un mot de passe aléatoire
         $plainPassword = Str::random(10);
@@ -57,12 +67,14 @@ class CandidateController extends Controller
             );
         }
 
-        return back()->with('success', "L'inscription de {$user->name} a été approuvée. Un email avec le mot de passe a été envoyé.");
+        AuditLog::record('candidate.approve', "Candidature approuvée: {$user->name}", ['user_id' => $user->id]);
+
+        return redirect()->route('admin.candidates.index')->with('success', "L'inscription de {$user->name} a été approuvée. Un email avec le mot de passe a été envoyé.");
     }
 
     public function reject(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('is_approved', false)->findOrFail($id);
         $motif = $request->input('motif', 'Votre candidature ne correspond pas aux critères requis.');
 
         // Envoyer l'email de rejet avant suppression
@@ -80,8 +92,9 @@ class CandidateController extends Controller
         }
 
         $userName = $user->name;
+        AuditLog::record('candidate.reject', "Candidature rejetée: {$userName}", ['user_id' => $user->id, 'motif' => $motif]);
         $user->delete();
 
-        return back()->with('success', "La candidature de {$userName} a été rejetée et le compte supprimé. Un email a été envoyé.");
+        return redirect()->route('admin.candidates.index')->with('success', "La candidature de {$userName} a été rejetée et le compte supprimé. Un email a été envoyé.");
     }
 }

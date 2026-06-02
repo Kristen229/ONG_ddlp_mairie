@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'super_admin' => \App\Http\Middleware\SuperAdminMiddleware::class,
             'force_password_change' => \App\Http\Middleware\ForcePasswordChange::class,
+            'admin_force_password_change' => \App\Http\Middleware\AdminForcePasswordChange::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

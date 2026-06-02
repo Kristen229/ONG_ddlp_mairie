@@ -1,6 +1,6 @@
-# 📘 DOCUMENTATION — Plateforme DDLP Mairie
+# 📘 DOCUMENTATION — Plateforme Mairie de Cotonou
 
-> Guide complet de fonctionnement de la plateforme de gestion des Associations et ONG de la Mairie.
+> Guide complet de fonctionnement de la plateforme de gestion des Associations et ONG de la Mairie de Cotonou.
 
 ---
 
@@ -25,7 +25,7 @@
 
 ## 1. Présentation générale
 
-La plateforme **DDLP Mairie** est une application web permettant à une Mairie de gérer, suivre et évaluer les Associations et ONG enregistrées sur son territoire. Elle offre trois espaces distincts :
+La plateforme **Mairie de Cotonou** est une application web permettant à la Mairie de gérer, suivre et évaluer les Associations et ONG enregistrées sur son territoire. Elle offre trois espaces distincts :
 
 - **Espace Public** : Vitrine accessible à tous les visiteurs, présentant les ONG/Associations approuvées et leurs activités.
 - **Espace ONG/Association** : Tableau de bord privé permettant à chaque organisation de gérer son profil, publier des activités et suivre ses demandes.
@@ -92,6 +92,12 @@ resources/views/
 - Crée des ONG directement (auto-approuvées).
 - Consulte les statistiques globales.
 - Exporte des rapports en PDF.
+
+### 5.8 Gestion des Administrateurs (`/admin/super-admin`) — Super Admin uniquement
+- CRUD complet des comptes administrateurs (créer, modifier, supprimer).
+- Attribution du rôle Super Administrateur via une case à cocher.
+- Un Super Admin ne peut pas se supprimer lui-même.
+- Interface avec modaux interactifs (Alpine.js) pour la création et la modification.
 
 ---
 

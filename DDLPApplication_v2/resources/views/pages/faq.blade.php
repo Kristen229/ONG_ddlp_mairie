@@ -2,10 +2,10 @@
 
 @section('content')
 <!-- Header Section -->
-<section class="bg-teal-700 py-16">
+<section class="bg-blue-700 py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
         <h1 class="text-3xl md:text-5xl font-bold mb-4">Questions Fréquentes (FAQ)</h1>
-        <p class="text-lg text-teal-100 max-w-2xl mx-auto">
+        <p class="text-lg text-blue-100 max-w-2xl mx-auto">
             Trouvez rapidement des réponses aux questions les plus courantes sur le fonctionnement de la plateforme et les démarches administratives.
         </p>
     </div>
@@ -19,7 +19,7 @@
         <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden [&_summary::-webkit-details-marker]:hidden">
             <summary class="flex items-center justify-between p-6 cursor-pointer bg-white hover:bg-gray-50 transition-colors">
                 <h3 class="text-lg font-semibold text-gray-900">Comment inscrire mon ONG sur la plateforme ?</h3>
-                <span class="ml-4 flex-shrink-0 text-teal-500 transition-transform duration-300 group-open:rotate-180">
+                <span class="ml-4 flex-shrink-0 text-blue-500 transition-transform duration-300 group-open:rotate-180">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </span>
             </summary>
@@ -38,7 +38,7 @@
         <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden [&_summary::-webkit-details-marker]:hidden">
             <summary class="flex items-center justify-between p-6 cursor-pointer bg-white hover:bg-gray-50 transition-colors">
                 <h3 class="text-lg font-semibold text-gray-900">Une simple association peut-elle s'inscrire ?</h3>
-                <span class="ml-4 flex-shrink-0 text-teal-500 transition-transform duration-300 group-open:rotate-180">
+                <span class="ml-4 flex-shrink-0 text-blue-500 transition-transform duration-300 group-open:rotate-180">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </span>
             </summary>
@@ -51,7 +51,7 @@
         <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden [&_summary::-webkit-details-marker]:hidden">
             <summary class="flex items-center justify-between p-6 cursor-pointer bg-white hover:bg-gray-50 transition-colors">
                 <h3 class="text-lg font-semibold text-gray-900">Comment soumettre une demande (audience, partenariat...) ?</h3>
-                <span class="ml-4 flex-shrink-0 text-teal-500 transition-transform duration-300 group-open:rotate-180">
+                <span class="ml-4 flex-shrink-0 text-blue-500 transition-transform duration-300 group-open:rotate-180">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </span>
             </summary>
@@ -70,7 +70,7 @@
         <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden [&_summary::-webkit-details-marker]:hidden">
             <summary class="flex items-center justify-between p-6 cursor-pointer bg-white hover:bg-gray-50 transition-colors">
                 <h3 class="text-lg font-semibold text-gray-900">Comment publier les activités de mon association ?</h3>
-                <span class="ml-4 flex-shrink-0 text-teal-500 transition-transform duration-300 group-open:rotate-180">
+                <span class="ml-4 flex-shrink-0 text-blue-500 transition-transform duration-300 group-open:rotate-180">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </span>
             </summary>
@@ -81,7 +81,7 @@
 
         <div class="mt-12 text-center">
             <p class="text-gray-500 mb-4">Vous n'avez pas trouvé votre réponse ?</p>
-            <a href="{{ route('contact') }}" class="inline-flex items-center px-6 py-3 border border-teal-600 text-base font-medium rounded-xl text-teal-600 bg-white hover:bg-teal-50 transition-colors">
+            <a href="{{ route('contact') }}" class="inline-flex items-center px-6 py-3 border border-blue-600 text-base font-medium rounded-xl text-blue-600 bg-white hover:bg-blue-50 transition-colors">
                 Nous contacter
             </a>
         </div>

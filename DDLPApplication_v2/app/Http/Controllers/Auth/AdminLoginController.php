@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\AuditLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,6 +26,7 @@ class AdminLoginController extends Controller
 
         if ($admin && Hash::check($request->password, $admin->password)) {
             Auth::guard('admin')->login($admin);
+            AuditLog::record('admin.login', "Connexion admin {$admin->email}");
             return redirect()->route('admin.dashboard', ['id' => $admin->id]);
         }
 

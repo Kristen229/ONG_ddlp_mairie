@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\AuditLog;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ class ActivityController extends Controller
     {
         $path = $request->file('attachment')->store('activities', 'public');
 
-        Activity::create([
+        $activity = Activity::create([
             'user_id' => Auth::id(),
             'titre' => $request->titre,
             'description' => $request->description,
@@ -22,10 +23,23 @@ class ActivityController extends Controller
             'beneficiaries_expected' => $request->beneficiaries_expected,
             'budget_expected' => $request->budget_expected,
             'target_audience' => $request->target_audience,
-            'is_visible' => false, // Sécurité : Forcer l'invisibilité par défaut
+            'is_visible' => false,
+            'status' => Activity::STATUS_PENDING,
         ]);
 
+        AuditLog::record('activity.create_user', "Activité soumise: {$activity->titre}", ['activity_id' => $activity->id]);
+
         return redirect()->back()->with('success', 'Activité créée avec succès.');
+    }
+
+    public function show($id)
+    {
+        $activity = Activity::where('is_visible', true)
+            ->where('status', Activity::STATUS_PUBLISHED)
+            ->with('user.domaines')
+            ->findOrFail($id);
+
+        return view('pages.activity-details', compact('activity'));
     }
 
     public function update(UpdateActivityRequest $request, $id)
@@ -36,9 +50,13 @@ class ActivityController extends Controller
         $data = [
             'titre' => $request->titre,
             'description' => $request->description,
-            'beneficiaries_actual' => $request->beneficiaries_actual,
-            'budget_actual' => $request->budget_actual,
-            'actual_date' => $request->actual_date,
+            'lieu' => $request->lieu,
+            'date' => $request->date,
+            'beneficiaries_expected' => $request->beneficiaries_expected,
+            'budget_expected' => $request->budget_expected,
+            'target_audience' => $request->target_audience,
+            'is_visible' => false,
+            'status' => Activity::STATUS_PENDING,
         ];
 
         if ($request->hasFile('attachment')) {
@@ -46,6 +64,8 @@ class ActivityController extends Controller
         }
 
         $activity->update($data);
-        return redirect()->back()->with('success', 'Activité modifiée.');
+        AuditLog::record('activity.resubmit', "Activité resoumise: {$activity->titre}", ['activity_id' => $activity->id]);
+
+        return redirect()->back()->with('success', 'Activité modifiée et renvoyée pour validation.');
     }
 }

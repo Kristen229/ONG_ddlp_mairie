@@ -10,9 +10,19 @@
             <p class="text-slate-500 mt-2">Gérez les structures, suivez les activités et traitez les courriers depuis votre barre de navigation.</p>
         </div>
         <div class="flex-shrink-0">
-            <div class="h-20 w-20 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z"></path></svg>
-            </div>
+            @if(auth('admin')->user()?->is_super_admin)
+                <form method="POST" action="{{ route('admin.stats.pdf') }}">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-blue-700 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-blue-800 transition-colors">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Exporter le tableau de bord
+                    </button>
+                </form>
+            @else
+                <div class="h-20 w-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -45,7 +55,7 @@
         </a>
 
         <!-- Raccourci Associations -->
-        <a href="{{ route('admin.associations.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-teal-500 hover:shadow-md transition-all flex flex-col justify-between">
+        <a href="{{ route('admin.associations.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-500 hover:shadow-md transition-all flex flex-col justify-between">
             <div class="flex justify-between items-start mb-4">
                 <div class="h-12 w-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
@@ -53,13 +63,13 @@
                 <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">{{ $userCount }} Enregistrées</span>
             </div>
             <div>
-                <h3 class="text-xl font-bold text-slate-800 group-hover:text-teal-600 transition-colors">Structures & ONG</h3>
+                <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">Structures & ONG</h3>
                 <p class="text-sm text-slate-500 mt-1">Gérer le répertoire des associations de la commune.</p>
             </div>
         </a>
 
         <!-- Raccourci Courriers -->
-        <a href="{{ route('admin.requests.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-teal-500 hover:shadow-md transition-all flex flex-col justify-between">
+        <a href="{{ route('admin.requests.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-500 hover:shadow-md transition-all flex flex-col justify-between">
             <div class="flex justify-between items-start mb-4">
                 <div class="h-12 w-12 bg-yellow-50 text-yellow-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -71,13 +81,13 @@
                 @endif
             </div>
             <div>
-                <h3 class="text-xl font-bold text-slate-800 group-hover:text-teal-600 transition-colors">Courriers & Demandes</h3>
+                <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">Courriers & Demandes</h3>
                 <p class="text-sm text-slate-500 mt-1">Traiter les lettres et correspondances des associations.</p>
             </div>
         </a>
 
         <!-- Raccourci Activités -->
-        <a href="{{ route('admin.activities.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-teal-500 hover:shadow-md transition-all flex flex-col justify-between">
+        <a href="{{ route('admin.activities.index') }}" class="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-500 hover:shadow-md transition-all flex flex-col justify-between">
             <div class="flex justify-between items-start mb-4">
                 <div class="h-12 w-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -85,7 +95,7 @@
                 <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full">{{ $activityCount }} Publiées</span>
             </div>
             <div>
-                <h3 class="text-xl font-bold text-slate-800 group-hover:text-teal-600 transition-colors">Galerie des Activités</h3>
+                <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">Galerie des Activités</h3>
                 <p class="text-sm text-slate-500 mt-1">Modérer et valider les activités soumises sur la plateforme.</p>
             </div>
         </a>
@@ -108,14 +118,14 @@
     <!-- STATISTIQUES AVANCÉES -->
     <div class="mt-8 space-y-6">
         <h2 class="text-2xl font-black text-slate-800 flex items-center gap-2">
-            <svg class="h-6 w-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
             Statistiques Avancées
         </h2>
 
         <!-- KPI Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600">
+                <div class="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
                 <div>
@@ -185,7 +195,7 @@
                             <span class="text-sm font-black text-slate-800 bg-slate-100 px-3 py-1 rounded-full">{{ $domaine->total }}</span>
                         </div>
                         <div class="w-full bg-slate-100 rounded-full h-2">
-                            <div class="bg-teal-500 h-2 rounded-full" style="width: {{ $userCount > 0 ? ($domaine->total / $userCount) * 100 : 0 }}%"></div>
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: {{ $userCount > 0 ? ($domaine->total / $userCount) * 100 : 0 }}%"></div>
                         </div>
                     @empty
                         <p class="text-sm text-slate-500">Aucune donnée disponible.</p>
@@ -224,7 +234,7 @@
                 labels: ['ONG', 'Associations'],
                 datasets: [{
                     data: [{{ $ongCount }}, {{ $associationCount }}],
-                    backgroundColor: ['#14b8a6', '#6366f1'], // Teal & Indigo
+                    backgroundColor: ['#3b82f6', '#6366f1'], // Teal & Indigo
                     borderWidth: 0,
                     hoverOffset: 4
                 }]

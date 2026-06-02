@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\AuditLog;
 use App\Models\Review;
 
 class ReviewController extends Controller
@@ -19,6 +19,7 @@ class ReviewController extends Controller
     {
         $review = Review::findOrFail($id);
         $review->update(['is_approved' => true]);
+        AuditLog::record('review.approve', 'Avis approuvé', ['review_id' => $review->id]);
         
         return redirect()->back()->with('success', 'L\'avis a été approuvé avec succès.');
     }
@@ -26,6 +27,7 @@ class ReviewController extends Controller
     public function destroy($id)
     {
         $review = Review::findOrFail($id);
+        AuditLog::record('review.delete', 'Avis supprimé', ['review_id' => $review->id]);
         $review->delete();
 
         return redirect()->back()->with('success', 'L\'avis a été supprimé.');

@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\RequestManagementController;
 use App\Http\Controllers\Admin\ActivityController as AdminActivityController;
 use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AssociationRequestController;
 use App\Http\Controllers\NotificationController;
@@ -47,6 +49,7 @@ Route::post('/reviews/store-from-home', [ReviewController::class, 'storeFromHome
 Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/association/{id}', [UserController::class, 'showDetails'])->name('association.details');
+Route::get('/activites/{id}', [ActivityController::class, 'show'])->name('activites.show');
 Route::post('/association/{id}/reviews', [ReviewController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('reviews.store');
@@ -127,9 +130,11 @@ Route::middleware(['auth', 'force_password_change'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth:admin')->group(function () {
+Route::middleware(['auth:admin', 'admin_force_password_change'])->group(function () {
     // Dashboard
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::put('/admin/profile/password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.password');
 
     // Associations
     Route::get('/admin/associations', [AssociationController::class, 'index'])->name('admin.associations.index');
@@ -170,6 +175,8 @@ Route::middleware('auth:admin')->group(function () {
         Route::post('/admin/super-admin', [\App\Http\Controllers\Admin\SuperAdminController::class, 'store'])->name('admin.superadmin.store');
         Route::put('/admin/super-admin/{id}', [\App\Http\Controllers\Admin\SuperAdminController::class, 'update'])->name('admin.superadmin.update');
         Route::delete('/admin/super-admin/{id}', [\App\Http\Controllers\Admin\SuperAdminController::class, 'destroy'])->name('admin.superadmin.destroy');
+        Route::get('/admin/audit-logs', [AuditLogController::class, 'index'])->name('admin.audit-logs.index');
+        Route::get('/admin/audit-logs/export', [AuditLogController::class, 'export'])->name('admin.audit-logs.export');
     });
 
     // Avis admin (Modération)
@@ -179,6 +186,7 @@ Route::middleware('auth:admin')->group(function () {
 
     // Candidatures
     Route::get('/admin/candidates', [CandidateController::class, 'index'])->name('admin.candidates.index');
+    Route::get('/admin/candidates/{id}', [CandidateController::class, 'show'])->name('admin.candidates.show');
     Route::post('/admin/candidates/{id}/approve', [CandidateController::class, 'approve'])->name('admin.candidates.approve');
     Route::post('/admin/candidates/{id}/reject', [CandidateController::class, 'reject'])->name('admin.candidates.reject');
 
@@ -197,4 +205,18 @@ Route::middleware('auth:admin')->group(function () {
         $request->session()->regenerateToken();
         return redirect()->route('conAdmin');
     })->name('admin.logout');
+
+    // Force password change for admin
+    Route::get('/admin/password/change', fn() => view('admin.auth.change-password'))->name('admin.password.change');
+    Route::post('/admin/password/change', function (Request $request) {
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        $admin = Auth::guard('admin')->user();
+        $admin->update([
+            'password' => Hash::make($request->password),
+            'must_change_password' => false,
+        ]);
+        return redirect()->route('admin.dashboard')->with('success', 'Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant utiliser la plateforme.');
+    })->name('admin.password.change.update');
 });

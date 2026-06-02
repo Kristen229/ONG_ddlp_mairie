@@ -1,6 +1,6 @@
-# 🏛️ DDLP Mairie — Plateforme de Gestion des Associations et ONG
+# 🏛️ Plateforme de Gestion des Associations et ONG - Mairie de Cotonou
 
-Application web de gestion, suivi et évaluation des Associations et ONG enregistrées sur le territoire d'une Mairie.
+Application web de gestion, suivi et évaluation des Associations et ONG enregistrées sur le territoire de la Mairie de Cotonou.
 
 ---
 
@@ -133,7 +133,7 @@ MAIL_USERNAME="votre-adresse@gmail.com"
 MAIL_PASSWORD="mot-de-passe-application"
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="votre-adresse@gmail.com"
-MAIL_FROM_NAME="DDLP Mairie"
+MAIL_FROM_NAME="Mairie de Cotonou"
 ```
 
 > ⚠️ Utilisez un **mot de passe d'application** Gmail, pas votre mot de passe principal.
@@ -192,4 +192,4 @@ Pour une description détaillée de chaque fonctionnalité, workflow et composan
 
 ## 📄 Licence
 
-Ce projet est développé dans le cadre d'un stage à la Mairie. Tous droits réservés.
+Ce projet est développé dans le cadre d'un stage à la Mairie de Cotonou. Tous droits réservés.

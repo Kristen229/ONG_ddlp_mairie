@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserStep1Request;
 use App\Http\Requests\StoreUserStep2Request;
 use App\Http\Requests\StoreUserStep3Request;
+use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -39,12 +40,16 @@ class AssociationController extends Controller
         $user->update($data);
         $user->syncDomainesByNames($domaines);
 
+        AuditLog::record('association.update', "Association modifiée par admin: {$user->name}", ['user_id' => $user->id]);
+
         return redirect()->route('admin.dashboard')->with('success', 'Association mise à jour.');
     }
 
     public function delete($id)
     {
-        User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
+        AuditLog::record('association.delete', "Association supprimée: {$user->name}", ['user_id' => $user->id]);
+        $user->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Association supprimée.');
     }
 
@@ -116,6 +121,8 @@ class AssociationController extends Controller
             'created_by' => 'admin',
             'is_approved' => true,
         ]);
+
+        AuditLog::record('association.create_admin', "Association créée par admin: {$user->name}", ['user_id' => $user->id]);
 
         session()->forget('admin_creating_user_id');
         return redirect()->route('admin.dashboard')->with('success', 'Association créée avec succès.');

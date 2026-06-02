@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-50 flex min-h-[calc(100vh-4rem)]" x-data="{ tab: '{{ $errors->any() ? 'activites' : 'profil' }}', showActivityModal: {{ $errors->any() ? 'true' : 'false' }}, showRequestModal: false, mobileSidebar: false }">
+<div class="bg-gray-50 flex min-h-[calc(100vh-4rem)]" x-data="{ tab: '{{ $errors->any() ? 'activites' : 'profil' }}', showActivityModal: {{ $errors->any() ? 'true' : 'false' }}, showRequestModal: false, mobileSidebar: false, requestFileName: '' }">
 
     <!-- OVERLAY POUR MOBILE -->
     <div x-show="mobileSidebar" class="fixed inset-0 bg-gray-900/50 z-40 lg:hidden" @click="mobileSidebar = false" style="display: none;"></div>
@@ -14,30 +14,30 @@
                 @if($user->logo_path)
                     <img src="{{ asset('storage/' . $user->logo_path) }}" alt="Logo" class="w-full h-full object-cover">
                 @else
-                    <div class="w-full h-full bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-2xl">
+                    <div class="w-full h-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-2xl">
                         {{ substr($user->name, 0, 1) }}
                     </div>
                 @endif
             </div>
             <h2 class="font-black text-gray-900 text-lg leading-tight">{{ $user->name }}</h2>
-            <p class="text-teal-600 text-xs font-bold mt-1 uppercase tracking-wider">{{ $user->groupe ? $user->groupe->value : 'ONG' }}</p>
+            <p class="text-blue-600 text-xs font-bold mt-1 uppercase tracking-wider">{{ $user->groupe ? $user->groupe->value : 'ONG' }}</p>
         </div>
 
         <!-- Menu Navigation -->
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <button @click="tab = 'profil'; mobileSidebar = false" :class="tab === 'profil' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
+            <button @click="tab = 'profil'; mobileSidebar = false" :class="tab === 'profil' ? 'bg-blue-50 text-blue-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                 Mon Profil
             </button>
-            <button @click="tab = 'activites'; mobileSidebar = false" :class="tab === 'activites' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
+            <button @click="tab = 'activites'; mobileSidebar = false" :class="tab === 'activites' ? 'bg-blue-50 text-blue-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 Mes Activités
             </button>
-            <button @click="tab = 'demandes'; mobileSidebar = false" :class="tab === 'demandes' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
+            <button @click="tab = 'demandes'; mobileSidebar = false" :class="tab === 'demandes' ? 'bg-blue-50 text-blue-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 Mes Demandes
             </button>
-            <button @click="tab = 'notifications'; mobileSidebar = false" :class="tab === 'notifications' ? 'bg-teal-50 text-teal-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all text-left">
+            <button @click="tab = 'notifications'; mobileSidebar = false" :class="tab === 'notifications' ? 'bg-blue-50 text-blue-700 font-bold shadow-sm' : 'text-gray-600 hover:bg-gray-50 font-medium'" class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all text-left">
                 <div class="flex items-center gap-3">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     Mes Notifications
@@ -80,12 +80,12 @@
                     <p class="text-gray-500 mt-1">Consultez les informations de votre structure.</p>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Informations Générales</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+	                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+	                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Informations Générales</h3>
+	                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
                             <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Domaine d'intervention</p>
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-50 text-teal-700 border border-teal-100">{{ $user->domaine }}</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100">{{ is_array($user->domaine) ? implode(', ', $user->domaine) : $user->domaine }}</span>
                         </div>
                         <div>
                             <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Email (Identifiant)</p>
@@ -101,21 +101,82 @@
                                 <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                                 {{ $user->number1 }} @if($user->number2) / {{ $user->number2 }} @endif
                             </p>
-                        </div>
-                    </div>
-                </div>
+	                        </div>
+	                    </div>
+	                </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+	                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+	                    <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Modifier mes informations</h3>
+	                    <form method="POST" action="{{ route('user.updateInfos', $user->id) }}" enctype="multipart/form-data" class="space-y-5">
+	                        @csrf
+	                        @method('PUT')
+	                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+	                            <div class="md:col-span-2">
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Nom de la structure</label>
+	                                <input type="text" name="name" value="{{ old('name', $user->name) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Sigle</label>
+	                                <input type="text" name="denomination" value="{{ old('denomination', $user->denomination) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Email</label>
+	                                <input type="email" name="email" value="{{ old('email', $user->email) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Téléphone principal</label>
+	                                <input type="text" name="number1" value="{{ old('number1', $user->number1) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Téléphone secondaire</label>
+	                                <input type="text" name="number2" value="{{ old('number2', $user->number2) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Commune</label>
+	                                <input type="text" name="commune" value="{{ old('commune', $user->commune ?? 'Cotonou') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Arrondissement</label>
+	                                <input type="text" name="arrondissement" value="{{ old('arrondissement', $user->arrondissement) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Quartier</label>
+	                                <input type="text" name="quartier" value="{{ old('quartier', $user->quartier) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Maison / repère</label>
+	                                <input type="text" name="maison" value="{{ old('maison', $user->maison) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                            </div>
+	                            <div class="md:col-span-2">
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Domaines d'intervention</label>
+	                                <input type="text" name="domaine_text" value="{{ old('domaine_text', $user->domaine) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Séparez les domaines par des virgules">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Lien web / réseau</label>
+	                                <input type="url" name="lien" value="{{ old('lien', $user->lien) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="https://...">
+	                            </div>
+	                            <div>
+	                                <label class="block text-sm font-bold text-gray-700 mb-1">Logo</label>
+	                                <input type="file" name="logo_path" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+	                            </div>
+	                        </div>
+	                        <div class="flex justify-end">
+	                            <button type="submit" class="px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-xl shadow-sm transition-colors">Enregistrer</button>
+	                        </div>
+	                    </form>
+	                </div>
+
+	                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Membres du Bureau</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                         @forelse($user->boardMembers as $member)
-                        <div class="bg-gradient-to-br from-teal-50 to-white p-5 rounded-2xl border border-teal-100 text-center">
-                            <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-3">{{ $member->role }}</p>
+                        <div class="bg-gradient-to-br from-blue-50 to-white p-5 rounded-2xl border border-blue-100 text-center">
+                            <p class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3">{{ $member->role }}</p>
                             <div class="w-12 h-12 bg-white rounded-full mx-auto mb-2 overflow-hidden shadow-sm border border-gray-100">
                                 @if($member->photo_path)
                                     <img src="{{ asset('storage/' . $member->photo_path) }}" class="w-full h-full object-cover">
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center font-bold text-teal-700">{{ substr($member->nom, 0, 1) }}</div>
+                                    <div class="w-full h-full flex items-center justify-center font-bold text-blue-700">{{ substr($member->nom, 0, 1) }}</div>
                                 @endif
                             </div>
                             <p class="font-bold text-gray-900 text-sm">{{ $member->nom }} {{ $member->prenom }}</p>
@@ -148,8 +209,12 @@
                                 <div class="relative h-48 overflow-hidden">
                                     <img src="{{ asset('storage/' . $activity->attachment) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                     <div class="absolute top-3 right-3">
-                                        @if($activity->is_visible)
+                                        @if($activity->status === \App\Models\Activity::STATUS_PUBLISHED)
                                             <span class="px-3 py-1 text-xs font-black tracking-wider bg-green-500 text-white rounded-full shadow-md">Publié</span>
+                                        @elseif($activity->status === \App\Models\Activity::STATUS_CORRECTION_REQUESTED)
+                                            <span class="px-3 py-1 text-xs font-black tracking-wider bg-amber-400 text-amber-950 rounded-full shadow-md">Correction</span>
+                                        @elseif($activity->status === \App\Models\Activity::STATUS_REJECTED)
+                                            <span class="px-3 py-1 text-xs font-black tracking-wider bg-red-500 text-white rounded-full shadow-md">Rejeté</span>
                                         @else
                                             <span class="px-3 py-1 text-xs font-black tracking-wider bg-yellow-400 text-yellow-900 rounded-full shadow-md">Modération</span>
                                         @endif
@@ -160,6 +225,33 @@
                                         <h4 class="font-bold text-gray-900 text-lg leading-tight mb-2">{{ $activity->titre }}</h4>
                                         <p class="text-sm text-gray-500 line-clamp-3">{{ $activity->description }}</p>
                                     </div>
+                                    @if($activity->last_admin_feedback)
+                                        <div class="mt-4 rounded-xl border border-amber-100 bg-amber-50 p-3 text-sm text-amber-900">
+                                            <p class="font-black mb-1">Message de la mairie</p>
+                                            <p>{{ $activity->last_admin_feedback }}</p>
+                                            <p class="text-xs font-bold mt-2">Corrections/rejets: {{ $activity->correction_count }}/3</p>
+                                        </div>
+                                    @endif
+
+                                    @if($activity->status === \App\Models\Activity::STATUS_CORRECTION_REQUESTED && $activity->correction_count <= 3)
+                                        <form action="{{ route('activites.update', $activity->id) }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-3 rounded-2xl border border-teal-100 bg-teal-50/50 p-4">
+                                            @csrf
+                                            @method('PUT')
+                                            <p class="text-sm font-black text-teal-800">Modifier et resoumettre</p>
+                                            <input type="text" name="titre" value="{{ old('titre', $activity->titre) }}" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm">
+                                            <textarea name="description" rows="3" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm">{{ old('description', $activity->description) }}</textarea>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <input type="text" name="lieu" value="{{ old('lieu', $activity->lieu) }}" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm" placeholder="Lieu">
+                                                <input type="date" name="date" value="{{ old('date', optional($activity->date)->format('Y-m-d')) }}" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm">
+                                                <input type="number" name="budget_expected" value="{{ old('budget_expected', $activity->budget_expected) }}" required min="0" class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm" placeholder="Budget">
+                                                <input type="number" name="beneficiaries_expected" value="{{ old('beneficiaries_expected', $activity->beneficiaries_expected) }}" required min="1" class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm" placeholder="Bénéficiaires">
+                                            </div>
+                                            <input type="text" name="target_audience" value="{{ old('target_audience', $activity->target_audience) }}" required class="w-full rounded-xl border border-teal-100 bg-white px-3 py-2 text-sm" placeholder="Public cible">
+                                            <input type="file" name="attachment" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-white file:text-teal-700">
+                                            <button type="submit" class="w-full rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-black text-white hover:bg-teal-800">Renvoyer pour validation</button>
+                                        </form>
+                                    @endif
+
                                     <div class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-xs font-medium text-gray-400">
                                         <span>Ajouté le {{ $activity->created_at->format('d/m/Y') }}</span>
                                     </div>
@@ -174,7 +266,7 @@
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 mb-1">Aucune activité enregistrée</h3>
                             <p class="text-gray-500">Commencez par ajouter votre première activité pour la rendre publique.</p>
-                            <button type="button" @click.prevent.stop="showActivityModal = true" class="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-teal-500 text-teal-600 text-sm font-bold rounded-xl transition-colors">
+                            <button type="button" @click.prevent.stop="showActivityModal = true" class="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-blue-500 text-blue-600 text-sm font-bold rounded-xl transition-colors">
                                 Ajouter une activité
                             </button>
                         </div>
@@ -189,7 +281,7 @@
                         <h2 class="text-3xl font-black text-gray-900">Demandes Officielles</h2>
                         <p class="text-gray-500 mt-1">Soumettez vos courriers et sollicitations à la Mairie.</p>
                     </div>
-                    <button type="button" @click.prevent.stop="showRequestModal = true" class="inline-flex items-center gap-2 px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-teal-200 transition-transform hover:-translate-y-0.5">
+                    <button type="button" @click.prevent.stop="showRequestModal = true" class="inline-flex items-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-200 transition-transform hover:-translate-y-0.5">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                         Nouveau Courrier
                     </button>
@@ -237,7 +329,7 @@
                                         
                                         @if($request->admin_response || $request->admin_attachment)
                                             <div class="mt-2 text-xs">
-                                                <button @click="$dispatch('open-response-modal', {{ json_encode(['objet' => $request->objet, 'response' => $request->admin_response, 'attachment' => $request->admin_attachment ? asset('storage/' . $request->admin_attachment) : null]) }})" class="text-teal-600 hover:text-teal-800 font-medium underline">
+                                                <button @click="$dispatch('open-response-modal', {{ json_encode(['objet' => $request->objet, 'response' => $request->admin_response, 'attachment' => $request->admin_attachment ? asset('storage/' . $request->admin_attachment) : null]) }})" class="text-blue-600 hover:text-blue-800 font-medium underline">
                                                     Voir la réponse
                                                 </button>
                                             </div>
@@ -289,7 +381,7 @@
                                     }
                                 }
                              "
-                             :class="{'bg-slate-50 border-l-4 border-l-teal-500': !isRead, 'bg-white hover:bg-slate-50': isRead}"
+                             :class="{'bg-slate-50 border-l-4 border-l-blue-500': !isRead, 'bg-white hover:bg-slate-50': isRead}"
                              class="p-6 border-b border-gray-100 last:border-0 transition-colors cursor-pointer group">
                             <div class="flex items-start gap-4">
                                 <!-- Icône -->
@@ -312,7 +404,7 @@
                                     <div class="flex items-center justify-between gap-4 mb-1">
                                         <h4 class="text-base font-black flex items-center gap-2" :class="{'text-slate-900': !isRead, 'text-slate-700': isRead}">
                                             {{ $notif->title }}
-                                            <span x-show="!isRead" class="w-2 h-2 rounded-full bg-teal-500 inline-block"></span>
+                                            <span x-show="!isRead" class="w-2 h-2 rounded-full bg-blue-500 inline-block"></span>
                                         </h4>
                                         <span class="text-xs font-bold text-slate-400 whitespace-nowrap">{{ $notif->created_at->diffForHumans() }}</span>
                                     </div>
@@ -362,30 +454,30 @@
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Titre de l'action <span class="text-red-500">*</span></label>
-                                <input type="text" name="titre" value="{{ old('titre') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                <input type="text" name="titre" value="{{ old('titre') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors">
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Lieu <span class="text-red-500">*</span></label>
-                                    <input type="text" name="lieu" value="{{ old('lieu') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Ex: Cotonou, Quartier X">
+                                    <input type="text" name="lieu" value="{{ old('lieu') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors" placeholder="Ex: Cotonou, Quartier X">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Date prévue <span class="text-red-500">*</span></label>
-                                    <input type="date" name="date" value="{{ old('date') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                    <input type="date" name="date" value="{{ old('date') }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors">
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Budget prévu (FCFA) <span class="text-red-500">*</span></label>
-                                    <input type="number" name="budget_expected" value="{{ old('budget_expected') }}" required min="0" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Ex: 500000">
+                                    <input type="number" name="budget_expected" value="{{ old('budget_expected') }}" required min="0" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors" placeholder="Ex: 500000">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Bénéficiaires espérés <span class="text-red-500">*</span></label>
-                                    <input type="number" name="beneficiaries_expected" value="{{ old('beneficiaries_expected') }}" required min="1" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Ex: 150">
+                                    <input type="number" name="beneficiaries_expected" value="{{ old('beneficiaries_expected') }}" required min="1" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors" placeholder="Ex: 150">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Public cible <span class="text-red-500">*</span></label>
-                                    <select name="target_audience" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                    <select name="target_audience" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors">
                                         <option value="">Sélectionner...</option>
                                         <option value="Tout public" {{ old('target_audience') == 'Tout public' ? 'selected' : '' }}>Tout public</option>
                                         <option value="Jeunes" {{ old('target_audience') == 'Jeunes' ? 'selected' : '' }}>Jeunes</option>
@@ -399,11 +491,11 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Description détaillée <span class="text-red-500">*</span></label>
-                                <textarea name="description" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Décrivez l'impact de l'activité...">{{ old('description') }}</textarea>
+                                <textarea name="description" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Décrivez l'impact de l'activité...">{{ old('description') }}</textarea>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Photo d'illustration <span class="text-red-500">*</span></label>
-                                <input type="file" name="attachment" accept="image/*" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+                                <input type="file" name="attachment" accept="image/*" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                             </div>
                         </div>
                     </div>
@@ -411,7 +503,7 @@
                         <button type="button" @click="showActivityModal = false" class="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">
                             Annuler
                         </button>
-                        <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-colors">
+                        <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-md hover:bg-blue-700 transition-colors">
                             Publier
                         </button>
                     </div>
@@ -433,7 +525,7 @@
                     @csrf
                     <div class="bg-white px-6 pt-6 pb-4 sm:p-8 sm:pb-4">
                         <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                            <div class="w-12 h-12 rounded-full bg-teal-50 flex items-center justify-center text-teal-600">
+                            <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </div>
                             <h3 class="text-2xl font-black text-gray-900" id="modal-title">Nouveau Courrier</h3>
@@ -442,22 +534,28 @@
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Objet officiel <span class="text-red-500">*</span></label>
-                                <input type="text" name="objet" placeholder="Ex: Demande de subvention..." required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                <input type="text" name="objet" placeholder="Ex: Demande de subvention..." required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors">
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Fichier PDF (Signé) <span class="text-red-500">*</span></label>
-                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl bg-gray-50 hover:bg-teal-50 transition-colors">
+                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors">
                                     <div class="space-y-1 text-center">
                                         <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                             <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                         <div class="flex text-sm text-gray-600 justify-center">
-                                            <label class="relative cursor-pointer bg-white rounded-md font-bold text-teal-600 hover:text-teal-500 focus-within:outline-none px-2">
+                                            <label class="relative cursor-pointer bg-white rounded-md font-bold text-blue-600 hover:text-blue-500 focus-within:outline-none px-2">
                                                 <span>Importer un fichier</span>
-                                                <input type="file" name="attachment" accept="application/pdf" class="sr-only" required>
+                                                <input type="file" name="attachment" accept="application/pdf" class="sr-only" required @change="requestFileName = $event.target.files[0]?.name || ''">
                                             </label>
                                         </div>
-                                        <p class="text-xs text-gray-500">PDF uniquement jusqu'à 10MB</p>
+                                        <template x-if="requestFileName">
+                                            <div class="mt-3 inline-flex max-w-full items-center gap-2 rounded-lg border border-teal-200 bg-teal-50 px-3 py-2 text-sm font-bold text-teal-800">
+                                                <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                <span class="truncate" x-text="requestFileName"></span>
+                                            </div>
+                                        </template>
+                                        <p class="text-xs text-gray-500">PDF uniquement jusqu'à 20MB</p>
                                     </div>
                                 </div>
                             </div>
@@ -467,7 +565,7 @@
                         <button type="button" @click="showRequestModal = false" class="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">
                             Annuler
                         </button>
-                        <button type="submit" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-colors">
+                        <button type="submit" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-md hover:bg-blue-700 transition-colors">
                             Envoyer la demande
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                         </button>
