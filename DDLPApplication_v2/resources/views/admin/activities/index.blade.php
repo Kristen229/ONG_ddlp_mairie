@@ -34,7 +34,7 @@
             
             <div class="p-5 flex-grow flex flex-col">
                 <div class="flex items-center gap-3 mb-3">
-                    <div class="h-8 w-8 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center text-xs font-black shrink-0 border border-teal-100">
+                    <div class="h-8 w-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center text-xs font-black shrink-0 border border-blue-100">
                         {{ substr($act->user->name ?? 'A', 0, 1) }}
                     </div>
                     <p class="text-xs font-black text-slate-600 truncate w-full uppercase tracking-wider">{{ $act->user->name ?? 'Inconnue' }}</p>
@@ -137,7 +137,7 @@
 
                 <div class="bg-white px-6 pt-6 pb-8 sm:px-8">
                     <div class="flex items-center gap-3 mb-8 pb-6 border-b border-slate-100">
-                        <div class="h-12 w-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-lg font-black border border-teal-100">
+                        <div class="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg font-black border border-blue-100">
                             <span x-text="(selectedAct?.user_name || 'A').substring(0, 1)"></span>
                         </div>
                         <div>
@@ -166,7 +166,7 @@
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span class="text-xs font-bold uppercase">Budget</span>
                             </div>
-                            <p class="text-teal-600 font-black font-mono text-lg" x-text="(selectedAct?.budget_expected || 0) + ' XOF'"></p>
+                            <p class="text-blue-600 font-black font-mono text-lg" x-text="(selectedAct?.budget_expected || 0) + ' XOF'"></p>
                         </div>
                         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col justify-center">
                             <div class="flex items-center gap-2 mb-1 text-slate-500">
@@ -186,7 +186,7 @@
 
                     <div>
                         <h4 class="text-sm font-black text-slate-800 uppercase tracking-wide mb-3 flex items-center gap-2">
-                            <svg class="h-5 w-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                            <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
                             Description
                         </h4>
                         <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 text-slate-700 leading-relaxed whitespace-pre-wrap shadow-inner" x-text="selectedAct?.description"></div>

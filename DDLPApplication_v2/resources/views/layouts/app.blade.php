@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DDLP - Mairie de Cotonou</title>
+    <title>Mairie de Cotonou - Mairie de Cotonou</title>
     
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -19,23 +19,23 @@
             <div class="w-full py-4 flex items-center justify-between">
                 <div class="flex items-center">
                     <a href="{{ route('accueil') }}" class="flex items-center gap-3">
-                        <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-500">
-                            DDLP Cotonou
+                        <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-500">
+                            Mairie de Cotonou
                         </span>
                     </a>
                 </div>
                 
                 <!-- Desktop Menu -->
                 <div class="hidden lg:flex items-center space-x-8">
-                    <a href="{{ route('accueil') }}" class="text-base font-medium text-gray-700 hover:text-teal-600">Accueil</a>
-                    <a href="{{ route('association-et-ong') }}" class="text-base font-medium text-gray-700 hover:text-teal-600">Associations et ONG</a>
-                    <a href="{{ route('accueil') }}#activite" class="text-base font-medium text-gray-700 hover:text-teal-600">Activités</a>
+                    <a href="{{ route('accueil') }}" class="text-base font-medium text-gray-700 hover:text-blue-600">Accueil</a>
+                    <a href="{{ route('association-et-ong') }}" class="text-base font-medium text-gray-700 hover:text-blue-600">Associations et ONG</a>
+                    <a href="{{ route('accueil') }}#activite" class="text-base font-medium text-gray-700 hover:text-blue-600">Activités</a>
                     
                     <!-- Dropdown "Plus" -->
                     <div x-data="{ open: false }" class="relative" @click.outside="open = false">
-                        <button @click="open = !open" class="text-base font-medium text-gray-700 hover:text-teal-600 flex items-center gap-1 group">
+                        <button @click="open = !open" class="text-base font-medium text-gray-700 hover:text-blue-600 flex items-center gap-1 group">
                             Plus
-                            <svg class="h-4 w-4 text-gray-400 group-hover:text-teal-500 transition-transform" :class="{'rotate-180': open}" viewBox="0 0 20 20" fill="currentColor">
+                            <svg class="h-4 w-4 text-gray-400 group-hover:text-blue-500 transition-transform" :class="{'rotate-180': open}" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </button>
@@ -44,19 +44,19 @@
                                 <div class="px-5 py-6 sm:p-6 space-y-4">
                                     <a href="{{ route('apropos') }}" class="group flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50">
                                         <div>
-                                            <p class="text-base font-medium text-gray-900 group-hover:text-teal-600">À Propos</p>
+                                            <p class="text-base font-medium text-gray-900 group-hover:text-blue-600">À Propos</p>
                                             <p class="mt-1 text-sm text-gray-600">Mission de la Mairie et engagement.</p>
                                         </div>
                                     </a>
                                     <a href="{{ route('faq') }}" class="group flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50">
                                         <div>
-                                            <p class="text-base font-medium text-gray-900 group-hover:text-teal-600">FAQ</p>
+                                            <p class="text-base font-medium text-gray-900 group-hover:text-blue-600">FAQ</p>
                                             <p class="mt-1 text-sm text-gray-600">Réponses aux questions fréquentes.</p>
                                         </div>
                                     </a>
                                     <a href="{{ route('contact') }}" class="group flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50">
                                         <div>
-                                            <p class="text-base font-medium text-gray-900 group-hover:text-teal-600">Contact</p>
+                                            <p class="text-base font-medium text-gray-900 group-hover:text-blue-600">Contact</p>
                                             <p class="mt-1 text-sm text-gray-600">Contactez la Mairie de Cotonou.</p>
                                         </div>
                                     </a>
@@ -68,9 +68,9 @@
 
                 <div class="hidden lg:flex items-center space-x-4">
                     @auth('web')
-                        <a href="{{ route('user.show', Auth::id()) }}" class="bg-teal-600 py-2 px-4 rounded-full text-sm font-medium text-white hover:bg-teal-700">Mon Espace</a>
+                        <a href="{{ route('user.show', Auth::id()) }}" class="bg-blue-600 py-2 px-4 rounded-full text-sm font-medium text-white hover:bg-blue-700">Mon Espace</a>
                     @else
-                        <a href="{{ route('connexion') }}" class="bg-teal-600 py-2 px-4 rounded-full text-sm font-medium text-white hover:bg-teal-700">Connexion membre</a>
+                        <a href="{{ route('connexion') }}" class="bg-blue-600 py-2 px-4 rounded-full text-sm font-medium text-white hover:bg-blue-700">Connexion membre</a>
                     @endauth
                 </div>
 
@@ -93,9 +93,9 @@
                 <a href="{{ route('contact') }}" class="block px-3 py-2 rounded-md font-medium text-gray-900 hover:bg-gray-50">Contact</a>
                 <div class="mt-4">
                      @auth('web')
-                        <a href="{{ route('user.show', Auth::id()) }}" class="w-full inline-block text-center bg-teal-600 py-3 px-4 rounded-full text-white">Mon Espace</a>
+                        <a href="{{ route('user.show', Auth::id()) }}" class="w-full inline-block text-center bg-blue-600 py-3 px-4 rounded-full text-white">Mon Espace</a>
                     @else
-                        <a href="{{ route('connexion') }}" class="w-full inline-block text-center bg-teal-600 py-3 px-4 rounded-full text-white">Connexion membre</a>
+                        <a href="{{ route('connexion') }}" class="w-full inline-block text-center bg-blue-600 py-3 px-4 rounded-full text-white">Connexion membre</a>
                     @endauth
                 </div>
             </div>
@@ -110,8 +110,8 @@
     <footer class="bg-gray-900 mt-16 py-12 text-white text-sm">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-                <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-400">DDLP Cotonou</span>
-                <p class="mt-4 text-gray-400">Direction du Développement Local et de la Participation de la Mairie de Cotonou.</p>
+                <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-400">Mairie de Cotonou</span>
+                <p class="mt-4 text-gray-400">Plateforme municipale des associations et ONG de Cotonou.</p>
             </div>
             <div>
                 <h3 class="font-bold uppercase tracking-wider mb-4">Liens Rapides</h3>
@@ -131,7 +131,7 @@
             </div>
         </div>
         <div class="mt-12 text-center text-gray-500 border-t border-gray-800 pt-8">
-            &copy; {{ date('Y') }} Mairie de Cotonou - DDLP. Tous droits réservés.
+            &copy; {{ date('Y') }} Mairie de Cotonou - Mairie de Cotonou. Tous droits réservés.
         </div>
     </footer>
 

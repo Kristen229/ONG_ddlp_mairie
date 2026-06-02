@@ -29,7 +29,7 @@
         <div class="lg:col-span-2 space-y-6">
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                 <h2 class="text-lg font-black text-slate-800 mb-4 border-b border-gray-100 pb-3 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     Contenu du courrier
                 </h2>
                 
@@ -94,9 +94,9 @@
         <!-- Colonne Droite : Formulaire de traitement -->
         <div class="lg:col-span-1">
             @if($assocRequest->statut === \App\Enums\RequestStatus::PENDING)
-            <div class="bg-white rounded-2xl shadow-lg border border-teal-100 p-6 sticky top-6">
+            <div class="bg-white rounded-2xl shadow-lg border border-blue-100 p-6 sticky top-6">
                 <h2 class="text-lg font-black text-slate-800 mb-4 border-b border-gray-100 pb-3 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                     Traiter le Courrier
                 </h2>
                 
@@ -106,12 +106,12 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-1">Message de réponse (Optionnel)</label>
-                            <textarea name="admin_response" rows="4" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:ring-teal-500 focus:border-teal-500 text-sm" placeholder="Rédigez la réponse qui sera envoyée à l'ONG..."></textarea>
+                            <textarea name="admin_response" rows="4" class="w-full border border-slate-300 rounded-xl px-4 py-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Rédigez la réponse qui sera envoyée à l'ONG..."></textarea>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-1">Joindre un document (Optionnel)</label>
-                            <input type="file" name="admin_attachment" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 transition-colors">
+                            <input type="file" name="admin_attachment" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors">
                         </div>
 
                         <div class="pt-4 flex gap-3">

@@ -67,13 +67,13 @@
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             @if($req->statut === \App\Enums\RequestStatus::PENDING)
                                 <div class="flex justify-end gap-2">
-                                    <a href="{{ route('requests.show', $req->id) }}" class="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-bold shadow-md">
+                                    <a href="{{ route('requests.show', $req->id) }}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-bold shadow-md">
                                         Traiter
                                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                     </a>
                                 </div>
                             @else
-                                <a href="{{ route('requests.show', $req->id) }}" class="text-xs font-bold text-teal-600 hover:underline">Voir détails</a>
+                                <a href="{{ route('requests.show', $req->id) }}" class="text-xs font-bold text-blue-600 hover:underline">Voir détails</a>
                             @endif
                         </td>
                     </tr>

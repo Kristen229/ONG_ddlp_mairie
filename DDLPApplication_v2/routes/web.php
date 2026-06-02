@@ -127,7 +127,7 @@ Route::middleware(['auth', 'force_password_change'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth:admin')->group(function () {
+Route::middleware(['auth:admin', 'admin_force_password_change'])->group(function () {
     // Dashboard
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
 
@@ -197,4 +197,18 @@ Route::middleware('auth:admin')->group(function () {
         $request->session()->regenerateToken();
         return redirect()->route('conAdmin');
     })->name('admin.logout');
+
+    // Force password change for admin
+    Route::get('/admin/password/change', fn() => view('admin.auth.change-password'))->name('admin.password.change');
+    Route::post('/admin/password/change', function (Request $request) {
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        $admin = Auth::guard('admin')->user();
+        $admin->update([
+            'password' => Hash::make($request->password),
+            'must_change_password' => false,
+        ]);
+        return redirect()->route('admin.dashboard')->with('success', 'Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant utiliser la plateforme.');
+    })->name('admin.password.change.update');
 });

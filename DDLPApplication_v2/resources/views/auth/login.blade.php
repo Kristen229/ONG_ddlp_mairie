@@ -4,9 +4,9 @@
     <section class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
             <!-- En-tête -->
-            <div class="bg-teal-700 py-8 px-6 text-center">
+            <div class="bg-blue-700 py-8 px-6 text-center">
                 <h2 class="text-3xl font-black text-white">Espace Membre</h2>
-                <p class="text-teal-100 mt-2">Connectez-vous pour accéder à vos services</p>
+                <p class="text-blue-100 mt-2">Connectez-vous pour accéder à vos services</p>
             </div>
 
             <div class="p-8">
@@ -34,7 +34,7 @@
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Adresse Email</label>
                         <input id="email" name="email" type="email" autocomplete="email" required
-                            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                             placeholder="ong@exemple.com">
                     </div>
 
@@ -44,7 +44,7 @@
                         </div>
                         <div class="relative">
                             <input id="password" name="password" :type="show ? 'text' : 'password'" autocomplete="current-password" required
-                                class="appearance-none block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm pr-10"
+                                class="appearance-none block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm pr-10"
                                 placeholder="••••••••">
                             <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none">
                                 <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,14 +61,14 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <input id="remember" name="remember" type="checkbox"
-                                class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded">
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                             <label for="remember" class="ml-2 block text-sm text-gray-900">Se souvenir de moi</label>
                         </div>
                     </div>
 
                     <div>
                         <button type="submit"
-                            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors">
+                            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                             Se connecter
                         </button>
                     </div>
@@ -86,7 +86,7 @@
                 <div class="mt-6">
                     <!-- Lien vers inscription Etape 1 -->
                     <a href="{{ route('inscription.prerequis') }}"
-                        class="w-full flex justify-center py-3 px-4 border-2 border-teal-600 text-sm font-medium rounded-xl text-teal-700 bg-white hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors">
+                        class="w-full flex justify-center py-3 px-4 border-2 border-blue-600 text-sm font-medium rounded-xl text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                         Inscrire mon association
                     </a>
                     <div class="mt-8 pt-6 border-t border-gray-100 text-center">

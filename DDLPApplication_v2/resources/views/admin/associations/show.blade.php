@@ -5,7 +5,7 @@
 
     <!-- Bouton Retour -->
     <div class="flex items-center gap-4">
-        <a href="{{ route('admin.associations.index') }}" class="text-slate-500 hover:text-teal-600 transition-colors flex items-center gap-2 font-medium bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200">
+        <a href="{{ route('admin.associations.index') }}" class="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-2 font-medium bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             Retour aux structures
         </a>
@@ -13,7 +13,7 @@
 
     <!-- EN-TETE / PROFIL GENERAL -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative">
-        <div class="h-32 bg-gradient-to-r from-teal-500 to-emerald-400"></div>
+        <div class="h-32 bg-gradient-to-r from-blue-500 to-emerald-400"></div>
 
         <div class="px-6 lg:px-10 pb-8 flex flex-col md:flex-row items-center md:items-end justify-between gap-6 -mt-16 relative">
             <div class="flex flex-col md:flex-row items-center gap-6">
@@ -49,7 +49,7 @@
 
             <!-- Actions Rapides -->
             <div class="flex items-center gap-3 w-full md:w-auto">
-                <a href="{{ route('admin.edit', $user->id) }}" class="flex-1 md:flex-none flex justify-center items-center gap-2 bg-teal-600 text-white hover:bg-teal-700 font-bold px-5 py-2.5 rounded-xl shadow-md transition-colors">
+                <a href="{{ route('admin.edit', $user->id) }}" class="flex-1 md:flex-none flex justify-center items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 font-bold px-5 py-2.5 rounded-xl shadow-md transition-colors">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                     Modifier
                 </a>
@@ -74,13 +74,13 @@
                     <div>
                         <p class="text-xs font-semibold text-slate-500">Adresse du Siège</p>
                         <p class="font-bold text-slate-800 flex items-start gap-1">
-                            <svg class="h-4 w-4 mt-0.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                            <svg class="h-4 w-4 mt-0.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
                             {{ $user->maison ?? '' }}, {{ $user->quartier ?? '' }}, {{ $user->arrondissement ?? '' }}, {{ $user->commune ?? 'Cotonou' }}
                         </p>
                     </div>
                     <div>
                         <p class="text-xs font-semibold text-slate-500">Email Officiel</p>
-                        <a href="mailto:{{ $user->email }}" class="font-bold text-teal-600 hover:underline">{{ $user->email }}</a>
+                        <a href="mailto:{{ $user->email }}" class="font-bold text-blue-600 hover:underline">{{ $user->email }}</a>
                     </div>
                     <div>
                         <p class="text-xs font-semibold text-slate-500">Téléphones</p>
@@ -93,7 +93,7 @@
                     @if($user->lien)
                     <div>
                         <p class="text-xs font-semibold text-slate-500">Site Web</p>
-                        <a href="{{ $user->lien }}" target="_blank" class="font-bold text-teal-600 hover:underline flex items-center gap-1">
+                        <a href="{{ $user->lien }}" target="_blank" class="font-bold text-blue-600 hover:underline flex items-center gap-1">
                             {{ $user->lien }}
                             <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         </a>
@@ -116,12 +116,12 @@
                     @endphp
                     @foreach($docs as $doc)
                         @if($doc['path'])
-                        <a href="{{ asset('storage/' . $doc['path']) }}" target="_blank" class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-teal-50 border border-slate-200 hover:border-teal-200 rounded-xl transition-colors group">
-                            <div class="h-10 w-10 bg-white shadow-sm flex items-center justify-center rounded-lg text-teal-600">
+                        <a href="{{ asset('storage/' . $doc['path']) }}" target="_blank" class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-xl transition-colors group">
+                            <div class="h-10 w-10 bg-white shadow-sm flex items-center justify-center rounded-lg text-blue-600">
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             </div>
                             <div>
-                                <p class="font-bold text-sm text-slate-800 group-hover:text-teal-700">{{ $doc['label'] }}</p>
+                                <p class="font-bold text-sm text-slate-800 group-hover:text-blue-700">{{ $doc['label'] }}</p>
                                 <p class="text-xs text-slate-500">Cliquer pour consulter</p>
                             </div>
                         </a>
@@ -150,7 +150,7 @@
                     @endphp
                     @forelse($objectifs as $index => $objectif)
                     <li class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                        <div class="h-8 w-8 bg-teal-100 text-teal-600 rounded-lg flex items-center justify-center font-black shrink-0">
+                        <div class="h-8 w-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center font-black shrink-0">
                             {{ $index + 1 }}
                         </div>
                         <p class="text-sm font-medium text-slate-700 mt-1 leading-relaxed">{{ $objectif }}</p>
@@ -167,7 +167,7 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @forelse($user->boardMembers as $member)
-                    <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:border-teal-200 transition-colors">
+                    <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:border-blue-200 transition-colors">
                         <div class="h-16 w-16 bg-gray-200 rounded-xl overflow-hidden shrink-0 shadow-sm border border-white">
                             @if($member->photo_path)
                                 <img src="{{ asset('storage/' . $member->photo_path) }}" class="w-full h-full object-cover">
@@ -178,7 +178,7 @@
                             @endif
                         </div>
                         <div>
-                            <p class="text-[10px] font-black text-teal-600 uppercase tracking-wider mb-0.5">{{ $member->role }}</p>
+                            <p class="text-[10px] font-black text-blue-600 uppercase tracking-wider mb-0.5">{{ $member->role }}</p>
                             <p class="font-bold text-slate-900 text-sm">{{ $member->nom }} {{ $member->prenom }}</p>
                             <p class="text-xs text-slate-500">{{ $member->telephone }}</p>
                         </div>

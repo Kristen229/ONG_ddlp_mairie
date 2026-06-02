@@ -44,7 +44,7 @@
                         <div class="text-xs text-gray-400 mt-1">{{ $review->created_at->format('d/m/Y H:i') }}</div>
                     </td>
                     <td class="px-6 py-4">
-                        <div class="text-sm font-bold text-teal-700">{{ $review->user->name }}</div>
+                        <div class="text-sm font-bold text-blue-700">{{ $review->user->name }}</div>
                         @if($review->activity)
                             <div class="text-xs text-gray-500 mt-1"><span class="font-medium">Activité :</span> {{ Str::limit($review->activity->titre, 30) }}</div>
                         @else

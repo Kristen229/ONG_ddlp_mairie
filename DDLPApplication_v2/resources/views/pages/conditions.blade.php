@@ -4,14 +4,14 @@
 <div class="bg-gray-50 py-12 min-h-screen">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="bg-teal-700 px-8 py-10 text-white text-center">
+            <div class="bg-blue-700 px-8 py-10 text-white text-center">
                 <h1 class="text-3xl md:text-4xl font-black mb-4">Conditions d'Utilisation</h1>
-                <p class="text-teal-100">Dernière mise à jour : {{ date('d/m/Y') }}</p>
+                <p class="text-blue-100">Dernière mise à jour : {{ date('d/m/Y') }}</p>
             </div>
             
-            <div class="p-8 md:p-12 prose prose-teal max-w-none text-gray-600">
+            <div class="p-8 md:p-12 prose prose-blue max-w-none text-gray-600">
                 <h2>1. Acceptation des conditions</h2>
-                <p>En accédant et en utilisant la plateforme de la Direction du Développement Local et de la Participation (DDLP) de la Mairie de Cotonou, vous acceptez sans réserve les présentes Conditions d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser la plateforme.</p>
+                <p>En accédant et en utilisant la plateforme de la Mairie de Cotonou, vous acceptez sans réserve les présentes Conditions d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser la plateforme.</p>
 
                 <h2>2. Objet de la plateforme</h2>
                 <p>La présente plateforme a pour but de recenser, suivre et accompagner les Associations et Organisations Non Gouvernementales (ONG) intervenant sur le territoire de la commune de Cotonou. Elle permet également aux citoyens de consulter les activités menées par ces organisations et de donner leur avis.</p>

@@ -6,24 +6,24 @@
         
         <!-- HEADER ASSOCIATION -->
         <div class="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden mb-8 relative">
-            <div class="h-40 bg-gradient-to-r from-teal-700 to-green-600"></div>
+            <div class="h-40 bg-gradient-to-r from-blue-700 to-blue-600"></div>
             <div class="px-8 pb-8 relative">
                 <div class="flex flex-col sm:flex-row items-center sm:items-end -mt-16 sm:-mt-20 gap-6">
                     <div class="h-32 w-32 sm:h-40 sm:w-40 rounded-full border-4 border-white bg-white shadow-md overflow-hidden flex-shrink-0">
                         @if($user->logo_path)
                             <img src="{{ asset('storage/' . $user->logo_path) }}" alt="Logo" class="w-full h-full object-cover">
                         @else
-                            <div class="w-full h-full bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-4xl">
+                            <div class="w-full h-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-4xl">
                                 {{ substr($user->name, 0, 1) }}
                             </div>
                         @endif
                     </div>
                     <div class="text-center sm:text-left flex-grow">
-                        <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-700 mb-2 uppercase tracking-wider">
+                        <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 mb-2 uppercase tracking-wider">
                             {{ $user->groupe ? Str::title($user->groupe->value) : 'ONG' }}
                         </div>
                         <h1 class="text-4xl font-black text-gray-900 mb-1">{{ $user->name }}</h1>
-                        <p class="text-gray-500 font-medium text-lg">{{ $user->domaine }}</p>
+                        <p class="text-gray-500 font-medium text-lg">{{ is_array($user->domaine) ? implode(', ', $user->domaine) : $user->domaine }}</p>
                     </div>
                     
                     @if(session('success'))
@@ -46,7 +46,7 @@
                     <div class="space-y-4 text-sm">
                         @if($user->commune)
                         <div class="flex items-start gap-3 text-gray-600">
-                            <svg class="w-5 h-5 text-teal-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <svg class="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             <div>
                                 <span class="block font-bold text-gray-900">Siège social</span>
                                 {{ $user->arrondissement }}, {{ $user->commune }}
@@ -56,17 +56,17 @@
 
                         @if($user->email)
                         <div class="flex items-start gap-3 text-gray-600">
-                            <svg class="w-5 h-5 text-teal-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <svg class="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             <div>
                                 <span class="block font-bold text-gray-900">Email de contact</span>
-                                <a href="mailto:{{ $user->email }}" class="text-teal-600 hover:underline">{{ $user->email }}</a>
+                                <a href="mailto:{{ $user->email }}" class="text-blue-600 hover:underline">{{ $user->email }}</a>
                             </div>
                         </div>
                         @endif
 
                         @if($user->number1)
                         <div class="flex items-start gap-3 text-gray-600">
-                            <svg class="w-5 h-5 text-teal-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <svg class="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                             <div>
                                 <span class="block font-bold text-gray-900">Téléphone</span>
                                 {{ $user->number1 }} @if($user->number2) / {{ $user->number2 }} @endif
@@ -76,10 +76,10 @@
                         
                         @if($user->lien)
                         <div class="flex items-start gap-3 text-gray-600">
-                            <svg class="w-5 h-5 text-teal-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            <svg class="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                             <div>
                                 <span class="block font-bold text-gray-900">Site Web / Réseaux</span>
-                                <a href="{{ $user->lien }}" target="_blank" class="text-teal-600 hover:underline break-all">{{ $user->lien }}</a>
+                                <a href="{{ $user->lien }}" target="_blank" class="text-blue-600 hover:underline break-all">{{ $user->lien }}</a>
                             </div>
                         </div>
                         @endif
@@ -134,7 +134,7 @@
                 <!-- OBJECTIFS -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
                     <h2 class="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Missions et Objectifs
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -143,7 +143,7 @@
                         @endphp
                         @forelse($objectifs as $index => $objectif)
                         <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
-                            <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-700 font-black flex items-center justify-center mb-3">{{ $index + 1 }}</span>
+                            <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black flex items-center justify-center mb-3">{{ $index + 1 }}</span>
                             <p class="text-gray-700 text-sm">{{ $objectif }}</p>
                         </div>
                         @empty
@@ -168,7 +168,7 @@
                                         <h4 class="font-bold text-gray-900 text-xl mb-2">{{ $activity->titre }}</h4>
                                         <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ $activity->description }}</p>
                                     </div>
-                                    <div class="text-xs font-bold text-teal-600 bg-teal-50 self-start px-3 py-1 rounded-lg">
+                                    <div class="text-xs font-bold text-blue-600 bg-blue-50 self-start px-3 py-1 rounded-lg">
                                         {{ $activity->created_at->translatedFormat('d F Y') }}
                                     </div>
                                 </div>
@@ -208,12 +208,12 @@
                             <div class="space-y-5">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Votre Nom / Pseudo <span class="text-red-500">*</span></label>
-                                    <input type="text" name="author_name" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" placeholder="Ex: Jean Dupont">
+                                    <input type="text" name="author_name" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors" placeholder="Ex: Jean Dupont">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Note (sur 5) <span class="text-red-500">*</span></label>
-                                    <select name="rating" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+                                    <select name="rating" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors">
                                         <option value="5">⭐⭐⭐⭐⭐ Excellent (5/5)</option>
                                         <option value="4">⭐⭐⭐⭐ Très bien (4/5)</option>
                                         <option value="3">⭐⭐⭐ Correct (3/5)</option>
@@ -224,7 +224,7 @@
 
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Votre commentaire <span class="text-red-500">*</span></label>
-                                    <textarea name="comment" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Partagez votre expérience avec cette association..."></textarea>
+                                    <textarea name="comment" rows="4" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors placeholder-gray-400" placeholder="Partagez votre expérience avec cette association..."></textarea>
                                 </div>
                             </div>
                         </div>

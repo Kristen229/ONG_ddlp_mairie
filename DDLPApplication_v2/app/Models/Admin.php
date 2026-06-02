@@ -11,9 +11,12 @@ class Admin extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
+        'nom',
+        'prenom',
         'email',
         'password',
         'is_super_admin',
+        'must_change_password',
     ];
 
     protected $hidden = [

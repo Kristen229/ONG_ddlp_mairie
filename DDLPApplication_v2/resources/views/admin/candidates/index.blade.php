@@ -30,7 +30,7 @@
         <!-- Header candidature -->
         <div class="bg-slate-50 border-b border-gray-200 p-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div class="flex items-center gap-4">
-                <div class="h-14 w-14 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center text-xl font-black border border-teal-100 shrink-0">
+                <div class="h-14 w-14 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl font-black border border-blue-100 shrink-0">
                     {{ substr($candidate->name, 0, 1) }}
                 </div>
                 <div>
@@ -66,7 +66,7 @@
             <!-- Informations générales -->
             <div>
                 <h3 class="text-sm font-black text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     Informations générales
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -76,7 +76,7 @@
                     </div>
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
                         <span class="text-xs font-bold text-slate-500 uppercase">Domaine</span>
-                        <p class="text-slate-800 font-bold mt-1">{{ $candidate->domaine }}</p>
+                        <p class="text-slate-800 font-bold mt-1">{{ is_array($candidate->domaine) ? implode(', ', $candidate->domaine) : $candidate->domaine }}</p>
                     </div>
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
                         <span class="text-xs font-bold text-slate-500 uppercase">Date de création</span>
@@ -88,20 +88,20 @@
             <!-- Objectifs -->
             <div>
                 <h3 class="text-sm font-black text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                     Objectifs déclarés
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div class="bg-teal-50/50 p-3 rounded-xl border border-teal-100 text-sm text-teal-800">1. {{ $candidate->objectif1 }}</div>
-                    <div class="bg-teal-50/50 p-3 rounded-xl border border-teal-100 text-sm text-teal-800">2. {{ $candidate->objectif2 }}</div>
-                    <div class="bg-teal-50/50 p-3 rounded-xl border border-teal-100 text-sm text-teal-800">3. {{ $candidate->objectif3 }}</div>
+                    <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 text-sm text-blue-800">1. {{ $candidate->objectif1 }}</div>
+                    <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 text-sm text-blue-800">2. {{ $candidate->objectif2 }}</div>
+                    <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 text-sm text-blue-800">3. {{ $candidate->objectif3 }}</div>
                 </div>
             </div>
 
             <!-- Coordonnées -->
             <div>
                 <h3 class="text-sm font-black text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                     Coordonnées
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -127,7 +127,7 @@
             <!-- Bureau exécutif -->
             <div>
                 <h3 class="text-sm font-black text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     Bureau exécutif
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -154,7 +154,7 @@
             @if($candidate->attachment && $candidate->attachment !== 'Non spécifié')
             <div>
                 <h3 class="text-sm font-black text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
                     Pièces jointes
                 </h3>
                 <div class="flex flex-wrap gap-3">

@@ -18,3 +18,7 @@ Date: 2026-05-31
 - [x] Uploads inscription - Limites Laravel passees a 20 Mo
 - [x] Uploads inscription - Limites PHP CLI passees a 20 Mo
 - [x] Uploads inscription - Verification executee
+- [x] Super Admin - Formulaire de création admin modifié (nom, prénom, email)
+- [x] Super Admin - Mot de passe généré automatiquement et envoyé par email
+- [x] Super Admin - Force du changement de mot de passe à la première connexion d'un admin
+- [x] Super Admin - Envoi d'email à l'admin lors d'une réinitialisation de mot de passe par le super admin

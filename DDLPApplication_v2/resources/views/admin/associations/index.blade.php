@@ -13,7 +13,7 @@
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Export PDF
             </a>
-            <a href="{{ route('admin.createForm1') }}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition-colors flex items-center gap-2">
+            <a href="{{ route('admin.createForm1') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition-colors flex items-center gap-2">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Nouveau
             </a>
@@ -35,7 +35,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
                     @foreach($users as $u)
-                    <tr class="hover:bg-teal-50/30 transition-colors">
+                    <tr class="hover:bg-blue-50/30 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center gap-4">
                                 <div class="h-12 w-12 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 flex items-center justify-center">
@@ -59,13 +59,13 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="text-sm font-medium text-slate-700 truncate max-w-[150px] inline-block" title="{{ $u->domaine }}">{{ $u->domaine ?: 'Non défini' }}</span>
+                            <span class="text-sm font-medium text-slate-700 truncate max-w-[150px] inline-block" title="{{ is_array($u->domaine) ? implode(', ', $u->domaine) : $u->domaine }}">{{ is_array($u->domaine) ? implode(', ', $u->domaine) : ($u->domaine ?: 'Non défini') }}</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-600">
                             {{ $u->number1 }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                            <a href="{{ route('account.show', $u->id) }}" class="inline-flex items-center justify-center text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 h-8 w-8 rounded-lg transition-colors border border-teal-100" title="Gérer">
+                            <a href="{{ route('account.show', $u->id) }}" class="inline-flex items-center justify-center text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 h-8 w-8 rounded-lg transition-colors border border-blue-100" title="Gérer">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </a>
                             <form method="POST" action="{{ route('admin.delete', $u->id) }}" class="inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ $u->name }} ?');">
