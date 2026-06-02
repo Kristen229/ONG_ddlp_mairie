@@ -57,7 +57,6 @@
                 <thead class="bg-slate-50">
                     <tr>
                         <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Administrateur</th>
-
                         <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Rôle</th>
                         <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Date de création</th>
                         <th class="px-6 py-4 text-right text-xs font-black text-slate-500 uppercase tracking-wider">Actions</th>
@@ -78,7 +77,6 @@
 
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-700">{{ $admin->email }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($admin->is_super_admin)
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-black rounded-full bg-purple-100 text-purple-800 border border-purple-200">
@@ -140,10 +138,11 @@
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Nom <span class="text-red-500">*</span></label>
                                 <input type="text" name="nom" required class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                                      <div>
+                            </div>
+                            <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Prénom <span class="text-red-500">*</span></label>
                                 <input type="text" name="prenom" required class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            </div>      </div>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>

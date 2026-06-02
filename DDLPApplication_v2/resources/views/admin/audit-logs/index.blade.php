@@ -22,7 +22,7 @@
         </div>
         <div class="flex gap-2">
             <button type="submit" class="flex-1 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-slate-800">Filtrer</button>
-            <a href="{{ route('admin.audit-logs.export', array_merge(request()->query(), ['format' => 'csv'])) }}" class="rounded-xl border border-teal-100 bg-teal-50 px-4 py-2.5 text-sm font-bold text-teal-700 hover:bg-teal-100">CSV</a>
+            <a href="{{ route('admin.audit-logs.export', array_merge(request()->query(), ['format' => 'csv'])) }}" class="rounded-xl border border-blue-100 bg-blue-50 px-4 py-2.5 text-sm font-bold text-blue-700 hover:bg-blue-100">CSV</a>
             <a href="{{ route('admin.audit-logs.export', array_merge(request()->query(), ['format' => 'excel'])) }}" class="rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-700 hover:bg-emerald-100">Excel</a>
         </div>
     </form>
@@ -44,7 +44,7 @@
                         <tr class="hover:bg-slate-50">
                             <td class="px-5 py-4 text-sm text-slate-500 whitespace-nowrap">{{ $log->created_at->format('d/m/Y H:i') }}</td>
                             <td class="px-5 py-4 text-sm font-bold text-slate-800">{{ $log->actor_name ?: 'Système' }}<br><span class="text-xs text-slate-400">{{ $log->actor_type }}</span></td>
-                            <td class="px-5 py-4 text-sm font-black text-teal-700">{{ $log->action }}</td>
+                            <td class="px-5 py-4 text-sm font-black text-blue-700">{{ $log->action }}</td>
                             <td class="px-5 py-4 text-sm text-slate-600">{{ $log->description }}</td>
                             <td class="px-5 py-4 text-sm text-slate-500">{{ $log->ip_address }}</td>
                         </tr>

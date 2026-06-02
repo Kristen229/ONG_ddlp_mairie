@@ -192,7 +192,6 @@
                         <img src="{{ $activity->user->logo_path ? asset('storage/' . $activity->user->logo_path) : asset('img/no-user.png') }}" class="w-10 h-10 rounded-full border-2 border-gray-100 object-cover">
                         <div class="text-xs">
                             <p class="font-bold text-gray-900 line-clamp-1 text-sm">{{ $activity->user->name }}</p>
-                            <p class="text-blue-600 font-medium">{{ is_array($activity->user->domaine) ? implode(', ', $activity->user->domaine) : $activity->user->domaine }}</p>
                         </div>
                     </div>
                     

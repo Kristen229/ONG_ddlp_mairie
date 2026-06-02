@@ -45,8 +45,8 @@
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-1">Mot de passe actuel</label>
                 <div class="relative">
-                    <input :type="current ? 'text' : 'password'" name="current_password" required class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 pr-12 focus:border-teal-500 focus:ring-teal-500">
-                    <button type="button" @click="current = !current" class="absolute inset-y-0 right-0 px-4 text-gray-400 hover:text-teal-700">
+                    <input :type="current ? 'text' : 'password'" name="current_password" required class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 pr-12 focus:border-blue-500 focus:ring-blue-500">
+                    <button type="button" @click="current = !current" class="absolute inset-y-0 right-0 px-4 text-gray-400 hover:text-blue-700">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     </button>
                 </div>
@@ -56,8 +56,8 @@
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-1">Nouveau mot de passe</label>
                     <div class="relative">
-                        <input :type="password ? 'text' : 'password'" name="password" required minlength="8" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 pr-12 focus:border-teal-500 focus:ring-teal-500">
-                        <button type="button" @click="password = !password" class="absolute inset-y-0 right-0 px-4 text-gray-400 hover:text-teal-700">
+                        <input :type="password ? 'text' : 'password'" name="password" required minlength="8" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 pr-12 focus:border-blue-500 focus:ring-blue-500">
+                        <button type="button" @click="password = !password" class="absolute inset-y-0 right-0 px-4 text-gray-400 hover:text-blue-700">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         </button>
                     </div>
@@ -65,8 +65,8 @@
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-1">Confirmation</label>
                     <div class="relative">
-                        <input :type="confirmation ? 'text' : 'password'" name="password_confirmation" required minlength="8" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 pr-12 focus:border-teal-500 focus:ring-teal-500">
-                        <button type="button" @click="confirmation = !confirmation" class="absolute inset-y-0 right-0 px-4 text-gray-400 hover:text-teal-700">
+                        <input :type="confirmation ? 'text' : 'password'" name="password_confirmation" required minlength="8" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 pr-12 focus:border-blue-500 focus:ring-blue-500">
+                        <button type="button" @click="confirmation = !confirmation" class="absolute inset-y-0 right-0 px-4 text-gray-400 hover:text-blue-700">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         </button>
                     </div>
@@ -74,7 +74,7 @@
             </div>
 
             <div class="flex justify-end">
-                <button type="submit" class="rounded-xl bg-teal-700 px-6 py-3 font-bold text-white hover:bg-teal-800">Mettre à jour</button>
+                <button type="submit" class="rounded-xl bg-blue-700 px-6 py-3 font-bold text-white hover:bg-blue-800">Mettre à jour</button>
             </div>
         </form>
     </div>
