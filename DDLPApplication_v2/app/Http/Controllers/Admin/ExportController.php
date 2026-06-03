@@ -45,4 +45,12 @@ class ExportController extends Controller
         $pdf = Pdf::loadView('pdf.stats', $data);
         return $pdf->download('statistiques.pdf');
     }
+
+    public function downloadDocumentationPdf()
+    {
+        abort_unless(auth('admin')->check(), 403);
+        AuditLog::record('export.documentation_pdf', 'Export PDF de la documentation technique');
+        $pdf = Pdf::loadView('pdf.documentation');
+        return $pdf->download('documentation_technique_ddlp.pdf');
+    }
 }

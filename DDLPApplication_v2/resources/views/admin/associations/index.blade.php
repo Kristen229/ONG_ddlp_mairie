@@ -8,16 +8,58 @@
             <h1 class="text-2xl font-black text-slate-800">Structures et ONG</h1>
             <p class="text-sm text-slate-500">Gérez l'ensemble des associations et ONG enregistrées à la commune.</p>
         </div>
-        <div class="flex gap-3">
-            <a href="{{ route('pdf.exportByDomaine', ['domaine' => 'all']) }}" class="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 font-bold px-4 py-2 rounded-xl text-sm transition-colors flex items-center gap-2 border border-indigo-100">
+        <div class="flex flex-wrap gap-3">
+            <a href="{{ route('pdf.exportByDomaine', ['domaine' => request('domaine', 'all')]) }}" class="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 font-bold px-4 py-2.5 rounded-xl text-sm transition-colors flex items-center gap-2 border border-indigo-100 shadow-sm">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Export PDF
             </a>
-            <a href="{{ route('admin.createForm1') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition-colors flex items-center gap-2">
+            <a href="{{ route('admin.createForm1') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-md transition-colors flex items-center gap-2">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Nouveau
             </a>
         </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
+        <form method="GET" action="{{ route('admin.associations.index') }}" class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher une structure..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div class="w-full md:w-64">
+                <select name="type" class="block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-xl text-sm focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Tous les types</option>
+                    <option value="ong" {{ request('type') === 'ong' ? 'selected' : '' }}>ONG</option>
+                    <option value="association" {{ request('type') === 'association' ? 'selected' : '' }}>Association</option>
+                </select>
+            </div>
+
+            <div class="w-full md:w-72">
+                <select name="domaine" class="block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-xl text-sm focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Tous les domaines</option>
+                    @foreach($domainesList as $domaine)
+                        <option value="{{ $domaine }}" {{ request('domaine') === $domaine ? 'selected' : '' }}>
+                            {{ \Illuminate\Support\Str::limit($domaine, 40) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="flex gap-2">
+                <button type="submit" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-800 transition-colors">
+                    Filtrer
+                </button>
+                @if(request()->anyFilled(['search', 'type', 'domaine']))
+                    <a href="{{ route('admin.associations.index') }}" class="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-xl text-sm font-bold hover:bg-gray-50 transition-colors flex items-center">
+                        Effacer
+                    </a>
+                @endif
+            </div>
+        </form>
     </div>
 
     <!-- Tableau -->

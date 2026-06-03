@@ -12,10 +12,34 @@ use Illuminate\Support\Facades\Hash;
 
 class AssociationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('is_approved', true)->with('domaines')->paginate(20);
-        return view('admin.associations.index', compact('users'));
+        $query = User::where('is_approved', true);
+
+        // Recherche par nom ou sigle
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('denomination', 'like', "%{$search}%");
+            });
+        }
+
+        // Filtre par domaine
+        if ($domaine = $request->input('domaine')) {
+            $query->whereHas('domaines', function ($q) use ($domaine) {
+                $q->where('nom', $domaine);
+            });
+        }
+
+        // Filtre par type (ONG/Association)
+        if ($type = $request->input('type')) {
+            $query->where('groupe', $type);
+        }
+
+        $users = $query->with('domaines')->paginate(20)->withQueryString();
+        $domainesList = \App\Models\Domaine::select('nom')->distinct()->orderBy('nom')->pluck('nom');
+
+        return view('admin.associations.index', compact('users', 'domainesList'));
     }
 
     public function showPage($id)
