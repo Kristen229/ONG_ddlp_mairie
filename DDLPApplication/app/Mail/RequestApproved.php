@@ -38,35 +38,12 @@ class RequestApproved extends Mailable
     }
     
         /**
-     * Construire le message.
-     *
-     * @return \Illuminate\Mail\Mailable
-     */
-    public function build()
-    {
-        $email = $this->subject('Demande acceptée')
-                      ->view('emails.approved') // Vue de l'email
-                      ->with(['request' => $this->request]); // Passer la demande à la vue
-
-        if ($this->filePath) {
-            $email->attach(storage_path('app/' . $this->filePath)); // Attacher le fichier si le chemin est défini
-        }
-
-        return $email;
-    }
-    
-
-
-
-    
-
-    /**
      * Récupérer l'enveloppe du message.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Request Approved',
+            subject: 'Demande acceptée',
             from: new Address('oloukaaureole@gmail.com', 'VotreApp')
         );
     }
@@ -88,6 +65,14 @@ class RequestApproved extends Mailable
      */
     public function attachments(): array
     {
+        if ($this->filePath) {
+            return [
+                \Illuminate\Mail\Mailables\Attachment::fromPath(
+                    storage_path('app/' . $this->filePath)
+                ),
+            ];
+        }
+
         return [];
     }
 }

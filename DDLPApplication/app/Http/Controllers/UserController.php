@@ -7,14 +7,9 @@ use App\Models\Requests;
 use App\Models\User;
 use App\Models\Activity;
 use App\Models\Notification;
-
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Hash;
-
-/**
- * @param Request $request
- */
+use App\Enums\RequestStatus;
 
 class UserController extends Controller
 {
@@ -132,7 +127,7 @@ class UserController extends Controller
         $users = User::all(); // Récupérer tous les utilisateurs
         $requests = Requests::all(); // Récupère toutes les demandes
 
-        $pendingRequests = Requests::where('statut', 'En attente')->get();
+        $pendingRequests = Requests::where('statut', RequestStatus::PENDING->value)->get();
 
         return view('admin', compact('users', 'requests', 'pendingRequests')); // Passer les variables $users et $requests à la vue
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\RequestStatus;
 
 class Requests extends Model
 {
@@ -31,7 +32,7 @@ class Requests extends Model
 
     public static function countPendingRequests()
     {
-        return self::where('statut', 'En attente')->count();
+        return self::where('statut', RequestStatus::PENDING->value)->count();
     }
 
 

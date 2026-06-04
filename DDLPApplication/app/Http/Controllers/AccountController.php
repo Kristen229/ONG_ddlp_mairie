@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 use App\Models\User;
+use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\ApproveRequest;
+use App\Enums\RequestStatus;
 
 class AccountController extends Controller
 {
@@ -91,7 +94,11 @@ class AccountController extends Controller
 
     public function createUserPartie3(Request $request)
     {
-        $user = User::latest()->first();
+        $user = User::find(session('user_id'));
+
+        if (!$user) {
+            return redirect()->route('user.createForme1')->withErrors('Session expirée, veuillez recommencer.');
+        }
 
         $user->update([
             'namePresident' => $request->namePresident,
@@ -140,7 +147,7 @@ class AccountController extends Controller
     public function createUserType1(Request $request)
     {
         // Logique de validation et sauvegarde pour UserType1
-        User::create([
+        $user = User::create([
             'groupe' => $request->groupe,
             'name' => $request->name,
             'domaine' => implode(',', $request->domaine),
@@ -150,6 +157,8 @@ class AccountController extends Controller
             'objectif2' => $request->objectif2,
             'objectif3' => $request->objectif3,
         ]);
+
+        session(['admin_creating_user_id' => $user->id]);
 
         return redirect()->route('admin.createForm2');
     }
@@ -172,10 +181,10 @@ class AccountController extends Controller
         $password = Hash::make($request->password);
     
     
-        // Récupérer le dernier utilisateur créé
-        $user = User::latest()->first();
+        // Récupérer l'utilisateur en cours de création
+        $user = User::find(session('admin_creating_user_id'));
         if (!$user) {
-            return redirect()->back()->withErrors('Aucun utilisateur trouvé pour mise à jour.');
+            return redirect()->route('admin.createForm1')->withErrors('Session expirée, veuillez recommencer.');
         }
     
         // Gérer l'upload d'image si un fichier est présent
@@ -203,7 +212,12 @@ class AccountController extends Controller
     public function createUserType3(Request $request)
     {
         // Logique de validation et sauvegarde pour UserType3
-        $user = User::latest()->first();
+        $user = User::find(session('admin_creating_user_id'));
+
+        if (!$user) {
+            return redirect()->route('admin.createForm1')->withErrors('Session expirée, veuillez recommencer.');
+        }
+
         $user->update([
             'namePresident' => $request->namePresident,
             'lastNamePresident' => $request->lastNamePresident,
@@ -277,38 +291,10 @@ class AccountController extends Controller
         return view('associationPage', compact('user'));
     }
 
-    public function index()
+    public function index(\App\Services\StatsService $statsService)
     {
-        // Assurez-vous de récupérer les associations correctement
-        
-        $associations = User::all();
-
-        $userAsssociation = User::where('created_by', 'user')->get();  // Les associations créées par l'utilisateur
-        $adminAssociations = User::where('created_by', 'admin')->get();  // Les associations créées par l'administrateur
-
-        // Récupérer les demandes avec relations utilisateur
-        $requests = Requests::with('user')->paginate(10); // Vous pouvez aussi paginer les demandes
-
-        // Récupérer les notifications paginées
-        $notifications = Notification::latest()->take(5)->get(); // 5 dernières
-        $allNotifications = Notification::latest()->skip(5)->take(1000000)->get();
-
-        // Compter les demandes en attente
-        $pendingRequestsCount = Requests::where('statut', 'En attente')->count();
-        $activities = Activity::where('is_visible', true)->get();
-
-        // Retourner la vue avec les données
-        return view('admin', [
-            'associations' => $associations,
-            'userAssociations' => $userAsssociation,
-            'adminAssociations' => $adminAssociations,
-            'pendingRequestsCount' => $pendingRequestsCount,
-            'requests' => $requests, // Assurez-vous que cette ligne passe bien la variable requests
-            'notifications' => $notifications,
-            'allNotifications' => $allNotifications,
-            'activities'=> $activities,
-            
-        ]);
+        $data = $statsService->getAdminDashboardData();
+        return view('admin', $data);
     }
 
     public function edit($id)
@@ -324,21 +310,9 @@ class AccountController extends Controller
         return view('editAssociation', compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         $user = User::findOrFail($id);
-
-        // Validation des fichiers
-        $validatedData = $request->validate([
-            'attachment' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'attachment1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'attachment2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'attachment3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'attachment4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'attachment5' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'signature_data' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'cachet' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
 
         // Mise à jour des autres champs
         $user->name = $request->input('name');
@@ -397,22 +371,16 @@ class AccountController extends Controller
         }
     }
 
-    public function approve(Request $request, $id)
+    public function approve(ApproveRequest $request, $id)
     {
         try {
             Log::info('Début de la méthode approve pour l\'ID: ' . $id);
-    
-            $validated = $request->validate([
-                'motif' => 'required|string',
-                'email' => 'required|email',
-                'attachment' => 'nullable|file|mimes:pdf|max:2048', // Pièce jointe optionnelle
-            ]);
     
             $requestToApprove = Requests::findOrFail($id);
     
             Log::info('Demande trouvée: ', ['id' => $requestToApprove->id]);
     
-            $requestToApprove->statut = 'Acceptée';
+            $requestToApprove->statut = RequestStatus::APPROVED->value;
             $requestToApprove->save();
     
             Log::info('Statut mis à jour pour la demande.');
@@ -458,20 +426,14 @@ class AccountController extends Controller
         }
     }
     
-   public function reject(Request $request, $id)
+   public function reject(ApproveRequest $request, $id)
 {
     try {
-        // Validation
-        $request->validate([
-            'motif' => 'required|string',
-            'email' => 'required|email',
-        ]);
-
         // Récupérer la demande
         $requestToReject = Requests::findOrFail($id);
 
         // Mettre à jour le statut
-        $requestToReject->statut = 'Refusée';
+        $requestToReject->statut = RequestStatus::REJECTED->value;
         $requestToReject->save();
 
         // Envoyer l'email
