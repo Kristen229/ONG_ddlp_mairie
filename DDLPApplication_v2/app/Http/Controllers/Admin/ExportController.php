@@ -38,7 +38,8 @@ class ExportController extends Controller
 
         $statsService = app(StatsService::class);
         $data = $statsService->getAdminDashboardData();
-        $data['chartImage'] = $request->input('chartImage');
+        $data['chartRep'] = $request->input('chartRep');
+        $data['chartIns'] = $request->input('chartIns');
 
         AuditLog::record('export.dashboard_pdf', 'Export PDF du tableau de bord');
 
