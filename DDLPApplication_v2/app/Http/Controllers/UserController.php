@@ -40,10 +40,8 @@ class UserController extends Controller
         $query->with('domaines');
         $users = $query->paginate(12)->appends($request->query());
 
-        // Récupérer tous les domaines uniques des assos approuvées pour le filtre
-        $domaines = Domaine::whereHas('users', fn ($user) => $user->where('is_approved', true))
-            ->orderBy('nom')
-            ->pluck('nom');
+        // Récupérer tous les domaines pour le filtre
+        $domaines = Domaine::orderBy('nom')->pluck('nom');
 
         return view('pages.association-et-ong', compact('users', 'domaines'));
     }

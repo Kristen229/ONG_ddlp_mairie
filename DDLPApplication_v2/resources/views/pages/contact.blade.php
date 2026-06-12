@@ -27,7 +27,7 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-gray-900">Adresse</h3>
-                            <p class="text-gray-600 mt-1">Mairie de Cotonou, Direction du Développement Local<br>Cotonou, Bénin</p>
+                            <p class="text-gray-600 mt-1">Quartier Wologuèdè, Cotonou</p>
                         </div>
                     </div>
                     
@@ -37,7 +37,7 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-gray-900">Téléphone</h3>
-                            <p class="text-gray-600 mt-1">+229 XX XX XX XX</p>
+                            <p class="text-gray-600 mt-1">+229 01 46 50 11 11</p>
                         </div>
                     </div>
                     
@@ -47,7 +47,17 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-gray-900">Email</h3>
-                            <p class="text-gray-600 mt-1">support-ddlp@mairie-cotonou.bj</p>
+                            <p class="text-gray-600 mt-1">contact.cotonou@mairie.bj ou mairiecotonou.infos@mairie.bj</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-sm">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Horaires</h3>
+                            <p class="text-gray-600 mt-1">Du lundi au vendredi de 08h00 à 12h30 et de 14h00 à 17h30</p>
                         </div>
                     </div>
                 </div>

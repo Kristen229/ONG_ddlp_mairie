@@ -19,6 +19,7 @@
             <div class="w-full py-4 flex items-center justify-between">
                 <div class="flex items-center">
                     <a href="{{ route('accueil') }}" class="flex items-center gap-3">
+                        <img src="{{ asset('build/assets/Logo_MCOT-2023-08_Final_qokf8t.png') }}" alt="Logo Mairie de Cotonou" class="h-10 w-auto">
                         <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-500">
                             Mairie de Cotonou
                         </span>

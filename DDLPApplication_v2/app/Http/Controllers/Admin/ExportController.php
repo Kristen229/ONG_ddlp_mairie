@@ -8,6 +8,8 @@ use App\Models\Activity;
 use App\Services\StatsService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AssociationsExport;
 
 class ExportController extends Controller
 {
@@ -53,5 +55,12 @@ class ExportController extends Controller
         AuditLog::record('export.documentation_pdf', 'Export PDF de la documentation technique');
         $pdf = Pdf::loadView('pdf.documentation');
         return $pdf->download('documentation_technique_ddlp.pdf');
+    }
+
+    public function exportExcel()
+    {
+        abort_unless(auth('admin')->check(), 403);
+        AuditLog::record('export.associations_excel', 'Export Excel de toutes les associations');
+        return Excel::download(new AssociationsExport, 'associations_cotonou.xlsx');
     }
 }

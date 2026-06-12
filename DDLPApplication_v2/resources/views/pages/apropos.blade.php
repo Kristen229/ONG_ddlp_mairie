@@ -37,7 +37,7 @@
             <!-- Image/Illustration -->
             <div class="relative">
                 <div class="absolute inset-0 bg-gradient-to-tr from-blue-200 to-blue-50 rounded-3xl transform rotate-3 scale-105 -z-10"></div>
-                <img src="{{ asset('/img1/4469bddf-fb4a-4003-9684-73ca66a47ad6-removebg-preview.png') }}" alt="Mairie de Cotonou" class="w-full h-auto rounded-3xl shadow-xl border border-white">
+                <img src="{{ asset('/images/hotel_de_ville.jpeg') }}" alt="Hôtel de Ville de Cotonou" class="w-full h-auto rounded-3xl shadow-xl border border-white">
             </div>
         </div>
     </div>
