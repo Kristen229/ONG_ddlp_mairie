@@ -58,6 +58,11 @@ class AssociationController extends Controller
     {
         $user = User::findOrFail($id);
         
+        $request->validate([
+            'number1' => 'required|string|regex:/^01[0-9]{8}$/',
+            'number2' => 'nullable|string|regex:/^01[0-9]{8}$/',
+        ]);
+
         $data = $request->except(['_token', '_method', 'domaine', 'domaine_autre']);
         $domaines = $this->normalizeDomaines($request->input('domaine', []), $request->input('domaine_autre'));
 
@@ -74,7 +79,7 @@ class AssociationController extends Controller
         $user = User::findOrFail($id);
         AuditLog::record('association.delete', "Association supprimée: {$user->name}", ['user_id' => $user->id]);
         $user->delete();
-        return redirect()->route('admin.dashboard')->with('success', 'Association supprimée.');
+        return redirect()->route('admin.associations.index')->with('success', 'Association supprimée.');
     }
 
     // --- Inscription par l'admin (3 étapes) ---

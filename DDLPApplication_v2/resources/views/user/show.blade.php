@@ -125,11 +125,21 @@
 	                            </div>
 	                            <div>
 	                                <label class="block text-sm font-bold text-gray-700 mb-1">Téléphone principal</label>
-	                                <input type="text" name="number1" value="{{ old('number1', $user->number1) }}" required class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                                <div class="flex">
+	                                    <span class="inline-flex items-center px-4 py-3 rounded-l-xl border border-r-0 border-gray-200 bg-gray-100 text-gray-500 text-sm font-bold">
+	                                        +229
+	                                    </span>
+	                                    <input type="text" name="number1" value="{{ old('number1', $user->number1) }}" placeholder="01XXXXXXXX" required minlength="10" maxlength="10" pattern="01[0-9]{8}" title="Le numéro doit contenir exactement 10 chiffres et commencer par 01" class="flex-1 block w-full border border-gray-200 rounded-r-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+	                                </div>
 	                            </div>
 	                            <div>
 	                                <label class="block text-sm font-bold text-gray-700 mb-1">Téléphone secondaire</label>
-	                                <input type="text" name="number2" value="{{ old('number2', $user->number2) }}" class="block w-full border border-gray-200 rounded-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors">
+	                                <div class="flex">
+	                                    <span class="inline-flex items-center px-4 py-3 rounded-l-xl border border-r-0 border-gray-200 bg-gray-100 text-gray-500 text-sm font-bold">
+	                                        +229
+	                                    </span>
+	                                    <input type="text" name="number2" value="{{ old('number2', $user->number2) }}" placeholder="01XXXXXXXX" minlength="10" maxlength="10" pattern="01[0-9]{8}" title="Le numéro doit contenir exactement 10 chiffres et commencer par 01" class="flex-1 block w-full border border-gray-200 rounded-r-xl bg-gray-50 py-3 px-4 focus:ring-teal-500 focus:border-teal-500 focus:bg-white transition-colors" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+	                                </div>
 	                            </div>
 	                            <div>
 	                                <label class="block text-sm font-bold text-gray-700 mb-1">Commune</label>

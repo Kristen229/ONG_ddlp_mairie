@@ -80,7 +80,12 @@
                                 <!-- Téléphone -->
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-1">Contact <span class="text-red-500">*</span></label>
-                                    <input type="text" :name="'members[' + index + '][telephone]'" x-model="member.telephone" placeholder="+229 XX XX XX XX" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-4 py-3 rounded-l-xl border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm font-bold">
+                                            +229
+                                        </span>
+                                        <input type="text" :name="'members[' + index + '][telephone]'" x-model="member.telephone" placeholder="01XXXXXXXX" required minlength="10" maxlength="10" pattern="01[0-9]{8}" title="Le numéro doit contenir exactement 10 chiffres et commencer par 01" class="flex-1 block w-full px-4 py-3 border border-gray-300 rounded-r-xl focus:ring-blue-500 focus:border-blue-500 sm:text-sm" @input="member.telephone = member.telephone.replace(/[^0-9]/g, '')">
+                                    </div>
                                 </div>
                                 <!-- Photo -->
                                 <div>

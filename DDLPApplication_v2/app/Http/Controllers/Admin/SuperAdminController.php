@@ -131,7 +131,7 @@ class SuperAdminController extends Controller
         return redirect()->route('admin.superadmin.index')->with('success', $msg);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $admin = Admin::findOrFail($id);
         
@@ -143,10 +143,15 @@ class SuperAdminController extends Controller
             return redirect()->back()->withErrors('Impossible de supprimer le dernier super admin.');
         }
 
-        AuditLog::record('admin.delete', "Administrateur supprimé: {$admin->email}", ['admin_id' => $admin->id]);
+        $motif = $request->input('motif', 'Aucun motif fourni');
+
+        AuditLog::record('admin.delete', "Administrateur supprimé: {$admin->email}", [
+            'admin_id' => $admin->id,
+            'motif' => $motif
+        ]);
 
         $admin->delete();
 
-        return redirect()->route('admin.superadmin.index')->with('success', 'Administrateur supprimé.');
+        return redirect()->route('admin.dashboard')->with('success', 'Administrateur supprimé avec succès.');
     }
 }

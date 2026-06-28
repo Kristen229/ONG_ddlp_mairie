@@ -23,8 +23,8 @@ class StoreUserStep1Request extends FormRequest
             'quartier' => 'required|string|max:255',
             'maison' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
-            'number1' => 'required|string|max:255',
-            'number2' => 'nullable|string|max:255',
+            'number1' => 'required|string|regex:/^01[0-9]{8}$/',
+            'number2' => 'nullable|string|regex:/^01[0-9]{8}$/',
             'lien' => 'nullable|url|max:255',
         ];
     }

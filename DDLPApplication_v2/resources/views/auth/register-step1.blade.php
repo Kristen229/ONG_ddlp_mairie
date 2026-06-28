@@ -199,13 +199,23 @@
                         <!-- Téléphone 1 -->
                         <div>
                             <label class="block text-base font-bold text-gray-700 mb-1">Téléphone principal <span class="text-red-500">*</span></label>
-                            <input type="text" name="number1" value="{{ old('number1') }}" placeholder="+229 XX XX XX XX" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 text-base">
+                            <div class="flex">
+                                <span class="inline-flex items-center px-4 py-3 rounded-l-xl border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-base font-bold">
+                                    +229
+                                </span>
+                                <input type="text" name="number1" value="{{ old('number1') }}" placeholder="01XXXXXXXX" required minlength="10" maxlength="10" pattern="01[0-9]{8}" title="Le numéro doit contenir exactement 10 chiffres et commencer par 01" class="flex-1 block w-full px-4 py-3 border border-gray-300 rounded-r-xl focus:ring-blue-500 focus:border-blue-500 text-base" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            </div>
                         </div>
 
                         <!-- Téléphone 2 -->
                         <div>
                             <label class="block text-base font-bold text-gray-700 mb-1">Téléphone secondaire <span class="text-gray-400 text-sm font-normal">(optionnel)</span></label>
-                            <input type="text" name="number2" value="{{ old('number2') }}" placeholder="+229 XX XX XX XX" class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 text-base">
+                            <div class="flex">
+                                <span class="inline-flex items-center px-4 py-3 rounded-l-xl border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-base font-bold">
+                                    +229
+                                </span>
+                                <input type="text" name="number2" value="{{ old('number2') }}" placeholder="01XXXXXXXX" minlength="10" maxlength="10" pattern="01[0-9]{8}" title="Le numéro doit contenir exactement 10 chiffres et commencer par 01" class="flex-1 block w-full px-4 py-3 border border-gray-300 rounded-r-xl focus:ring-blue-500 focus:border-blue-500 text-base" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            </div>
                         </div>
                     </div>
 

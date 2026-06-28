@@ -4,11 +4,14 @@
 <div class="space-y-6" x-data="{
     showCreateModal: false,
     showEditModal: false,
+    showDeleteModal: false,
     editId: '',
     editNom: '',
     editPrenom: '',
     editEmail: '',
     editIsSuperAdmin: false,
+    deleteId: '',
+    deleteEmail: '',
     openEdit(id, nom, prenom, email, isSuperAdmin) {
         this.editId = id;
         this.editNom = nom;
@@ -16,6 +19,11 @@
         this.editEmail = email;
         this.editIsSuperAdmin = isSuperAdmin;
         this.showEditModal = true;
+    },
+    openDelete(id, email) {
+        this.deleteId = id;
+        this.deleteEmail = email;
+        this.showDeleteModal = true;
     }
 }">
 
@@ -96,12 +104,9 @@
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </button>
                             @if($admin->id !== auth('admin')->id())
-                            <form method="POST" action="{{ route('admin.superadmin.destroy', $admin->id) }}" class="inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?');">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="inline-flex items-center justify-center text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 h-8 w-8 rounded-lg transition-colors border border-red-100" title="Supprimer">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button>
-                            </form>
+                            <button type="button" @click="openDelete({{ $admin->id }}, '{{ addslashes($admin->email) }}')" class="inline-flex items-center justify-center text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 h-8 w-8 rounded-lg transition-colors border border-red-100" title="Supprimer">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
                             @endif
                         </td>
                     </tr>
@@ -223,6 +228,53 @@
                         Enregistrer
                     </button>
                     <button type="button" @click="showEditModal = false" class="px-5 py-2.5 bg-white text-gray-700 text-sm font-bold rounded-xl border border-gray-300 hover:bg-gray-50 transition-colors">
+                        Annuler
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL DELETE - Structure simple et fiable                     -->
+    <!-- ============================================================ -->
+    <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <!-- Overlay (fond sombre) -->
+        <div x-show="showDeleteModal" x-transition.opacity.duration.200ms class="fixed inset-0 bg-gray-900/70" @click="showDeleteModal = false"></div>
+
+        <!-- Contenu du modal -->
+        <div x-show="showDeleteModal"
+             x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+             @click.stop
+             class="relative z-10 w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <form method="POST" :action="'/admin/super-admin/' + deleteId">
+                @csrf
+                @method('DELETE')
+                <div class="px-6 pt-6 pb-4">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-red-100">
+                            <svg class="h-5 w-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-black text-gray-900">Supprimer l'Administrateur</h3>
+                    </div>
+                    
+                    <div class="bg-red-50 text-red-800 p-4 rounded-xl text-sm mb-4">
+                        Vous êtes sur le point de supprimer l'administrateur <strong x-text="deleteEmail"></strong>. Cette action est irréversible.
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Motif de la suppression <span class="text-red-500">*</span></label>
+                            <textarea name="motif" rows="3" required placeholder="Veuillez justifier cette suppression (sera consigné dans l'audit)..." class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 flex flex-row-reverse gap-3 border-t border-gray-100">
+                    <button type="submit" class="px-5 py-2.5 bg-red-600 text-white text-sm font-bold rounded-xl hover:bg-red-700 transition-colors shadow-sm">
+                        Supprimer définitivement
+                    </button>
+                    <button type="button" @click="showDeleteModal = false" class="px-5 py-2.5 bg-white text-gray-700 text-sm font-bold rounded-xl border border-gray-300 hover:bg-gray-50 transition-colors">
                         Annuler
                     </button>
                 </div>
