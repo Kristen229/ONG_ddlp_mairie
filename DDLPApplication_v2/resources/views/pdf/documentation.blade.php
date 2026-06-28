@@ -4,25 +4,29 @@
     <meta charset="utf-8">
     <title>Documentation Technique - DDLPApplication</title>
     <style>
-        body { font-family: DejaVu Sans, sans-serif; color: #111827; font-size: 12px; line-height: 1.5; }
-        h1 { color: #1e3a8a; font-size: 24px; margin-bottom: 4px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
-        h2 { color: #1e40af; font-size: 18px; margin-top: 24px; border-bottom: 1px solid #bfdbfe; padding-bottom: 6px; }
-        h3 { color: #2563eb; font-size: 14px; margin-top: 16px; }
+        @page { margin: 25px 25px 50px 25px; } /* top, right, bottom, left */
+        body { font-family: DejaVu Sans, sans-serif; color: #000000; font-size: 11px; line-height: 1.5; margin-bottom: 20px; }
+        h1 { color: #000000; font-size: 18px; margin-bottom: 8px; text-align: center; text-transform: uppercase; text-decoration: underline; }
+        .subtitle { text-align: center; font-size: 11px; margin-bottom: 25px; font-weight: bold; }
+        h2 { color: #000000; font-size: 14px; margin-top: 20px; border-bottom: 1px solid #000000; padding-bottom: 4px; text-transform: uppercase; }
+        h3 { color: #000000; font-size: 12px; margin-top: 16px; font-weight: bold; }
         p { margin-top: 8px; margin-bottom: 8px; text-align: justify; }
         ul, ol { margin-top: 8px; margin-bottom: 8px; padding-left: 20px; }
         li { margin-bottom: 4px; }
-        code { font-family: monospace; background-color: #f1f5f9; padding: 2px 4px; border-radius: 4px; color: #b91c1c; font-size: 11px; }
-        .muted { color: #64748b; font-size: 10px; }
+        code { font-family: monospace; background-color: #f1f5f9; padding: 2px 4px; border-radius: 4px; color: #b91c1c; font-size: 10px; }
         .page-break { page-break-after: always; }
-        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-        th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: left; vertical-align: top; }
-        th { background: #f8fafc; color: #475569; }
-        .header-box { background-color: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; }
+        th, td { border: 1px solid #000000; padding: 10px; text-align: left; vertical-align: top; }
+        th { background: #e5e7eb; color: #000000; font-weight: bold; text-transform: uppercase; font-size: 10px; }
+        tr:nth-child(even) { background-color: #f9fafb; }
+        .header-box { background-color: #f8fafc; border: 1px solid #000000; padding: 12px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
+    @include('pdf.header')
+    
     <h1>Documentation Technique - Plateforme DDLP</h1>
-    <p class="muted">Généré le {{ now()->format('d/m/Y à H:i') }}</p>
+    <div class="subtitle">Généré le {{ now()->format('d/m/Y à H:i') }}</div>
 
     <div class="header-box">
         <strong>Application :</strong> Gestion des Associations et ONG - Mairie de Cotonou<br>
@@ -118,5 +122,6 @@
     <h3>6.2 Gestion des fichiers</h3>
     <p>Les fichiers uploadés (statuts, récépissés, rapports d'activité) sont stockés dans <code>storage/app/public/</code>. La taille maximale d'upload est définie à 20 Mo. Il est nécessaire de configurer <code>upload_max_filesize</code> et <code>post_max_size</code> dans le <code>php.ini</code> du serveur.</p>
 
+    @include('pdf.footer')
 </body>
 </html>

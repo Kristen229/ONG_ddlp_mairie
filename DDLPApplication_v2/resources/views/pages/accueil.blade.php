@@ -73,7 +73,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-100">
-                <img src="{{ asset('/img1/4469bddf-fb4a-4003-9684-73ca66a47ad6-removebg-preview.png') }}" alt="Mairie de Cotonou" class="w-full h-auto object-cover" />
+                <img src="{{ asset('/images/hotel_de_ville.jpeg') }}" alt="Hôtel de Ville de Cotonou" class="w-full h-auto object-cover" />
             </div>
             <div class="space-y-8">
                 <!-- Feature 1 -->

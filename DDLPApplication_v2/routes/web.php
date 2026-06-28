@@ -193,11 +193,12 @@ Route::middleware(['auth:admin', 'admin_force_password_change'])->group(function
     // Notifications
     Route::post('/notifications/send', [NotificationController::class, 'send'])->name('notifications.send');
 
-    // Exports PDF
+    // Exports
     Route::get('/pdf/{id}', [ExportController::class, 'downloadAssociationPdf'])->name('pdf.download');
     Route::get('/admin/export/domaine', [ExportController::class, 'exportByDomaine'])->name('pdf.exportByDomaine');
     Route::post('/admin/stats/pdf', [ExportController::class, 'exportStatsPdf'])->name('admin.stats.pdf');
     Route::get('/admin/documentation/pdf', [ExportController::class, 'downloadDocumentationPdf'])->name('admin.documentation.pdf');
+    Route::get('/admin/export/excel', [ExportController::class, 'exportExcel'])->name('admin.export.excel');
 
     // Logout admin
     Route::post('/admin/logout', function (Request $request) {
