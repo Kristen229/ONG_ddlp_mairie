@@ -123,21 +123,16 @@ L'inscription des ONG suit un processus sécurisé en plusieurs étapes :
 
 ## ✉️ Configuration Email
 
-Pour activer l'envoi d'emails (validation/rejet d'inscription), configurez le SMTP dans `.env` :
+Pour activer l'envoi d'emails (validation/rejet d'inscription), configurez Brevo dans `.env` :
 
 ```env
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME="votre-adresse@gmail.com"
-MAIL_PASSWORD="mot-de-passe-application"
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="votre-adresse@gmail.com"
-MAIL_FROM_NAME="Mairie de Cotonou"
+MAIL_MAILER=brevo
+MAIL_FROM_ADDRESS="votre-adresse-verifiee@domaine.com"
+MAIL_FROM_NAME="${APP_NAME}"
+BREVO_API_KEY="votre_cle_api_brevo"
 ```
 
-> ⚠️ Utilisez un **mot de passe d'application** Gmail, pas votre mot de passe principal.
-> Générez-le depuis : *Compte Google → Sécurité → Mots de passe des applications*.
+> ⚠️ L'adresse d'expédition (`MAIL_FROM_ADDRESS`) doit correspondre à un expéditeur ou domaine vérifié sur votre compte Brevo pour que les e-mails ne finissent pas dans les spams.
 
 ---
 
